@@ -1,13 +1,9 @@
-/* ========================================== */
-/* ==== 【常修改模組：系統配置 - config.js】 ==== */
-/* ========================================== */
-
 // 🗝️ 雙軌金鑰配置 (2026 隱藏鎖版)
 const config = {
-    adminCode: "ODg4ODg=",  // 管理員 (對應 88888)
-    memberCode: "Nzc3Nzc="   // 成員 (對應 77777)
+    // 💡 1212G 的編碼是 MTIxMkc=，8888 的編碼是 ODg4OA==
+    adminCode: "MTIxMkc=",  // 管理員 (輸入 1212G)
+    memberCode: "ODg4OA=="   // 成員 (輸入 8888)
 };
-
 // 為了相容舊邏輯，保留此變數 (自動抓取管理員金鑰)
 const SYSTEM_DAILY_KEY = atob(config.adminCode);
 
