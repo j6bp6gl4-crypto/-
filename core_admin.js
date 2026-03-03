@@ -46,5 +46,4 @@ window.adminAddRecord = function(expertName, sportKey) {
     localStorage.setItem('DashboardDB_V62_Final', JSON.stringify(window.dataDB)); 
     if (typeof window.renderDisplay === 'function') window.renderDisplay(); 
     if (typeof window.init === 'function') window.init(); 
-
 };
