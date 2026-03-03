@@ -56,9 +56,15 @@ function checkPasscode() {
 function unlockSystem() {
     const authGate = document.getElementById('authGate');
     const mainContent = document.getElementById('mainContent');
-    if (authGate) authGate.style.display = 'none';
+if (authGate) authGate.style.display = 'none';
     if (mainContent) mainContent.style.display = 'block';
-    
+
+    // 🚀 2026 點火程序：如果是管理員，啟動指揮中心與備份按鈕
+    if (window.isAdmin === true) {
+        if (typeof window.initAdminWidget === 'function') window.initAdminWidget();
+        if (typeof window.initBackupWidget === 'function') window.initBackupWidget();
+    }
+
     if (typeof window.init === 'function') {
         window.init();
     }
