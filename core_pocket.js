@@ -2,6 +2,9 @@
 /* ==== 【功能模組：口袋系統 - core_pocket.js】 ==== */
 /* ============================================================== */
 
+// 🌟 [關鍵修復] 必須在這裡提早讀取記憶，否則一開網頁會找不到資料導致按鈕關不掉！
+window.userPocket = JSON.parse(localStorage.getItem('UserPocketDB')) || [];
+
 // 🎯 處理點擊「➕ 收錄口袋」的邏輯，並叫出右側橘色大口袋
 window.toggleUserPocket = function(expertName, btnElement) {
     const idx = window.userPocket.indexOf(expertName);
@@ -77,10 +80,22 @@ window.toggleUserPocket = function(expertName, btnElement) {
         const listArea = document.getElementById('pocketListArea'); listArea.innerHTML = '';
         if (window.userPocket.length === 0) { 
             listArea.innerHTML = '<div style="padding: 100px 20px; text-align: center; color: #94a3b8; font-weight:bold; font-size:20px;">您的預測口袋目前空空如也！<br><small style="font-weight:normal;">快去排行榜點擊「➕ 收錄口袋」吧！</small></div>'; 
-        } else {
+} else {
             window.userPocket.forEach((name, index) => {
-                let pickText = (typeof todayPicks !== 'undefined' && todayPicks[name]) ? todayPicks[name].replace(/\n/g, '<br>') : '今日該好手尚未發布任何推薦';
+                // 🎯 [核心修復] 讓口袋面板也能支援「陣列格式」的 todayPicks
+                let rawText = "";
+                if (typeof todayPicks !== 'undefined') {
+                    if (Array.isArray(todayPicks)) {
+                        const found = todayPicks.find(p => p[0] === name);
+                        if (found) rawText = found[1] || "";
+                    } else {
+                        rawText = todayPicks[name] || "";
+                    }
+                }
+                let pickText = rawText ? rawText.replace(/\n/g, '<br>') : '今日該好手尚未發布任何推薦';
+
                 listArea.innerHTML += `
+
                 <li class="pocket-item" style="animation-delay: ${index * 0.1}s;">
                     <div class="pocket-item-name">${name} <span class="pocket-remove-btn" onclick="window.removePocketItem('${name}')">移除</span></div>
                     <div class="pocket-item-text">${pickText}</div>
@@ -113,19 +128,4 @@ window.toggleUserPocket = function(expertName, btnElement) {
     };
 
     window.updatePocketWidget();
-})();/* ============================================================== */
-/* ==== 【功能模組：口袋系統 - core_pocket.js】 ==== */
-/* ============================================================== */
-
-(function initPocketWidget() {
-    if (!document.getElementById('pocketWidgetStyle')) {
-        const style = document.createElement('style'); style.id = 'pocketWidgetStyle';
-        style.innerHTML = `
-            .floating-pocket-btn { position: fixed; top: 50%; right: -8px; transform: translateY(-50%); z-index: 9995; background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 22px 16px 22px 28px; border-radius: 45px 0 0 45px; font-weight: 900; cursor: pointer; box-shadow: -8px 8px 30px rgba(0,0,0,0.5); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; align-items: center; gap: 8px; border: 2px solid rgba(255,255,255,0.2); text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-            /* ... 中間樣式代碼完全不變 ... */
-            .pocket-clear-btn:hover { background: #dc2626; color: white; border-color: #dc2626; transform: scale(1.05); }
-        `; document.head.appendChild(style);
-    }
-    /* ... 其餘浮動按鈕、彈窗渲染、更新邏輯、remove/clear 功能完整原裝移入 ... */
-    /* 這裡省略顯示中間代碼，但實際文件中必須完整保留 */
 })();
