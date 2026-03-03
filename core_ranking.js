@@ -104,9 +104,21 @@ window.getRankBanner = function(title, name, key) {
     return `<div class="title-container ${cls}"><h4 class="section-title">${title}</h4><span class="rank-badge ${bCls}">${(rankIdx !== -1)?`${rankPrefix} NO.${rankIdx+1}`:'近況'} (${target.net>=0?'+'+target.net:target.net})</span></div>`;
 };
 
+
 window.buildHTML = function(list, limitTo20, expertName = null, sportKey = null, prefixBtn = '') {
-    let addBtnHtml = (expertName && sportKey && typeof window.adminAddRecord === 'function') ? 
-        `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;"><div class="func-left">${prefixBtn}</div><button onclick="window.adminAddRecord('${expertName}', '${sportKey}')" style="background:#10b981; color:white; border:none; padding:5px 12px; border-radius:4px; font-size:13px; font-weight:bold; cursor:pointer; box-shadow:0 2px 4px rgba(0,0,0,0.1);">➕ 新增戰績</button></div>` : (prefixBtn ? `<div style="margin-bottom:10px;">${prefixBtn}</div>` : '');
+    
+    // 💡 2026 億級權限鎖：這是「隱身術」的核心開關
+    // 必須嚴格檢查 window.isAdmin 是否「絕對等於」true
+    const canEdit = (window.isAdmin === true); 
+
+    // 下面這一行會決定「新增戰績」按鈕要不要印出來給用戶看
+    let addBtnHtml = (expertName && sportKey && canEdit) ? 
+        `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <div class="func-left">${prefixBtn}</div>
+            <button onclick="window.adminAddRecord('${expertName}', '${sportKey}')" style="background:#10b981; color:white; border:none; padding:5px 12px; border-radius:4px; font-size:13px; font-weight:bold; cursor:pointer; box-shadow:0 2px 4px rgba(0,0,0,0.1);">➕ 新增戰績</button>
+        </div>` : (prefixBtn ? `<div style="margin-bottom:10px;">${prefixBtn}</div>` : '');
+
+
     if(!list || list.length === 0) { let hint = ''; if (expertName && window.dataDB[expertName]) { let avail = []; for (let k in window.dataDB[expertName]) { if (window.dataDB[expertName][k].length > 0 && itemNames[k]) avail.push(itemNames[k]); } if (avail.length > 0) hint = `<div style="margin-top:10px;font-size:14px;color:#f59e0b;">💡 該好手主要預測：<b>${avail.join('、')}</b></div>`; } return `${addBtnHtml}<div style="padding:40px 20px;text-align:center;color:#94a3b8;background:#f8fafc;border-radius:8px;">目前項目無數據${hint}</div>`; }
     let show = limitTo20 ? list.slice(0, 20) : list; let html = addBtnHtml;
     for (let i = 0; i < show.length; i += 10) {
