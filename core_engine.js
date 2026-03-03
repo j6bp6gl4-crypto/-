@@ -314,5 +314,4 @@ window.toggleExpert = function(n, el) {
     if (document.getElementById('details').style.display === 'block') window.renderDisplay();
 };
 
-
 window.init();
