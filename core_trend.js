@@ -96,20 +96,33 @@ window.renderTrendChart = function() {
     const maxNet = Math.max(...chartData.map(d => Math.abs(d.net))); 
     const scale = maxNet === 0 ? 1 : maxNet;
 
-    chartData.forEach((d, i) => { 
-        const barWidth = (Math.abs(d.net) / scale) * 100; 
-        const barColorClass = d.isActive ? (d.net >= 0 ? 'bar-pos' : 'bar-neg') : ''; 
-        const inactiveStyle = !d.isActive ? 'background: #cbd5e1;' : ''; 
-        const nameColor = d.isActive ? '#1e293b' : '#94a3b8'; 
-        const sign = d.net > 0 ? '+' : ''; 
-        
+chartData.forEach((d, i) => {
+        const barWidth = (Math.abs(d.net) / scale) * 100;
+
+        // 🎯 [智慧植入] 參照舊版 core_engine.js，支援陣列格式與長條圖泡泡
+        let pickHtml = '';
+        if (typeof todayPicks !== 'undefined' && Array.isArray(todayPicks)) {
+            const myPick = todayPicks.find(p => p[0] === d.name);
+            if (myPick && myPick[1]) {
+                const content = myPick[1].replace(/\n/g, '<br>');
+                pickHtml = `<div class="pick-tooltip-container"><div class="pick-icon">💡 <span style="font-size:12px; margin-left:4px; font-weight:bold; color:#d97706;">今日推薦</span></div><div class="pick-tooltip"><div style="color:#fcd34d; font-weight:bold; margin-bottom:6px; border-bottom:1px solid #334155; padding-bottom:4px;"><span>${d.name} · 本日精選單</span></div><div style="line-height:1.6; font-size:14px; color:#f1f5f9;">${content}</div></div></div>`;
+            }
+        }
+
+        const barColorClass = d.isActive ? (d.net >= 0 ? 'bar-pos' : 'bar-neg') : '';
+        const inactiveStyle = !d.isActive ? 'background: #cbd5e1;' : '';
+        const nameColor = d.isActive ? '#1e293b' : '#94a3b8';
+        const sign = d.net > 0 ? '+' : '';
+
         chartBody.innerHTML += `
             <div class="bar-row" style="animation-delay: ${i * 0.05}s; opacity: ${d.isActive ? 1 : 0.6};">
                 <div class="bar-name" style="color: ${nameColor};">
                     ${d.isActive ? d.streak : '<span class="streak-badge" style="background:#e2e8f0; color:#64748b;">💤 休眠</span>'} 
                     ${d.isActive ? d.baseBadge : ''}
                     <span style="margin-left:10px; text-decoration: ${d.isActive ? 'none' : 'line-through'};">${d.name}</span>
+                    ${pickHtml}
                 </div>
+
                 <div class="bar-wrapper">
                     <div class="bar-fill ${barColorClass}" style="width: ${barWidth}%; ${inactiveStyle}">
                         ${Math.abs(d.net) > 0 ? sign + d.net : ''}

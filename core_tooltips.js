@@ -3,8 +3,19 @@
 /* ============================================================== */
 
 window.getPickTooltipHtml = function(name) {
-    if (typeof todayPicks === 'undefined' || !todayPicks[name]) return '';
-    let rawText = todayPicks[name];
+    if (typeof todayPicks === 'undefined') return '';
+    
+    // 🎯 [大腦同步] 參照舊版 core_engine.js，支援物件與陣列雙格式
+    let rawText = "";
+    if (Array.isArray(todayPicks)) {
+        const found = todayPicks.find(p => p[0] === name);
+        if (found) rawText = found[1] || "";
+    } else {
+        rawText = todayPicks[name] || "";
+    }
+    
+    if (!rawText) return '';
+
     let sportKey = window.activeSportKey || "";
     let finalContent = ""; 
     rawText = rawText.replace(/<br\s*[\/]?>/gi, '\n');

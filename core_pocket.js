@@ -2,6 +2,24 @@
 /* ==== 【功能模組：口袋系統 - core_pocket.js】 ==== */
 /* ============================================================== */
 
+// 🎯 處理點擊「➕ 收錄口袋」的邏輯，並叫出右側橘色大口袋
+window.toggleUserPocket = function(expertName, btnElement) {
+    const idx = window.userPocket.indexOf(expertName);
+    if (idx > -1) { 
+        window.userPocket.splice(idx, 1); 
+        btnElement.className = 'pocket-add-btn'; 
+        btnElement.innerHTML = '➕ 收錄口袋'; 
+    } else { 
+        window.userPocket.push(expertName); 
+        btnElement.className = 'pocket-add-btn saved'; 
+        btnElement.innerHTML = '⭐ 已收錄'; 
+    }
+    localStorage.setItem('UserPocketDB', JSON.stringify(window.userPocket));
+    
+    // 💡 呼叫更新面板函數，讓橘色大口袋根據陣列長度顯示或隱藏
+    if (typeof window.updatePocketWidget === 'function') window.updatePocketWidget(); 
+};
+
 (function initPocketWidget() {
     if (!document.getElementById('pocketWidgetStyle')) {
         const style = document.createElement('style'); style.id = 'pocketWidgetStyle';
