@@ -2,9 +2,10 @@
 /* ==== 【功能模組：智能對獎 - core_settle.js】 ==== */
 /* ============================================================== */
 
-(function initAdminWidget() {
-// 💡 歸類標記：只有管理員能啟動指揮中心介面
-if (window.isAdmin !== true) return;
+// 💡 修正：定義為全域函數，待 auth.js 驗證成功後再啟動
+window.initAdminWidget = function() {
+    // 💡 歸類標記：只有管理員能啟動指揮中心介面
+    if (window.isAdmin !== true) return;
 
     if (!document.getElementById('adminWidgetStyle')) {
         const style = document.createElement('style'); style.id = 'adminWidgetStyle';
@@ -246,5 +247,5 @@ if (window.isAdmin !== true) return;
         alert(`🎉 歸位成功！\n\n系統已精準植入 ${finalCount} 筆戰績。\n76人、賽爾提克等錯字與別名已全數追回並結算完畢！`); 
         closeAdminModal(); 
         if(typeof window.init === 'function') window.init();
-    };
-})();
+}
+}; // ✅ 改成單純的大括號加分號，結束這個函數定義
