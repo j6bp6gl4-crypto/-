@@ -106,8 +106,8 @@ window.getRankBanner = function(title, name, key) {
 
 
 window.buildHTML = function(list, limitTo20, expertName = null, sportKey = null, prefixBtn = '') {
-    // 💡 2026 億級權限鎖：強制鎖定 window.isAdmin 狀態，不依賴功能函數是否存在
-    const canEdit = (window.isAdmin === true);
+// 💡 歸類標記：強制鎖定 window.isAdmin 狀態
+const canEdit = (window.isAdmin === true);
 
     let addBtnHtml = (expertName && sportKey && canEdit) ? 
         `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
@@ -124,7 +124,8 @@ window.buildHTML = function(list, limitTo20, expertName = null, sportKey = null,
         chunk.forEach((r, idx) => { 
             let val = parseInt(r[2] || 0); let bg = val > 0 ? "bg-pos" : (val < 0 ? "bg-neg" : "bg-neu"); 
             let sH = val > 0 ? `<span class="score-pos">+${val}</span>` : (val < 0 ? `<span class="score-neg">${val}</span>` : `<span class="score-neu">0</span>`); 
-            let delBtnHtml = (expertName && sportKey && typeof window.adminDelRecord === 'function') ? `<span onclick="window.adminDelRecord('${expertName}', '${sportKey}', '${r[0]}', '${r[1]}')" style="cursor:pointer; position:absolute; right:10px; font-size:14px; filter:grayscale(100%); transition:0.2s;" onmouseover="this.style.filter='none'" onmouseout="this.style.filter='grayscale(100%)'" title="刪除此筆">🗑️</span>` : '';
+// 💡 歸類標記：使用 isAdmin 決定是否生成刪除按鈕
+let delBtnHtml = (expertName && sportKey && canEdit) ? `<span onclick="window.adminDelRecord('${expertName}', '${sportKey}', '${r[0]}', '${r[1]}')"` : '';  style="cursor:pointer; position:absolute; right:10px; font-size:14px; filter:grayscale(100%); transition:0.2s;" onmouseover="this.style.filter='none'" onmouseout="this.style.filter='grayscale(100%)'" title="刪除此筆">🗑️</span>` : '';
             html += `<div class="record-row ${bg} ${idx===chunk.length-1 && i+10<show.length?'ten-day-gap':''}"><div class="col-date">${r[0]}</div><div class="col-record">${r[1]}</div><div class="score-wrapper" style="display:flex; align-items:center; position:relative;">${sH}${delBtnHtml}</div></div>`; 
         });
     } return html;

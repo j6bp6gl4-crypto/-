@@ -3,6 +3,9 @@
 /* ============================================================== */
 
 (function initAdminWidget() {
+// 💡 歸類標記：只有管理員能啟動指揮中心介面
+if (window.isAdmin !== true) return;
+
     if (!document.getElementById('adminWidgetStyle')) {
         const style = document.createElement('style'); style.id = 'adminWidgetStyle';
         style.innerHTML = `

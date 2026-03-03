@@ -18,6 +18,8 @@ window.exportToDataJS = function() {
 };
 
 setTimeout(() => { 
+// 💡 只有管理員能看到備份按鈕
+if (window.isAdmin !== true) return;
     if(!document.getElementById('exportBtn')){
         const btn = document.createElement("div"); 
         btn.id = 'exportBtn';
