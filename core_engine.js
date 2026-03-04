@@ -12,10 +12,29 @@ if (!window.dataDB) { window.dataDB = JSON.parse(JSON.stringify(defaultDB)); }
 if (!document.getElementById('pickTooltipStyle')) {
     const style = document.createElement('style'); style.id = 'pickTooltipStyle';
     style.innerHTML = `
-        .pick-tooltip-container { position: relative; display: inline-flex; align-items: center; margin-left: 10px; }
+.pick-tooltip-container { position: relative; display: inline-flex; align-items: center; margin-left: 10px; }
         .pick-icon { font-size: 18px; cursor: pointer; background: #fffbeb; border: 1px solid #fde68a; padding: 4px 12px; border-radius: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); animation: floatPulse 2s infinite ease-in-out; display: inline-flex; align-items: center; justify-content: center; transition: 0.2s; }
         .pick-icon:hover { animation: none; transform: scale(1.08); background: #fef3c7; box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
         @keyframes floatPulse { 0% { transform: translateY(0px); } 50% { transform: translateY(-3px); } 100% { transform: translateY(0px); } }
+
+        /* 📱 手機/LINE 版專屬防護：將泡泡改為「右上角懸浮通知」，徹底解決把卡片撐破的問題 */
+        @media (max-width: 768px) {
+            .pick-tooltip-container { 
+                position: absolute; 
+                top: -10px; 
+                right: -10px; 
+                margin-left: 0; 
+                z-index: 5; 
+            }
+            .pick-icon { 
+                font-size: 14px; 
+                padding: 3px 8px; 
+                border: 2px solid #fff; 
+                box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
+            }
+            /* 微調手機版字體大小，確保每個好手名字都在同一水平線上 */
+            .expert-card .name { font-size: 14px !important; line-height: 1.2; }
+        }
 
 .pick-tooltip { 
             visibility: hidden; opacity: 0; position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%); 
