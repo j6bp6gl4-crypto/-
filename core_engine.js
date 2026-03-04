@@ -2,7 +2,7 @@
 /* ==== 【組件 E：核心引擎 - core_engine.js】 ==== */
 /* ============================================================== */
 
-const DB_KEY = 'DashboardDB_V77_Final'; 
+const DB_KEY = 'DashboardDB_V78_Final'; 
 window.dataDB = JSON.parse(localStorage.getItem(DB_KEY));
 window.isNegativeMode = false; // 🪄 魔法反向開關
 
@@ -314,7 +314,7 @@ window.selectSport = function(key, el) {
 window.toggleExpert = function(n, el) { 
     const i = window.selectedExperts.indexOf(n);
     if(i > -1) { window.selectedExperts.splice(i, 1); document.querySelectorAll(`[data-name="${n}"]`).forEach(c => c.classList.remove('active')); } 
-    else { if(window.selectedExperts.length >= 6) return alert('最多比較6位'); window.selectedExperts.push(n); if(el) el.classList.add('active'); } 
+    else { window.selectedExperts.push(n); if(el) el.classList.add('active'); } 
     if (typeof window.updateTabHighlights === 'function') window.updateTabHighlights();
     if (document.getElementById('details').style.display === 'block') window.renderDisplay();
 };

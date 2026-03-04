@@ -58,8 +58,8 @@ window.renderRankMode = function() {
     }
     allSorted.sort((a,b) => b.rate - a.rate || b.net - a.net);
     const isActuallyPositive = (item) => { const naturallyPositive = item.rate >= 0.5; const isSwapped = window.manualSwapList.includes(item.name); return isSwapped ? !naturallyPositive : naturallyPositive; };
-    const top6 = allSorted.filter(item => isActuallyPositive(item)).slice(0, 6); 
-    const bottom6 = allSorted.filter(item => !isActuallyPositive(item)).sort((a,b) => a.rate - b.rate || a.net - b.net).slice(0, 6);
+    const top6 = allSorted.filter(item => isActuallyPositive(item)); 
+    const bottom6 = allSorted.filter(item => !isActuallyPositive(item)).sort((a,b) => a.rate - b.rate || a.net - b.net);
     display.innerHTML = `<div class="rank-group-title" style="color:#16a34a; border-bottom:2px solid #bbf7d0;">🏆 ${itemNames[window.activeSportKey]} - 戰力紅榜</div><div class="pk-layout" id="topLayout"></div><div class="rank-group-title" style="color:#dc3545; border-bottom:2px solid #fecaca;">💀 ${itemNames[window.activeSportKey]} - 戰力黑榜</div><div class="pk-layout" id="bottomLayout"></div>`;
     top6.forEach((item, i) => document.getElementById('topLayout').innerHTML += window.renderRankCard(item, i, window.activeSportKey, false));
     bottom6.forEach((item, i) => document.getElementById('bottomLayout').innerHTML += window.renderRankCard(item, i, window.activeSportKey, true));
@@ -71,8 +71,14 @@ window.renderRankCard = function(item, idx, key, isReverse) {
     const showFull = window.expandStates[item.name]; const hasMore = window.dataDB[item.name][key] && window.dataDB[item.name][key].length > 20;
     const btnHtml = hasMore ? `<button class="expand-btn" onclick="window.toggleExpand('${item.name}')">${showFull ? '🔼 收起' : '🔍 展開歷史'}</button>` : '';
     const swapText = isReverse ? '暫居正向區' : '暫居反向區'; const swapColor = isReverse ? '#16a34a' : '#dc3545';
-    const swapBtn = `<button onclick="event.stopPropagation(); window.toggleManualSwap('${item.name}')" style="cursor:pointer; font-size:13px; color:${swapColor}; border:1.5px solid ${swapColor}; padding:4.5px 12px; border-radius:4px; font-weight:900; white-space:nowrap; background:transparent; transition:0.2s; height:28px; line-height:1;">${swapText}</button>`;
-    return `<div class="pk-column"><div class="close-x" onclick="window.excludeAndRedraw('${item.name}')">×</div><div class="pk-name-label" style="display:flex; align-items:center; justify-content:center; padding: 10px 5px;">${item.name} ${window.getPickTooltipHtml(item.name)}</div><div class="title-container ${cls}"><h4 class="section-title">勝率 ${(item.rate*100).toFixed(0)}%</h4><span class="rank-badge ${bCls}">${isReverse?'反向':''} NO.${idx+1} (${item.net>=0?'+'+item.net:item.net})</span></div>${window.buildHTML(window.dataDB[item.name][key] || [], !showFull, item.name, key, swapBtn)}${btnHtml}</div>`;
+const swapBtn = `<button onclick="event.stopPropagation(); window.toggleManualSwap('${item.name}')" style="cursor:pointer; font-size:13px; color:${swapColor}; border:1.5px solid ${swapColor}; padding:4.5px 12px; border-radius:4px; font-weight:900; white-space:nowrap; background:transparent; transition:0.2s; height:28px; line-height:1;">${swapText}</button>`;
+    
+// 🎯 新增的：收入麾下按鈕邏輯
+    let recruitKey = `${item.name}||${key}`;
+    let isRecruited = window.userRecruit && window.userRecruit.includes(recruitKey);
+    let recruitBtn = `<button class="recruit-btn ${isRecruited ? 'recruited' : ''}" onclick="event.stopPropagation(); if(window.toggleRecruit) window.toggleRecruit('${item.name}', this, '${key}')">${isRecruited ? '⭐ 已收錄' : '📌 收入麾下'}</button>`;
+
+    return `<div class="pk-column">${recruitBtn}<div class="close-x" onclick="window.excludeAndRedraw('${item.name}')">×</div><div class="pk-name-label" style="display:flex; align-items:center; justify-content:center; padding: 10px 5px;">${item.name} ${window.getPickTooltipHtml(item.name)}</div><div class="title-container ${cls}"><h4 class="section-title">勝率 ${(item.rate*100).toFixed(0)}%</h4><span class="rank-badge ${bCls}">${isReverse?'反向':''} NO.${idx+1} (${item.net>=0?'+'+item.net:item.net})</span></div>${window.buildHTML(window.dataDB[item.name][key] || [], !showFull, item.name, key, swapBtn)}${btnHtml}</div>`;
 };
 
 window.excludeAndRedraw = function(name) { window.excludedExperts.push(name); window.renderDisplay(); };

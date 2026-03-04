@@ -32,10 +32,10 @@ window.toggleUserPocket = function(expertName, btnElement, sportKey) {
             .pocket-badge { background: #dc2626; color: white; border-radius: 50%; padding: 3px 10px; font-size: 14px; font-weight: 900; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.4); position: relative; top: -5px; }
             .pocket-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(15px); z-index: 10001; display: none; justify-content: center; align-items: center; opacity: 0; transition: 0.4s ease; }
             .pocket-modal-overlay.show { display: flex; opacity: 1; }
-            .pocket-modal-content { background: #f8fafc; width: 92%; max-width: 550px; border-radius: 30px; overflow: hidden; box-shadow: 0 50px 120px rgba(0,0,0,0.8); transform: translateY(50px) scale(0.9); transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+            .pocket-modal-content { background: #f8fafc; width: 95%; max-width: 800px; border-radius: 30px; overflow: hidden; box-shadow: 0 50px 120px rgba(0,0,0,0.8); transform: translateY(50px) scale(0.9); transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
             .pocket-modal-overlay.show .pocket-modal-content { transform: translateY(0) scale(1); }
             .pocket-modal-header { background: linear-gradient(135deg, #1e293b, #0f172a); padding: 25px 35px; display: flex; justify-content: space-between; align-items: center; color: #fbbf24; border-bottom: 5px solid #fbbf24; }
-            .pocket-list { max-height: 55vh; overflow-y: auto; padding: 15px 0; margin: 0; list-style: none; }
+            .pocket-list { max-height: 75vh; overflow-y: auto; padding: 15px 0; margin: 0; list-style: none; }
             .pocket-item { padding: 25px 35px; border-bottom: 1px solid #e2e8f0; animation: pocketItemIn 0.5s ease-out backwards; }
             @keyframes pocketItemIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
             .pocket-item-name { font-weight: 900; font-size: 24px; color: #0f172a; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
