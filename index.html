@@ -9,48 +9,52 @@
     
     <style>
 /* ==================================================== */
-        /* 🌟 主視覺中央招牌 (尊爵星空競技場全新設計版)         */
+        /* 🌟 主視覺中央招牌 (鎮壓全場！超越第一名的極致金光)    */
         /* ==================================================== */
         .main-header-signboard {
             position: relative; 
             max-width: 850px; 
-            margin: 40px auto 35px auto; /* 🎯 修正 1：上方加入 40px 的留白，不再貼齊頂部 */
+            margin: 40px auto 35px auto; 
             
-            /* 🎯 修正 2：捨棄原本的灰色，改用深邃星空藍漸層，質感大爆發 */
+            /* 尊爵深邃底色不變，襯托金光 */
             background: linear-gradient(145deg, #0f172a, #1e293b, #020617); 
             
-            border: 1px solid rgba(251, 191, 36, 0.4); 
+            /* 🎯 1. 邊框改為 2px 純金實線，不再半透明，讓輪廓更銳利 */
+            border: 2px solid #fbbf24; 
             border-radius: 50px; 
             padding: 15px 40px;
             
             display: flex;
             flex-wrap: wrap; 
-            align-items: baseline; /* 維持您要求的底部基線對齊 */
+            align-items: baseline; 
             justify-content: center;
             gap: 15px; 
             
-            /* 精緻的金屬內發光與深層懸浮陰影 */
-            box-shadow: 
-                0 15px 35px rgba(0,0,0,0.15), 
-                inset 0 2px 0 rgba(255,255,255,0.05),
-                inset 0 -2px 0 rgba(0,0,0,0.5);
-                
-            animation: premium-pulse 3.5s infinite alternate;
+            /* 🎯 2. 加速呼吸頻率 (縮短為 2秒)，看起來更有精神與動能 */
+            animation: supreme-gold-pulse 2s infinite ease-in-out;
             transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: default;
         }
 
-        /* 更沉穩的高級呼吸燈 */
-        @keyframes premium-pulse {
-            0% { box-shadow: 0 15px 35px rgba(0,0,0,0.15), 0 0 15px rgba(251, 191, 36, 0.1); border-color: rgba(251, 191, 36, 0.3); }
-            100% { box-shadow: 0 15px 35px rgba(0,0,0,0.25), 0 0 30px rgba(251, 191, 36, 0.4); border-color: rgba(251, 191, 36, 0.8); }
+        /* 🔥 3. 霸王發光動畫：光暈範圍與亮度直接超越 Rank 1 */
+        @keyframes supreme-gold-pulse {
+            0% { 
+                box-shadow: 0 0 20px 8px rgba(251, 191, 36, 0.5), inset 0 0 15px rgba(251, 191, 36, 0.3); 
+            }
+            50% { 
+                /* 最高亮度時：擴散範圍達 50px (第一名僅30px)，透明度逼近 0.9 */
+                box-shadow: 0 0 50px 20px rgba(251, 191, 36, 0.9), inset 0 0 30px rgba(251, 191, 36, 0.6); 
+            }
+            100% { 
+                box-shadow: 0 0 20px 8px rgba(251, 191, 36, 0.5), inset 0 0 15px rgba(251, 191, 36, 0.3); 
+            }
         }
 
-        /* 互動懸浮放大 */
+        /* 互動懸浮：光芒徹底炸裂 */
         .main-header-signboard:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 40px rgba(251, 191, 36, 0.6);
-            border-color: #fbbf24;
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 0 70px 25px rgba(251, 191, 36, 1), inset 0 0 40px rgba(251, 191, 36, 0.8);
+            border-color: #fef08a; /* 邊框閃現白金色 */
         }
 
         .main-header-signboard .signboard-title {
@@ -60,26 +64,32 @@
             margin: 0;
             display: flex;
             align-items: baseline;
+            /* 讓招牌內的字體本身也帶有微微發光感 */
+            text-shadow: 0 0 10px rgba(251, 191, 36, 0.3); 
         }
 
-        /* 讓金字帶有立體漸層質感 */
+        /* 金字漸層強化 */
         .main-header-signboard .title-gold { 
-            background: linear-gradient(to bottom, #fde047, #f59e0b);
+            background: linear-gradient(to bottom, #fef08a, #f59e0b);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.6)); /* 讓文字在深色底上更浮凸 */
+            filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.8)); 
+        }
+        
+        .main-header-signboard .title-white {
+            color: #f8fafc;
+            filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.8)); 
         }
 
-        /* 🎯 備註字體：保留無邊框與基線對齊，改用科技冰藍色，跳脫灰色的沉悶 */
+        /* 備註字體：加上微弱的科技冰藍光，不搶戲但有質感 */
         .main-header-signboard .version-badge {
             font-size: 15px;  
             color: #7dd3fc; 
             font-weight: bold;
             letter-spacing: 2px;
             opacity: 0.9;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+            text-shadow: 0 0 8px rgba(125, 211, 252, 0.4); 
             
-            /* 確保沒有多餘邊框或底色 */
             background: transparent; border: none; box-shadow: none; padding: 0; position: static;
         }
 
