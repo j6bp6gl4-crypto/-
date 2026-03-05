@@ -87,6 +87,8 @@ const todayPicks = [
 
 ["MAX.YAN 36", "nba_team", "🏀 NBA 讓分：獨行俠+8.5、勇士+9.5"],
 
+["小叮噹19", "mlb_ml", "⚾ MLB 獨贏：海盜、洋基、大都會"],
+
 ["Marbury陳03", "nba_team", "🏀 NBA 讓分：魔術-9、金塊-5、暴龍+6"],
 ["Marbury陳03", "nba_total", "🏀 NBA 大小：魔術場 229.5小、金塊場 240.5大、暴龍場 227.5小"],
 
