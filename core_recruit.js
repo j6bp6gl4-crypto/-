@@ -30,14 +30,13 @@ window.toggleRecruit = function(expertName, btnElement, sportKey) {
 /* 🎯 懸浮按鈕優化：調整 Padding 與寬度比例，讓框框貼合大字體，消除空洞感 */
 .floating-recruit-btn { 
                 position: fixed; 
-                top: calc(50% + 65px); 
+                top: calc(65% + 65px); 
                 right: -8px; 
                 transform: translateY(-50%); 
                 z-index: 9995; 
                 background: linear-gradient(135deg, #4f46e5, #312e81); 
                 color: white; 
-                /* ✅ 已同步寶庫尺寸：上下 22px，右 16px，左 28px */
-                padding: 22px 16px 22px 28px; 
+                padding: 18px 12px 18px 24px; 
                 border-radius: 45px 0 0 45px; 
                 font-weight: 900; 
                 cursor: pointer; 
@@ -46,8 +45,7 @@ window.toggleRecruit = function(expertName, btnElement, sportKey) {
                 display: flex; 
                 flex-direction: column; 
                 align-items: center; 
-                /* ✅ 已同步寶庫內部間距 */
-                gap: 8px; 
+                gap: 6px; 
                 border: 2px solid rgba(255,255,255,0.2); 
                 text-shadow: 0 2px 4px rgba(0,0,0,0.3); 
             }
