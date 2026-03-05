@@ -28,7 +28,7 @@ window.toggleRecruit = function(expertName, btnElement, sportKey) {
         const style = document.createElement('style'); style.id = 'recruitWidgetStyle';
         style.innerHTML = `
 /* 🎯 懸浮按鈕優化：調整 Padding 與寬度比例，讓框框貼合大字體，消除空洞感 */
-            .floating-recruit-btn { 
+.floating-recruit-btn { 
                 position: fixed; 
                 top: calc(50% + 65px); 
                 right: -8px; 
@@ -36,8 +36,8 @@ window.toggleRecruit = function(expertName, btnElement, sportKey) {
                 z-index: 9995; 
                 background: linear-gradient(135deg, #4f46e5, #312e81); 
                 color: white; 
-                /* 縮減左右 Padding (從 16px/28px 調整)，讓框框變窄更紮實 */
-                padding: 25px 12px 25px 22px; 
+                /* ✅ 已同步寶庫尺寸：上下 22px，右 16px，左 28px */
+                padding: 22px 16px 22px 28px; 
                 border-radius: 45px 0 0 45px; 
                 font-weight: 900; 
                 cursor: pointer; 
@@ -46,7 +46,8 @@ window.toggleRecruit = function(expertName, btnElement, sportKey) {
                 display: flex; 
                 flex-direction: column; 
                 align-items: center; 
-                gap: 6px; 
+                /* ✅ 已同步寶庫內部間距 */
+                gap: 8px; 
                 border: 2px solid rgba(255,255,255,0.2); 
                 text-shadow: 0 2px 4px rgba(0,0,0,0.3); 
             }
@@ -108,7 +109,7 @@ window.toggleRecruit = function(expertName, btnElement, sportKey) {
     overlay.innerHTML = `
         <div class="recruit-modal-content">
             <div class="recruit-modal-header">
-                <h3 style="margin:0;font-size:24px;letter-spacing:1px;color:white;">👁️ 麾下好手追蹤名單</h3>
+                <h3 style="margin:0;font-size:28px;letter-spacing:2px;font-weight:900;">🏯 麾下好手名單</h3>
                 <div style="cursor:pointer;font-size:45px;line-height:1;color:white;" onclick="closeRecruitModal()">&times;</div>
             </div>
             <div style="padding:10px 35px; background:#f1f5f9; font-size:13px; color:#64748b; font-weight:bold; border-bottom:1px solid #e2e8f0;">💡 提示：將滑鼠移至名單上方，即可直接預覽該好手的 1:1 原版戰力卡片。</div>
@@ -123,11 +124,11 @@ window.toggleRecruit = function(expertName, btnElement, sportKey) {
 window.updateRecruitWidget = () => {
         if (window.userRecruit.length > 0) { 
             floatBtn.style.display = 'flex'; 
-            /* 🎯 字體優化：將字體從 14px 提升至 17px 極粗體，確保撐滿按鈕空間 */
+            /* 🎯 字體再次放大：將圖示升級至 24px，文字升級至 19px 極粗體 */
             floatBtn.innerHTML = `
-                <span style="font-size:20px;">👁️</span>
-                <span style="font-size:17px; margin-top:2px; letter-spacing:1px;">麾下</span>
-                <span style="font-size:17px; letter-spacing:1px;">名單</span>
+                <span style="font-size:24px;">🏯</span>
+                <span style="font-size:19px; margin-top:4px; letter-spacing:1.5px; font-weight:900;">麾下</span>
+                <span style="font-size:19px; letter-spacing:1.5px; font-weight:900;">名單</span>
                 <span class="recruit-badge">${window.userRecruit.length}</span>
             `; 
         } else { 
