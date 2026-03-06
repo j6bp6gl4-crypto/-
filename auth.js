@@ -1,34 +1,29 @@
 /* ========================================== */
 /* ==== 【開發模組：雙軌金鑰驗證 - auth.js】 ==== */
-/* ==== (V15.1 7天次防護 + 點擊限制版) ==== */
+/* ==== (V15.4 終極地雷版：1點擊+滑動即死) ==== */
 /* ========================================== */
 
 let isRestrictedMode = false; 
 let validClickCount = 0;      
-const MAX_CLICKS = 3;         
+let hasLockedDown = false;    // 🔒 新增：確保鎖定咒語只會執行一次
+const MAX_CLICKS = 1;         
 const FREE_DAYS_LIMIT = 7;    
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. 檢查是否有已驗證的超級金鑰
     const savedKey = sessionStorage.getItem('verifiedKey');
     if (typeof config !== 'undefined' && savedKey) {
         if (savedKey === atob(config.adminCode) || savedKey === atob(config.memberCode)) {
             window.isAdmin = (savedKey === atob(config.adminCode));
-            fullUnlockSystem(); // 這是已經輸入過密碼的「完全解鎖」
+            fullUnlockSystem(); 
             return; 
         }
     }
 
-    // 2. 啟動天次數追蹤
     trackVisitorDays();
-
-    // 3. 🌟 關鍵修正：一進來先幫訪客「開門」看畫面！
-    // 不管他是第 1 天還是第 8 天，預設一進來都要能看見主畫面
     window.isAdmin = false;
     openDoorForVisitor(); 
 });
 
-// 紀錄與判斷天次數
 function trackVisitorDays() {
     const today = new Date().toLocaleDateString('en-CA'); 
     let visitedDays = JSON.parse(localStorage.getItem('qiJuVisitedDays')) || [];
@@ -36,50 +31,116 @@ function trackVisitorDays() {
     if (!visitedDays.includes(today)) {
         visitedDays.push(today);
         localStorage.setItem('qiJuVisitedDays', JSON.stringify(visitedDays));
-        console.log(`📅 新增登入天次！目前累積：${visitedDays.length} 天`);
-    } else {
-        console.log(`📅 今日已記錄。目前累積：${visitedDays.length} 天`);
     }
 
     if (visitedDays.length > FREE_DAYS_LIMIT) {
-        isRestrictedMode = true; // 超過 7 天，啟動點擊限制！
-        console.log(`🚨 已超過 7 天免費額度！啟動限制模式。`);
+        isRestrictedMode = true; 
     }
 }
 
-// 全域點擊監聽 (攔截第 4 次點擊)
+// 全域點擊攔截
 document.addEventListener('click', (e) => {
-    if (!isRestrictedMode) return;
+    if (!isRestrictedMode || hasLockedDown) return;
     if (e.target.closest('#authGate')) return;
 
     validClickCount++;
-    console.log(`🖱️ 限制模式 - 第 ${validClickCount} 次點擊`);
 
-    if (validClickCount > MAX_CLICKS) {
+    if (validClickCount === 1) {
+        // 🎯 第 1 次點擊：放行他，但偷偷埋下「滑動地雷」
+        armMovementTrap();
+    } else if (validClickCount > 1) {
+        // 如果他手速極快，在地雷啟動前又點了第 2 下，直接引爆
         e.preventDefault();  
         e.stopPropagation(); 
         triggerLockdown();
     }
 }, true); 
 
-// 第 4 次點擊觸發：關門放狗 (彈出金鑰視窗)
+// 💣 埋設滑動地雷 (延遲 0.8 秒啟動，給他看完第1次點擊效果的時間)
+function armMovementTrap() {
+    setTimeout(() => {
+        if (hasLockedDown) return; 
+
+        // 監聽：滑鼠移動、頁面滾動、手機觸控滑動、鍵盤按壓
+        const trapEvents = ['mousemove', 'scroll', 'touchmove', 'keydown'];
+        
+        const detonateTrap = (e) => {
+            if (hasLockedDown) return;
+            // 如果他的滑鼠是在金鑰視窗裡面動，就不理他
+            if (e.target && e.target.closest && e.target.closest('#authGate')) return;
+            
+            // 💥 引爆地雷！瞬間鎖死！
+            triggerLockdown();
+
+            // 拆除地雷監聽器 (避免重複觸發浪費效能)
+            trapEvents.forEach(evt => document.removeEventListener(evt, detonateTrap, true));
+        };
+
+        // 把地雷掛載到全網頁
+        trapEvents.forEach(evt => document.addEventListener(evt, detonateTrap, true));
+        console.log("💣 滑動地雷已佈署！滑鼠一動即刻鎖死！");
+
+    }, 800); // 800 毫秒的黃金延遲
+}
+
+// 🎯 關門放狗 + 終極鎖死 + 抹除泡泡框
 function triggerLockdown() {
+    if (hasLockedDown) return; 
+    hasLockedDown = true; // 標記為已死亡狀態
+
     const authGate = document.getElementById('authGate');
     const authBox = document.querySelector('.auth-box');
+    const mainContent = document.getElementById('mainContent');
     
     if (authGate && authBox) {
-        // 動態修改彈窗文案
         const title = authBox.querySelector('h1');
-        const subtitle = authBox.querySelector('p');
-        if(title) title.innerHTML = "⚠️ 試用額度已滿";
-        if(subtitle) subtitle.innerHTML = "您的 7 天免費使用權限已達上限！<br>請截圖此畫面並私訊版大索取今日專屬金鑰。";
+        if(title) {
+            title.innerHTML = "⚠️ 試用額度已滿";
+            title.style.color = "#ef4444"; 
+        }
 
-        authGate.style.display = 'flex'; // 把視窗叫出來
-        authGate.classList.add('scatter-fly-in'); // 加上碎裂飛入動畫
+        const subtitle = authBox.querySelector('p');
+        if(subtitle) {
+            subtitle.innerHTML = `
+                <div style="font-size: 16px; line-height: 1.6; margin-bottom: 20px;">
+                    <span style="color: #fbbf24; font-weight: bold; font-size: 18px;">您的試用權限已到期！</span><br>
+                    感謝您對「齊聚眾選」的支持與愛用。<br><br>
+                    <div style="background: rgba(239, 68, 68, 0.1); border-left: 4px solid #ef4444; padding: 10px; margin-top: 10px; text-align: left;">
+                        💡 <strong style="color: #fff;">歡迎贊助本企劃</strong>，即可索取 <strong style="color: #60a5fa;">30 日專屬金鑰</strong>！<br>
+                        詳情請內洽 <a href="https://lin.ee/MaTQnpA" target="_blank" style="color: #34d399; text-decoration: underline; font-weight: bold;">點選👉 私訊官方Line</a> 或直接私訊版大。
+                    </div>
+                </div>
+            `;
+        }
+
+        authGate.style.display = 'flex'; 
+        authGate.classList.add('scatter-fly-in'); 
+
+        // 🚫 【終極鎖死魔法 1】禁止滾動、禁止反白、背景點擊失效
+        document.body.style.overflow = 'hidden'; 
+        document.body.style.userSelect = 'none'; 
+        if (mainContent) {
+            mainContent.style.pointerEvents = 'none'; 
+            mainContent.style.filter = 'blur(8px)';   
+        }
+
+        // 🚫 【終極鎖死魔法 2】強制抹除所有推薦泡泡框！(防偷看)
+        if (!document.getElementById('nukeTooltipsStyle')) {
+            const style = document.createElement('style');
+            style.id = 'nukeTooltipsStyle';
+            style.innerHTML = `
+                .pick-tooltip-container, .pick-tooltip {
+                    display: none !important;
+                    opacity: 0 !important;
+                    visibility: hidden !important;
+                    transform: scale(0) !important;
+                }
+            `;
+            document.head.appendChild(style);
+        }
     }
 }
 
-// 密碼驗證邏輯
 function checkPasscode() {
     const userInput = document.getElementById('passcodeInput').value;
     const errorMsg = document.getElementById('errorMsg');
@@ -110,20 +171,17 @@ function checkPasscode() {
     }
 }
 
-// 🌟 新增：專給一般訪客的「純開門」，不解除限制
 function openDoorForVisitor() {
     const authGate = document.getElementById('authGate');
     const mainContent = document.getElementById('mainContent');
     
-    if (authGate) authGate.style.display = 'none'; // 隱藏金鑰視窗
-    if (mainContent) mainContent.style.display = 'block'; // 顯示主畫面
+    if (authGate) authGate.style.display = 'none'; 
+    if (mainContent) mainContent.style.display = 'block'; 
 
-    if (typeof window.init === 'function') {
-        window.init(); // 啟動齊聚眾選的資料渲染
-    }
+    if (typeof window.init === 'function') window.init(); 
 }
 
-// 輸入正確密碼後的「完全解鎖」
+// 輸入正確密碼後的「完全解鎖與恢復原狀」
 function fullUnlockSystem() {
     const authGate = document.getElementById('authGate');
     const mainContent = document.getElementById('mainContent');
@@ -134,22 +192,30 @@ function fullUnlockSystem() {
     }
     if (mainContent) mainContent.style.display = 'block';
 
-    // 完全解除點擊限制
+    // 🔓 解除所有鎖死魔法
+    document.body.style.overflow = '';
+    document.body.style.userSelect = '';
+    if (mainContent) {
+        mainContent.style.pointerEvents = '';
+        mainContent.style.filter = '';
+    }
+
+    // 🔓 移除抹除泡泡框的咒語
+    const nukeStyle = document.getElementById('nukeTooltipsStyle');
+    if (nukeStyle) nukeStyle.remove();
+
     isRestrictedMode = false;
     validClickCount = 0;
+    hasLockedDown = false; // 重置地雷狀態
 
-    // 啟動管理員專屬功能
     if (window.isAdmin === true) {
         if (typeof window.initAdminWidget === 'function') window.initAdminWidget();
         if (typeof window.initBackupWidget === 'function') window.initBackupWidget();
     }
 
-    if (typeof window.init === 'function') {
-        window.init();
-    }
+    if (typeof window.init === 'function') window.init();
 }
 
-// 支援 Enter 鍵
 document.addEventListener('keypress', (e) => {
     const authGate = document.getElementById('authGate');
     if (authGate && authGate.style.display !== 'none' && e.key === 'Enter') {
