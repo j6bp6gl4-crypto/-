@@ -16,8 +16,13 @@ if (!document.getElementById('pickTooltipStyle')) {
         .grid-container { grid-template-columns: repeat(8, minmax(0, 1fr)) !important; }
         .expert-card { position: relative !important; } /* 確保泡泡能精準掛在卡片右上角 */
 
-        /* 🎯 核心升級二：泡泡框絕對懸浮化 (脫離空間搶奪，變成右上角小紅點) */
+/* 🎯 核心升級二：泡泡框絕對懸浮化 (脫離空間搶奪，變成右上角小紅點) */
         .pick-tooltip-container { position: absolute !important; top: -8px !important; right: -8px !important; margin-left: 0 !important; z-index: 5 !important; }
+        
+        /* 💡 修正對策：對比卡片內部的泡泡框恢復「名字後方模式」，避免撞到右上角的關閉按鈕 */
+        .pk-column .pick-tooltip-container { position: relative !important; top: auto !important; right: auto !important; margin-left: 10px !important; display: inline-flex !important; }
+        .pk-column .pick-icon { animation: floatPulse 2s infinite ease-in-out !important; }
+
         .pick-icon { font-size: 12px !important; padding: 2px 6px !important; border: 2px solid #fff !important; box-shadow: 0 4px 10px rgba(0,0,0,0.3) !important; background: #fffbeb; border-radius: 20px; cursor: pointer; transition: 0.2s; }
         .pick-icon:hover { transform: scale(1.1); background: #fef3c7; }
 
