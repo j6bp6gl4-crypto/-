@@ -44,7 +44,32 @@ if (!document.getElementById('pickTooltipStyle')) {
                 justify-content: center !important;
             }
 
-            /* 🚀 終極修復 (您神觀察抓出的元凶)：限制手機版飛入動畫的距離！
+            /* 🎯 新增對策四 (版面解壓縮)：適度縮小兩側空白與卡片間距，讓 8 欄卡片在手機上完美置中呼吸，不被硬擠到左邊 */
+            .container { padding: 10px 12px !important; }
+            .grid-container { gap: 6px !important; }
+
+            /* 🎯 新增對策五 (泡泡框防撞牆：徹底消滅隱形白邊的終極殺招)：
+               讓右側邊緣卡片的泡泡向「左」展開，左側泡泡向「右」展開。
+               這樣隱形的泡泡就不會再超出螢幕，LINE 瀏覽器就不會再產生右側大空白！ */
+            .expert-card:nth-child(8n+6) .pick-tooltip,
+            .expert-card:nth-child(8n+7) .pick-tooltip,
+            .expert-card:nth-child(8n+8) .pick-tooltip { left: auto !important; right: -5px !important; transform: none !important; }
+            .expert-card:nth-child(8n+6) .pick-tooltip::after,
+            .expert-card:nth-child(8n+7) .pick-tooltip::after,
+            .expert-card:nth-child(8n+8) .pick-tooltip::after { left: auto !important; right: 15px !important; margin-left: 0 !important; }
+
+            .expert-card:nth-child(8n+1) .pick-tooltip,
+            .expert-card:nth-child(8n+2) .pick-tooltip { left: -5px !important; transform: none !important; }
+            .expert-card:nth-child(8n+1) .pick-tooltip::after,
+            .expert-card:nth-child(8n+2) .pick-tooltip::after { left: 15px !important; margin-left: 0 !important; }
+
+            .podium-card:nth-child(3) .pick-tooltip { left: auto !important; right: -5px !important; transform: none !important; }
+            .podium-card:nth-child(3) .pick-tooltip::after { left: auto !important; right: 15px !important; margin-left: 0 !important; }
+            
+            .podium-card:nth-child(2) .pick-tooltip { left: -5px !important; transform: none !important; }
+            .podium-card:nth-child(2) .pick-tooltip::after { left: 15px !important; margin-left: 0 !important; }
+
+            /* 🚀 終極修復：限制手機版飛入動畫的距離！
                防止卡片從 1200px 外飛入時，瞬間撐開 LINE 瀏覽器產生無法復原的大白邊 */
             .expert-card:nth-child(4n+1) { --rx: -100px !important; --ry: -100px !important; }
             .expert-card:nth-child(4n+2) { --rx: 100px !important;  --ry: -100px !important; }
@@ -54,7 +79,6 @@ if (!document.getElementById('pickTooltipStyle')) {
             .podium-card:nth-child(1) { --rx: 0px !important;    --ry: -120px !important; }
             .podium-card:nth-child(2) { --rx: -100px !important; --ry: 0px !important;    }
             .podium-card:nth-child(3) { --rx: 100px !important;  --ry: 0px !important;    }
-
         }
 
 .pick-tooltip { 
