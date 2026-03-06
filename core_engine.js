@@ -44,9 +44,9 @@ if (!document.getElementById('pickTooltipStyle')) {
                 justify-content: center !important;
             }
 
-            /* 🎯 新增對策四：右側安全緩衝區 (70px終極版)。強制為懸浮按鈕挖出專屬疊加空間，絕對不吃卡片 */
+/* 🎯 對策四微調：縮減版安全緩衝區 (28px)。保護卡片文字不被貼死，同時消除大片空白感 */
             .grid-container {
-                padding-right: 70px !important;
+                padding-right: 28px !important;
                 box-sizing: border-box !important;
             }
         }

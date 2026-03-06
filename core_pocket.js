@@ -31,9 +31,9 @@ window.toggleUserPocket = function(expertName, btnElement, sportKey) {
             /* 🎯 正常狀態的懸浮展開 */
             .floating-pocket-btn:hover { right: 0; background: linear-gradient(135deg, #fbbf24, #f59e0b); padding-right: 22px; transform: translateY(-50%) scale(1.05); }
             
-            /* 🎯 最新方案：對比模式時縮進右側邊緣 (剩15px的彩色邊框)，滑鼠移入/手指點擊時完整滑出 */
-            .floating-pocket-btn.is-comparing { right: -60px; opacity: 0.7; }
-            .floating-pocket-btn.is-comparing:hover { right: 0px; opacity: 1; transform: translateY(-50%) scale(1.05); }
+/* 🎯 視覺魔術版：利用 transform 平移縮進，實體維持在原位，絕對不會撐出白邊！ */
+            .floating-pocket-btn.is-comparing { transform: translate(52px, -50%); opacity: 0.7; }
+            .floating-pocket-btn.is-comparing:hover { transform: translate(-8px, -50%) scale(1.05); opacity: 1; }
 
             .pocket-badge { background: #dc2626; color: white; border-radius: 50%; padding: 3px 10px; font-size: 14px; font-weight: 900; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.4); position: relative; top: -5px; }
             .pocket-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(15px); z-index: 10001; display: none; justify-content: center; align-items: center; opacity: 0; transition: 0.4s ease; }
