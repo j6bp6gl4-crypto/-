@@ -84,15 +84,19 @@ if (!document.getElementById('pickTooltipStyle')) {
             .podium-card:nth-child(2) .pick-tooltip { left: -5px !important; transform: none !important; }
             .podium-card:nth-child(2) .pick-tooltip::after { left: 15px !important; margin-left: 0 !important; }
 
-            /* 🚀 終極修復：限制手機版飛入動畫的距離！ */
-            .expert-card:nth-child(4n+1) { --rx: -100px !important; --ry: -100px !important; }
-            .expert-card:nth-child(4n+2) { --rx: 100px !important;  --ry: -100px !important; }
-            .expert-card:nth-child(4n+3) { --rx: -100px !important; --ry: 100px !important;  }
-            .expert-card:nth-child(4n+4) { --rx: 100px !important;  --ry: 100px !important;  }
+/* 🚀 刪除多餘的橫向位移代碼！改為純垂直飛入。
+               徹底根除 LINE 瀏覽器因為動畫跑到畫面外，而強行撐開產生大白邊的 Bug！ */
+            .expert-card, .podium-card { --rx: 0px !important; } /* 強制所有卡片橫向位移歸零 */
             
-            .podium-card:nth-child(1) { --rx: 0px !important;    --ry: -120px !important; }
-            .podium-card:nth-child(2) { --rx: -100px !important; --ry: 0px !important;    }
-            .podium-card:nth-child(3) { --rx: 100px !important;  --ry: 0px !important;    }
+            .expert-card:nth-child(4n+1) { --ry: -60px !important; }
+            .expert-card:nth-child(4n+2) { --ry: -40px !important; }
+            .expert-card:nth-child(4n+3) { --ry: 60px !important;  }
+            .expert-card:nth-child(4n+4) { --ry: 40px !important;  }
+            
+            .podium-card:nth-child(1) { --ry: -80px !important; }
+            .podium-card:nth-child(2) { --ry: 0px !important;   }
+            .podium-card:nth-child(3) { --ry: 0px !important;   }
+        }
         }
 
         .pick-tooltip { 

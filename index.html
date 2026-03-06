@@ -102,7 +102,8 @@
 /* ==================================================== */
         /* 1. 密鑰解鎖畫面的專屬樣式 (新增 - 半透明效果)      */
         /* ==================================================== */
-        body { font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; background-color: #f4f7f9; margin: 0; color: #333; overflow-x: auto; }
+        html, body { overflow-x: hidden; width: 100%; } /* 🔒 重新加回防護罩：鎖死水平捲軸。因為泡泡框已優化，現在鎖死絕對安全！ */
+        body { font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; background-color: #f4f7f9; margin: 0; color: #333; }
         
         #authGate {
             position: fixed; 
@@ -381,7 +382,7 @@
     <script src="core_trend.js?v=1.0.5"></script>
     <script src="core_ranking.js?v=1.0.9"></script>
     <script src="core_recruit.js?v=1.0.15"></script>
-    <script src="core_engine.js?v=1.0.28"></script>
+    <script src="core_engine.js?v=1.0.29"></script>
 
 </body>
 </html>
