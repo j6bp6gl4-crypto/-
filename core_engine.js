@@ -33,7 +33,7 @@ if (!document.getElementById('pickTooltipStyle')) {
                 box-sizing: border-box !important;
             }
             
-            /* 對策三：彈性名字空間。吸收中間剩餘空間，斷幾行都垂直置中 */
+/* 對策三：彈性名字空間。吸收中間剩餘空間，斷幾行都垂直置中 */
             .expert-card .name { 
                 flex-grow: 1 !important; 
                 font-size: 13.5px !important; 
@@ -44,10 +44,15 @@ if (!document.getElementById('pickTooltipStyle')) {
                 justify-content: center !important;
             }
 
-/* 🎯 對策四微調：縮減版安全緩衝區 (28px)。保護卡片文字不被貼死，同時消除大片空白感 */
-            .grid-container {
-                padding-right: 28px !important;
+            /* 🎯 新增對策四 (對稱留白版)：依據您的巧思，讓整個主容器左右往內縮 32px，產生對等空白，完美解決視覺偏移與泡泡框被切的問題！ */
+            .container {
+                padding-left: 32px !important;
+                padding-right: 32px !important;
                 box-sizing: border-box !important;
+            }
+            
+            .grid-container {
+                padding-right: 0 !important; /* 清除之前的單邊設定，統一交給 container 控管 */
             }
         }
 
