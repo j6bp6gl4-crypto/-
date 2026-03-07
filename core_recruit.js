@@ -152,9 +152,10 @@ window.openRecruitModal = () => {
                 "npb_runline": "日棒讓分", "npb_ml": "日棒獨贏", "npb_total": "日棒大小", "npb_1h_runline": "日棒上半讓分", "npb_1h_ml": "日棒上半獨贏", "npb_1h_total": "日棒上半大小",
                 "nba_team": "NBA 讓分盤", "nba_total": "NBA 大小分",
                 "mlb_ml": "MLB 獨贏", "mlb_runline": "MLB 讓分盤", "mlb_total": "MLB 大小分", "mlb_ml_high": "MLB 高賠獨贏",
-                "nhl_ml": "冰球獨贏(含加時)", "nhl_ml_reg": "冰球獨贏(不含加時)", "nhl_spread_ot": "冰球讓盤(含加時)", "nhl_spread_reg": "冰球讓盤(不含加時)", "nhl_total_ot": "冰球大小(含加時)", "nhl_total_reg": "冰球大小(不含加時)", "khl_team": "俄冰隊伍", "khl_total": "俄冰大小分",
+                "nhl_ml": "冰球獨贏(含加時)", "nhl_ml_reg": "冰球獨贏(不含加時)", "nhl_spread_ot": "冰球讓盤(含加時)", "nhl_spread_reg": "冰球讓盤(不含加時)", 
+                "nhl_total_ot": "冰球大小(含加時)", "nhl_total_reg": "冰球大小(不含加時)", "khl_team": "俄冰隊伍", "khl_total": "俄冰大小分",
                 "soccer_team": "足球隊伍", "soccer_total": "足球大小分", "soccer_ml": "足球獨贏", "soccer_btts": "足球兩隊進球",
-                "euro_team": "歐籃隊伍", "euro_total": "歐籃大小", "cba_team": "中籃隊伍", "kbl_team": "韓籃隊伍", "kbl_total": "韓籃大小", "nbl_team": "澳籃隊伍",
+                "euro_team": "歐籃隊伍", "euro_total": "歐籃大小", "cba_team": "中籃隊伍","jbl_team": "日籃讓盤", "jbl_total": "日籃大小", "kbl_team": "韓籃隊伍", "kbl_total": "韓籃大小", "nbl_team": "澳籃隊伍",
                 "lol_team": "電競隊伍", "lol_total": "電競大小"
             };
 

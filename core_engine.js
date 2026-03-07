@@ -360,7 +360,8 @@ const categories = [
             { name: '🇯🇵 日棒 NPB', items: [ { id: 'npb_runline', label: '日棒讓分' }, { id: 'npb_ml', label: '日棒獨贏' }, { id: 'npb_total', label: '日棒大小' }, { id: 'npb_1h_runline', label: '日棒上半讓分' }, { id: 'npb_1h_ml', label: '日棒上半獨贏' }, { id: 'npb_1h_total', label: '日棒上半大小' } ] },
             { name: '⚽ 足球系列', items: [ { id: 'soccer_team', label: '足球隊伍' }, { id: 'soccer_total', label: '足球大小分' }, { id: 'soccer_ml', label: '足球獨贏' }, { id: 'soccer_btts', label: '足球兩隊進球' }, { id: 'soccer_corner_total', label: '足球角球大小' }, { id: 'soccer_corner_ml', label: '足球角球PK' } ] },
             { name: '🏒 冰球系列', items: [ { id: 'nhl_ml', label: '冰球獨贏(含加時)' }, { id: 'nhl_ml_reg', label: '冰球獨贏(不含加時)' }, { id: 'nhl_spread_ot', label: '冰球讓盤(含加時)' }, { id: 'nhl_spread_reg', label: '冰球讓盤(不含加時)' }, { id: 'nhl_total_ot', label: '冰球大小(含加時)' }, { id: 'nhl_total_reg', label: '冰球大小(不含加時)' }, { id: 'khl_team', label: '俄冰隊伍' }, { id: 'khl_total', label: '俄冰大小分' } ] },
-            { name: '🌏 亞洲/歐籃', items: [ { id: 'euro_team', label: '歐籃隊伍' }, { id: 'euro_total', label: '歐籃大小' }, { id: 'euro_1h', label: '歐籃上半' }, { id: 'nbl_team', label: '澳籃隊伍' }, { id: 'nbl_total', label: '澳籃大小' }, { id: 'jp_team', label: '日籃隊伍' }, { id: 'kbl_team', label: '韓籃隊伍' }, { id: 'kbl_total', label: '韓籃大小' }, { id: 'cba_team', label: '中籃隊伍' }, { id: 'cba_total', label: '中籃大小' } ] }, 
+
+            { name: '🌏 亞洲/歐籃', items: [ { id: 'euro_team', label: '歐籃隊伍' }, { id: 'euro_total', label: '歐籃大小' }, { id: 'euro_1h', label: '歐籃上半' }, { id: 'nbl_team', label: '澳籃隊伍' }, { id: 'nbl_total', label: '澳籃大小' }, { id: 'jbl_team', label: '日籃隊伍' },{ id: 'jbl_total', label: '日籃大小' },{ id: 'kbl_team', label: '韓籃隊伍' }, { id: 'kbl_total', label: '韓籃大小' }, { id: 'cba_team', label: '中籃隊伍' }, { id: 'cba_total', label: '中籃大小' } ] }, 
             { name: '🎮 電競系列', items: [ { id: 'lol_team', label: '電競隊伍' }, { id: 'lol_total', label: '電競大小' } ] }
         ];
         categories.forEach(cat => {
