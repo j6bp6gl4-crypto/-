@@ -2,7 +2,7 @@
 /* ==== 【組件 E：核心引擎 - core_engine.js】 ==== */
 /* ============================================================== */
 
-const DB_KEY = 'DashboardDB_V85_Final'; 
+const DB_KEY = 'DashboardDB_V86_Final'; 
 window.dataDB = JSON.parse(localStorage.getItem(DB_KEY));
 window.isNegativeMode = false; // 🪄 魔法反向開關
 
@@ -281,6 +281,10 @@ window.init = function() {
     const podiumArea = document.getElementById('podiumArea');
     const targetSport = window.activeSportKey || "nba_team"; 
     let systemLatestDate = window.getSystemLatestDate(targetSport); 
+    // 🎯 特殊激活白名單：從 localStorage 讀取後台設定
+    let qualifiedWhitelist = [];
+    try { qualifiedWhitelist = JSON.parse(localStorage.getItem('AdminWhitelist_Experts')) || []; } catch(e) {}
+
     let rankedList = [];
 
     for (let name in window.dataDB) {
@@ -290,7 +294,9 @@ window.init = function() {
         let isActive = diffDays <= 3;
         // 🎯 門檻激活：計算不重複預測天數，未滿10天不進入正式排行
         let uniqueDates = new Set(records.map(r => r[0]));
-        let isQualified = uniqueDates.size >= 10;
+
+let isQualified = uniqueDates.size >= 10 || qualifiedWhitelist.includes(name + '||' + targetSport);
+
         let sliceRec = window.currentHomeFilter === 'all' ? records : records.slice(0, window.currentHomeFilter);
         let net = sliceRec.reduce((sum, r) => sum + parseInt(r[2] || 0), 0);
         
