@@ -75,29 +75,41 @@ window.renderTrendChart = function() {
             }
             if(currentStreak >= 2) streakStr = `<span class="streak-badge ${streakType === 'win' ? 'streak-win' : 'streak-loss'}">${streakType === 'win' ? '🔥' : '❄️'} ${currentStreak}連${streakType === 'win' ? '勝' : '敗'}</span>`;
             
-            // 根據過濾器切換資料範圍
+// 根據過濾器切換資料範圍
             let targetRecords = window.activeTrendFilter === 'all' ? records : records.slice(0, parseInt(window.activeTrendFilter));
             if (targetRecords.length > 0) { 
                 let totalNet = targetRecords.reduce((sum, r) => sum + parseInt(r[2] || 0), 0); 
-                chartData.push({ name, net: totalNet, streak: streakStr, baseBadge: baseBadge, isActive }); 
+                
+                // 🎯 新增：精準計算該區間的勝率 (保留小數點，防止整數推擠導致名次失真)
+                let tw = 0, tl = 0;
+                targetRecords.forEach(r => {
+                    let wm = r[1].match(/(\d+)勝/);
+                    let lm = r[1].match(/(\d+)敗/);
+                    if(wm) tw += parseInt(wm[1]);
+                    if(lm) tl += parseInt(lm[1]);
+                });
+                let tRate = (tw + tl) > 0 ? (tw / (tw + tl)) : 0;
+
+                chartData.push({ name, net: totalNet, rate: tRate, streak: streakStr, baseBadge: baseBadge, isActive }); 
             }
         }
     }
 
-    // 排序：活躍優先 -> 淨值排序
+    // 🏆 排序修改：活躍優先 -> 勝率優先 -> 勝率相同則看淨值加權
     chartData.sort((a, b) => { 
         if (a.isActive && !b.isActive) return -1; 
         if (!a.isActive && b.isActive) return 1; 
-        return b.net - a.net; 
+        return b.rate - a.rate || b.net - a.net; 
     });
 
     if (chartData.length === 0) return chartBody.innerHTML = '<p style="text-align:center; padding:50px; color:#999; font-weight:bold; font-size:18px;">該項目此區間段尚無數據</p>';
 
-    const maxNet = Math.max(...chartData.map(d => Math.abs(d.net))); 
-    const scale = maxNet === 0 ? 1 : maxNet;
-
-chartData.forEach((d, i) => {
-        const barWidth = (Math.abs(d.net) / scale) * 100;
+   // 💡 拔除舊的 maxNet 縮放，改用勝率的 0~100 絕對值來畫寬度
+    chartData.forEach((d, i) => {
+        // 勝率轉換為整數 % 數顯示
+        const displayRate = Math.round(d.rate * 100);
+        // 寬度直接對應勝率
+        const barWidth = displayRate;
 
         // 🎯 [智慧植入] 參照舊版 core_engine.js，支援陣列格式與長條圖泡泡
         let pickHtml = '';
@@ -109,7 +121,8 @@ chartData.forEach((d, i) => {
             }
         }
 
-        const barColorClass = d.isActive ? (d.net >= 0 ? 'bar-pos' : 'bar-neg') : '';
+        // 顏色邏輯：勝率 >= 50% 為正向色，否則為負向色
+        const barColorClass = d.isActive ? (d.rate >= 0.5 ? 'bar-pos' : 'bar-neg') : '';
         const inactiveStyle = !d.isActive ? 'background: #cbd5e1;' : '';
         const nameColor = d.isActive ? '#1e293b' : '#94a3b8';
         const sign = d.net > 0 ? '+' : '';
@@ -125,10 +138,11 @@ chartData.forEach((d, i) => {
 
                 <div class="bar-wrapper">
                     <div class="bar-fill ${barColorClass}" style="width: ${barWidth}%; ${inactiveStyle}">
-                        ${Math.abs(d.net) > 0 ? sign + d.net : ''}
                     </div>
                 </div>
-                <div class="bar-val" style="color: ${nameColor};">${sign}${d.net}</div>
+                <div class="bar-val" style="color: ${nameColor}; font-weight:bold; min-width:85px; text-align:right;">
+                    ${displayRate}% <span style="font-size:13px; color:#94a3b8; font-weight:normal;">(淨${sign}${d.net})</span>
+                </div>
             </div>`; 
     });
 };

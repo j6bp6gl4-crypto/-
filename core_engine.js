@@ -2,7 +2,7 @@
 /* ==== 【組件 E：核心引擎 - core_engine.js】 ==== */
 /* ============================================================== */
 
-const DB_KEY = 'DashboardDB_V84_Final'; 
+const DB_KEY = 'DashboardDB_V85_Final'; 
 window.dataDB = JSON.parse(localStorage.getItem(DB_KEY));
 window.isNegativeMode = false; // 🪄 魔法反向開關
 
@@ -290,14 +290,47 @@ window.init = function() {
         let isActive = diffDays <= 3;
         let sliceRec = window.currentHomeFilter === 'all' ? records : records.slice(0, window.currentHomeFilter);
         let net = sliceRec.reduce((sum, r) => sum + parseInt(r[2] || 0), 0);
-        rankedList.push({ name, net, isActive });
+        
+        // 🎯 核心升級：精準計算勝率
+        let w = 0, l = 0;
+        sliceRec.forEach(r => {
+            const wm = r[1].match(/(\d+)勝/);
+            const lm = r[1].match(/(\d+)敗/);
+            if(wm) w += parseInt(wm[1]);
+            if(lm) l += parseInt(lm[1]);
+        });
+        let winRate = (w + l) > 0 ? Math.round((w / (w + l)) * 100) : 0;
+
+        rankedList.push({ name, net, winRate, isActive });
     }
 
+// 🏆 首頁排序徹底改為：活躍優先 -> 勝率優先 -> 淨值加權
     rankedList.sort((a, b) => { 
         if (a.isActive && !b.isActive) return -1; 
         if (!a.isActive && b.isActive) return 1; 
-        return window.isNegativeMode ? (a.net - b.net) : (b.net - a.net); 
+        if (window.isNegativeMode) {
+            return a.winRate - b.winRate || a.net - b.net; 
+        } else {
+            return b.winRate - a.winRate || b.net - a.net; 
+        }
     });
+
+    // 🔗 核心對接：將排序結果發佈為 masterRankMap，供量化觀測台直接引用
+    window.masterRankMap = {};
+    rankedList.forEach((player, index) => {
+        window.masterRankMap[player.name] = {
+            rank: index + 1,
+            rate: player.winRate,
+            isGod: index < 3 && player.isActive
+        };
+    });
+
+// 💾 同步寫入 localStorage，讓量化觀測台直接讀取，100% 與前端一致
+    // 以運動種類為 key 分開存，支援多運動切換
+    try {
+        localStorage.setItem('MasterRankMap_Cache_' + targetSport, JSON.stringify(window.masterRankMap));
+    } catch(e) {}
+
 
     if(podiumArea) {
         podiumArea.innerHTML = ''; 
@@ -311,7 +344,9 @@ window.init = function() {
                 card.className = `podium-card rank-${i + 1} ${isActiveSelect}`;
                 card.setAttribute('data-name', exp.name);
                 card.style.animationDelay = window.isNegativeMode ? `${(i + 1) * 0.1}s` : '0s';
-                card.innerHTML = `<div class="rank-number">RANK ${i + 1}</div><span class="rank-crown">${window.isNegativeMode ? '🪄' : (i===0?'👑':(i===1?'🥈':'🥉'))}</span><div class="name" style="font-size:20px; display:flex; align-items:center; justify-content:center;">${exp.name} ${window.getPickTooltipHtml(exp.name)}</div><span class="rank-net">${exp.net >= 0 ? '+' : ''}${exp.net} <span style="font-size:14px;">注</span></span><div style="font-size:12px; color:#64748b; margin-top:5px;">${itemNames[targetSport] || '紀錄'}</div>`;
+                
+                // 🎯 UI 升級：顯示 勝率% (淨值)
+                card.innerHTML = `<div class="rank-number">RANK ${i + 1}</div><span class="rank-crown">${window.isNegativeMode ? '🪄' : (i===0?'👑':(i===1?'🥈':'🥉'))}</span><div class="name" style="font-size:20px; display:flex; align-items:center; justify-content:center;">${exp.name} ${window.getPickTooltipHtml(exp.name)}</div><span class="rank-net">${exp.winRate}% <span style="font-size:16px; color:#64748b; font-weight:bold;">(淨${exp.net >= 0 ? '+' : ''}${exp.net})</span></span><div style="font-size:12px; color:#64748b; margin-top:5px;">${itemNames[targetSport] || '紀錄'}</div>`;
                 card.onclick = () => window.toggleExpert(exp.name, card); 
                 podiumArea.appendChild(card);
             }
@@ -329,7 +364,8 @@ window.init = function() {
             card.style.animationDelay = window.isNegativeMode ? `${(idx * 0.1) + 0.4}s` : '0s';
             
             if (exp.isActive) {
-                card.innerHTML = `<div style="font-size:11px; color:#94a3b8; margin-bottom:5px;">NO.${idx + 4}</div><div class="name" style="display:flex; align-items:center; justify-content:center;">${exp.name} ${window.getPickTooltipHtml(exp.name)}</div><span class="badge" style="color:#1877f2;">淨值 ${exp.net >= 0 ? '+' : ''}${exp.net}</span>`;
+                // 🎯 UI 升級：顯示 勝率% (淨值)
+                card.innerHTML = `<div style="font-size:11px; color:#94a3b8; margin-bottom:5px;">NO.${idx + 4}</div><div class="name" style="display:flex; align-items:center; justify-content:center;">${exp.name} ${window.getPickTooltipHtml(exp.name)}</div><span class="badge" style="color:#1877f2;">勝率 ${exp.winRate}% (淨${exp.net >= 0 ? '+' : ''}${exp.net})</span>`;
             } else {
                 card.classList.add('sleep-card');
                 card.innerHTML = `<div class="sleep-icon">zZzZ</div><div class="sleep-text" style="font-size:11px; margin-bottom:5px;">無近期數據</div><span class="name" style="display:flex; align-items:center; justify-content:center;">${exp.name}</span><span class="badge">💤 休眠中</span>`;
