@@ -288,6 +288,9 @@ window.init = function() {
         if (records.length === 0) continue;
         let diffDays = window.getDaysDiff(records[0][0], systemLatestDate); 
         let isActive = diffDays <= 3;
+        // 🎯 門檻激活：計算不重複預測天數，未滿10天不進入正式排行
+        let uniqueDates = new Set(records.map(r => r[0]));
+        let isQualified = uniqueDates.size >= 10;
         let sliceRec = window.currentHomeFilter === 'all' ? records : records.slice(0, window.currentHomeFilter);
         let net = sliceRec.reduce((sum, r) => sum + parseInt(r[2] || 0), 0);
         
@@ -301,11 +304,16 @@ window.init = function() {
         });
         let winRate = (w + l) > 0 ? Math.round((w / (w + l)) * 100) : 0;
 
-        rankedList.push({ name, net, winRate, isActive });
+        rankedList.push({ name, net, winRate, isActive, isQualified });
+    
     }
 
-// 🏆 首頁排序徹底改為：活躍優先 -> 勝率優先 -> 淨值加權
+// 🏆 首頁排序：活躍+已激活優先 -> 勝率優先 -> 淨值加權
     rankedList.sort((a, b) => { 
+        const aRank = a.isActive && a.isQualified;
+        const bRank = b.isActive && b.isQualified;
+        if (aRank && !bRank) return -1; 
+        if (!aRank && bRank) return 1;
         if (a.isActive && !b.isActive) return -1; 
         if (!a.isActive && b.isActive) return 1; 
         if (window.isNegativeMode) {
@@ -334,7 +342,9 @@ window.init = function() {
 
     if(podiumArea) {
         podiumArea.innerHTML = ''; 
-        const top3 = rankedList.slice(0, 3); 
+
+        const top3 = rankedList.filter(p => p.isActive && p.isQualified).slice(0, 3);
+ 
         const order = [1, 0, 2]; 
         order.forEach(i => {
             if (top3[i] && top3[i].isActive) { 
@@ -363,13 +373,16 @@ window.init = function() {
             card.setAttribute('data-name', exp.name);
             card.style.animationDelay = window.isNegativeMode ? `${(idx * 0.1) + 0.4}s` : '0s';
             
-            if (exp.isActive) {
-                // 🎯 UI 升級：顯示 勝率% (淨值)
+if (exp.isActive && exp.isQualified) {
                 card.innerHTML = `<div style="font-size:11px; color:#94a3b8; margin-bottom:5px;">NO.${idx + 4}</div><div class="name" style="display:flex; align-items:center; justify-content:center;">${exp.name} ${window.getPickTooltipHtml(exp.name)}</div><span class="badge" style="color:#1877f2;">勝率 ${exp.winRate}% (淨${exp.net >= 0 ? '+' : ''}${exp.net})</span>`;
+            } else if (exp.isActive && !exp.isQualified) {
+                card.classList.add('sleep-card');
+                card.innerHTML = `<div class="sleep-icon">📊</div><div class="sleep-text" style="font-size:11px; margin-bottom:5px;">資料累積中</div><span class="name" style="display:flex; align-items:center; justify-content:center;">${exp.name}</span><span class="badge" style="color:#f59e0b;">已累積 ${new Set((window.dataDB[exp.name][targetSport] || []).map(r => r[0])).size}/10 天</span>`;
             } else {
                 card.classList.add('sleep-card');
                 card.innerHTML = `<div class="sleep-icon">zZzZ</div><div class="sleep-text" style="font-size:11px; margin-bottom:5px;">無近期數據</div><span class="name" style="display:flex; align-items:center; justify-content:center;">${exp.name}</span><span class="badge">💤 休眠中</span>`;
             }
+
             card.onclick = () => window.toggleExpert(exp.name, card); 
             grid.appendChild(card);
         });

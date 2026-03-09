@@ -79,7 +79,12 @@ window.renderRankMode = function() {
     const display = document.getElementById('displayArea'); let allSorted = []; let systemLatestDate = window.getSystemLatestDate(window.activeSportKey);
     for(let name in window.dataDB) {
         if(window.excludedExperts.includes(name)) continue; let list = window.dataDB[name][window.activeSportKey] || []; if(list.length === 0) continue;
-        let diffDays = window.getDaysDiff(list[0][0], systemLatestDate); if (diffDays > 3) continue;
+        
+let diffDays = window.getDaysDiff(list[0][0], systemLatestDate); if (diffDays > 3) continue;
+        // 🎯 門檻激活：不重複天數 < 10 天不進入賽事排行
+        let uniqueDatesRank = new Set(list.map(r => r[0]));
+        if (uniqueDatesRank.size < 10) continue;
+
         let w=0, l=0, n20=0; list.slice(0, 20).forEach(r => { const wm = r[1].match(/(\d+)勝/); const lm = r[1].match(/(\d+)敗/); if(wm) w += parseInt(wm[1]); if(lm) l += parseInt(lm[1]); n20 += parseInt(r[2] || 0); }); let rate = (w+l) > 0 ? (w/(w+l)) : 0; allSorted.push({ name, w, l, net: n20, rate });
     }
     allSorted.sort((a,b) => b.rate - a.rate || b.net - a.net);
@@ -131,7 +136,12 @@ window.renderNormalMode = function() {
 
 window.getRankBanner = function(title, name, key) {
     let list = []; let systemLatestDate = window.getSystemLatestDate(key);
-    for(let n in window.dataDB) { if(window.dataDB[n][key] && window.dataDB[n][key].length > 0){ let diffDays = window.getDaysDiff(window.dataDB[n][key][0][0], systemLatestDate); if (diffDays > 3) continue; let w=0, l=0, n20=0; window.dataDB[n][key].slice(0, 20).forEach(r => { const wm = r[1].match(/(\d+)勝/); const lm = r[1].match(/(\d+)敗/); if(wm) w += parseInt(wm[1]); if(lm) l += parseInt(lm[1]); n20 += parseInt(r[2] || 0); }); let rate = (w+l) > 0 ? (w/(w+l)) : 0; list.push({name: n, net: n20, rate: rate}); } }
+for(let n in window.dataDB) { if(window.dataDB[n][key] && window.dataDB[n][key].length > 0){ let diffDays = window.getDaysDiff(window.dataDB[n][key][0][0], systemLatestDate); if (diffDays > 3) continue;
+        // 🎯 門檻激活：不重複天數 < 10 天不進入 getRankBanner 排名
+        let uniqueDatesRB = new Set(window.dataDB[n][key].map(r => r[0]));
+        if (uniqueDatesRB.size < 10) continue;
+        let w=0, l=0, n20=0; window.dataDB[n][key].slice(0, 20).forEach(r => { const wm = r[1].match(/(\d+)勝/); const lm = r[1].match(/(\d+)敗/); if(wm) w += parseInt(wm[1]); if(lm) l += parseInt(lm[1]); n20 += parseInt(r[2] || 0); }); let rate = (w+l) > 0 ? (w/(w+l)) : 0; list.push({name: n, net: n20, rate: rate}); } }
+ 
     const target = list.find(r => r.name === name); if (!target) return `<div class="title-container title-unranked"><h4 class="section-title">${title}</h4><span class="rank-badge" style="background:#f1f5f9; color:#94a3b8;">未激活榜單</span></div>`;
     let isReverse = target.rate < 0.5; let rankIdx = -1; let cls = "title-unranked"; let bCls = ""; let rankPrefix = "近況";
     if (!isReverse) { let topList = list.filter(item => item.rate >= 0.5); topList.sort((a,b) => b.rate - a.rate || b.net - a.net); rankIdx = topList.findIndex(r => r.name === name); if(rankIdx === 0) { cls = "title-rank-1"; bCls = "rank-1-badge"; } else if(rankIdx === 1) { cls = "title-rank-2"; bCls = "rank-2-badge"; } else if(rankIdx === 2) { cls = "title-rank-3"; bCls = "rank-3-badge"; } } 
