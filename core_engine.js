@@ -41,8 +41,8 @@ if (!document.getElementById('pickTooltipStyle')) {
         /* 📱 手機/LINE 版終極防護：徹底解決卡片高低不平的問題 (武裝版) */
         @media (max-width: 768px) {
             /* 手機版泡泡框稍微再縮小一點，更貼合邊緣 */
-            .pick-tooltip-container { top: -6px !important; right: -6px !important; }
-            .pick-icon { font-size: 8px !important; padding: 1px 3px !important; min-width: 18px; min-height: 18px; }
+          .pick-tooltip-container { top: -6px !important; right: -6px !important; }
+          .pick-icon { font-size: 10px !important; padding: 1px 4px !important; min-width: 22px !important; min-height: 22px !important; }
             
             /* 對策二：高度鎖死。強制卡片統一高度，並將內容垂直置中 */
             .expert-card, body.mode-neg .expert-card { 
