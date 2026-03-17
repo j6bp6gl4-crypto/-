@@ -7,15 +7,13 @@ let isRestrictedMode = false;
 let validClickCount = 0;      
 let hasLockedDown = false;    // 🔒 新增：確保鎖定咒語只會執行一次
 const MAX_CLICKS = 1;         
-const FREE_DAYS_LIMIT = 0;    
+const FREE_DAYS_LIMIT = 16;    
 
 document.addEventListener('DOMContentLoaded', () => {
     const savedKey = sessionStorage.getItem('verifiedKey');
     if (typeof config !== 'undefined' && savedKey) {
-        const isAdmin = savedKey === atob(config.adminCode);
-const isMember = (config.memberKeys || []).some(m => atob(m.key) === savedKey);
-if (isAdmin || isMember) {
-    window.isAdmin = isAdmin;
+        if (savedKey === atob(config.adminCode) || savedKey {
+            window.isAdmin = (savedKey === atob(config.adminCode));
             fullUnlockSystem(); 
             return; 
         }
@@ -94,8 +92,28 @@ function triggerLockdown() {
     const authBox = document.querySelector('.auth-box');
     const mainContent = document.getElementById('mainContent');
     
-    if (authGate) {
-        authGate.style.display = 'flex';
+    if (authGate && authBox) {
+        const title = authBox.querySelector('h1');
+        if(title) {
+            title.innerHTML = "⚠️ 試用額度已滿";
+            title.style.color = "#ef4444"; 
+        }
+
+        const subtitle = authBox.querySelector('p');
+        if(subtitle) {
+            subtitle.innerHTML = `
+                <div style="font-size: 16px; line-height: 1.6; margin-bottom: 20px;">
+                    <span style="color: #fbbf24; font-weight: bold; font-size: 18px;">您的試用權限已到期！</span><br>
+                    感謝您對「齊聚眾選」的支持與愛用。<br><br>
+                    <div style="background: rgba(239, 68, 68, 0.1); border-left: 4px solid #ef4444; padding: 10px; margin-top: 10px; text-align: left;">
+                        💡 <strong style="color: #fff;">歡迎贊助本企劃</strong>，即可索取 <strong style="color: #60a5fa;">30 日專屬金鑰</strong>！<br>
+                        詳情請內洽 <a href="https://lin.ee/MaTQnpA" target="_blank" style="color: #34d399; text-decoration: underline; font-weight: bold;">點選👉 私訊官方Line</a> 或直接私訊版大。
+                    </div>
+                </div>
+            `;
+        }
+
+        authGate.style.display = 'flex'; 
         authGate.classList.add('scatter-fly-in'); 
 
         // 🚫 【終極鎖死魔法 1】禁止滾動、禁止反白、背景點擊失效
@@ -123,33 +141,48 @@ function triggerLockdown() {
     }
 }
 
-function checkPasscode() {
+async function checkPasscode() {
     const userInput = document.getElementById('passcodeInput').value;
     const errorMsg = document.getElementById('errorMsg');
-    
+    if (!userInput) return;
+
+    // 管理員金鑰走原本邏輯
     try {
-        const ADMIN_KEY = atob(config.adminCode); 
+        const ADMIN_KEY = atob(config.adminCode);
+        if (userInput === ADMIN_KEY) {
+            window.isAdmin = true;
+            sessionStorage.setItem('verifiedKey', ADMIN_KEY);
+            fullUnlockSystem();
+            return;
+        }
+    } catch(e) {}
 
-if (userInput === ADMIN_KEY) {
-    window.isAdmin = true;
-    sessionStorage.setItem('verifiedKey', ADMIN_KEY);
-    fullUnlockSystem();
-    return;
-}
+    // 會員金鑰走 API 驗證
+    try {
+        const response = await fetch('/api/verify-key', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ key: userInput })
+        });
 
-        const matched = (config.memberKeys || []).find(m => atob(m.key) === userInput);
-if (matched) {
-    if (matched.expiry && new Date().toLocaleDateString('en-CA') > matched.expiry) {
-        errorMsg.innerHTML = `⚠️ 金鑰已於 ${matched.expiry} 到期，請聯絡版大續約。`;
-        errorMsg.style.display = 'block';
-        return;
-    }
-    window.isAdmin = false;
-    sessionStorage.setItem('verifiedKey', userInput);
-    fullUnlockSystem();
+        const result = await response.json();
 
+        if (result.valid) {
+            sessionStorage.setItem('verifiedKey', userInput);
+            sessionStorage.setItem('verifiedPlan', result.plan);
+            sessionStorage.setItem('verifiedUser', result.user_name);
+            sessionStorage.setItem('expiresAt', result.expires_at);
+            window.isAdmin = false;
+            fullUnlockSystem();
         } else {
             errorMsg.style.display = 'block';
+            if (result.reason === 'used') {
+                errorMsg.innerHTML = '❌ 此金鑰已被使用過';
+            } else if (result.reason === 'expired') {
+                errorMsg.innerHTML = '❌ 金鑰已過期，請聯絡版大續約';
+            } else {
+                errorMsg.innerHTML = '❌ 密鑰錯誤或已過期';
+            }
             const authBox = document.querySelector('.auth-box');
             if (authBox) {
                 authBox.style.transform = 'translateX(10px)';
@@ -158,10 +191,10 @@ if (matched) {
             }
         }
     } catch (e) {
-        alert("系統密鑰配置錯誤，請聯絡開發端檢查 config.js");
+        errorMsg.style.display = 'block';
+        errorMsg.innerHTML = '❌ 系統錯誤，請稍後再試';
     }
 }
-
 function openDoorForVisitor() {
     const authGate = document.getElementById('authGate');
     const mainContent = document.getElementById('mainContent');
