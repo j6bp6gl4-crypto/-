@@ -12,7 +12,8 @@ const FREE_DAYS_LIMIT = 16;
 document.addEventListener('DOMContentLoaded', () => {
     const savedKey = sessionStorage.getItem('verifiedKey');
     if (typeof config !== 'undefined' && savedKey) {
-        if (savedKey === atob(config.adminCode) || savedKey {
+        // ✅ 修正後的程式碼
+    if (savedKey === atob(config.adminCode) || savedKey) {
             window.isAdmin = (savedKey === atob(config.adminCode));
             fullUnlockSystem(); 
             return; 
