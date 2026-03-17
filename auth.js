@@ -12,7 +12,7 @@ const FREE_DAYS_LIMIT = 16;
 document.addEventListener('DOMContentLoaded', () => {
     const savedKey = sessionStorage.getItem('verifiedKey');
     if (typeof config !== 'undefined' && savedKey) {
-        if (savedKey === atob(config.adminCode) || savedKey === atob(config.memberCode)) {
+        if (savedKey === atob(config.adminCode) || savedKey {
             window.isAdmin = (savedKey === atob(config.adminCode));
             fullUnlockSystem(); 
             return; 
@@ -141,24 +141,48 @@ function triggerLockdown() {
     }
 }
 
-function checkPasscode() {
+async function checkPasscode() {
     const userInput = document.getElementById('passcodeInput').value;
     const errorMsg = document.getElementById('errorMsg');
-    
-    try {
-        const ADMIN_KEY = atob(config.adminCode); 
-        const MEMBER_KEY = atob(config.memberCode);
+    if (!userInput) return;
 
+    // 管理員金鑰走原本邏輯
+    try {
+        const ADMIN_KEY = atob(config.adminCode);
         if (userInput === ADMIN_KEY) {
             window.isAdmin = true;
             sessionStorage.setItem('verifiedKey', ADMIN_KEY);
             fullUnlockSystem();
-        } else if (userInput === MEMBER_KEY) {
+            return;
+        }
+    } catch(e) {}
+
+    // 會員金鑰走 API 驗證
+    try {
+        const response = await fetch('/api/verify-key', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ key: userInput })
+        });
+
+        const result = await response.json();
+
+        if (result.valid) {
+            sessionStorage.setItem('verifiedKey', userInput);
+            sessionStorage.setItem('verifiedPlan', result.plan);
+            sessionStorage.setItem('verifiedUser', result.user_name);
+            sessionStorage.setItem('expiresAt', result.expires_at);
             window.isAdmin = false;
-            sessionStorage.setItem('verifiedKey', MEMBER_KEY);
             fullUnlockSystem();
         } else {
             errorMsg.style.display = 'block';
+            if (result.reason === 'used') {
+                errorMsg.innerHTML = '❌ 此金鑰已被使用過';
+            } else if (result.reason === 'expired') {
+                errorMsg.innerHTML = '❌ 金鑰已過期，請聯絡版大續約';
+            } else {
+                errorMsg.innerHTML = '❌ 密鑰錯誤或已過期';
+            }
             const authBox = document.querySelector('.auth-box');
             if (authBox) {
                 authBox.style.transform = 'translateX(10px)';
@@ -167,10 +191,10 @@ function checkPasscode() {
             }
         }
     } catch (e) {
-        alert("系統密鑰配置錯誤，請聯絡開發端檢查 config.js");
+        errorMsg.style.display = 'block';
+        errorMsg.innerHTML = '❌ 系統錯誤，請稍後再試';
     }
 }
-
 function openDoorForVisitor() {
     const authGate = document.getElementById('authGate');
     const mainContent = document.getElementById('mainContent');
