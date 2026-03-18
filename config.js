@@ -92,6 +92,10 @@ const dailyUpdates = [
 
 const todayPicks = [
 
+// --- 林Cu 53 NBA 雙向推薦 ---
+    ["林Cu 53", "nba_team", "鵜鶘 -2.0<br>暴龍 -7.5"],
+    ["林Cu 53", "nba_total", "賽爾 216小"],
+
     // --- 綺瀅 NBA 雙向推薦 ---
     ["綺瀅", "nba_team", "賽爾 -12.5<br>灰狼 -13.5"],
     ["綺瀅", "nba_total", "賽爾 217大分<br>籃網 214小分<br>溜馬 223小分"],
