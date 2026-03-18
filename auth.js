@@ -9,7 +9,7 @@ let hasLockedDown = false;    // 🔒 新增：確保鎖定咒語只會執行一
 const MAX_CLICKS = 1;         
 const FREE_DAYS_LIMIT = 16;    
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const savedKey = sessionStorage.getItem('verifiedKey');
     if (typeof config !== 'undefined' && savedKey) {
         // ✅ 修正後的程式碼
@@ -17,6 +17,28 @@ document.addEventListener('DOMContentLoaded', () => {
             window.isAdmin = (savedKey === atob(config.adminCode));
             fullUnlockSystem(); 
             return; 
+        }
+    }
+
+    // 🚀 共存邏輯：背景自動驗證 V2 天次制金鑰 (永久記憶)
+    const savedKeyV2 = localStorage.getItem('verifiedKey_v2');
+    if (savedKeyV2) {
+        try {
+            const resV2 = await fetch('/api/verify-key-v2', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ key: savedKeyV2 })
+            });
+            const dataV2 = await resV2.json();
+            if (dataV2.valid) {
+                window.isAdmin = false;
+                fullUnlockSystem();
+                return; // 驗證成功，自動解鎖並結束
+            } else {
+                localStorage.removeItem('verifiedKey_v2'); // 失效則清除記憶
+            }
+        } catch(e) {
+            console.error('V2背景驗證失敗', e);
         }
     }
 
@@ -160,7 +182,11 @@ async function checkPasscode() {
 
     // 會員金鑰走 API 驗證
     try {
-        const response = await fetch('/api/verify-key', {
+        // 🚀 共存智慧分流：以金鑰是否包含 "V2" (不分大小寫) 來決定走哪支 API
+        const isV2Key = userInput.toUpperCase().includes('V2');
+        const apiUrl = isV2Key ? '/api/verify-key-v2' : '/api/verify-key';
+        
+        const response = await fetch(apiUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ key: userInput })
@@ -169,10 +195,22 @@ async function checkPasscode() {
         const result = await response.json();
 
         if (result.valid) {
-            sessionStorage.setItem('verifiedKey', userInput);
+            if (isV2Key) {
+                // 天次制：存入永久記憶 localStorage
+                localStorage.setItem('verifiedKey_v2', userInput);
+            } else {
+                // 單次制：維持原本的暫時記憶 sessionStorage
+                sessionStorage.setItem('verifiedKey', userInput);
+            }
             sessionStorage.setItem('verifiedPlan', result.plan);
             sessionStorage.setItem('verifiedUser', result.user_name);
             sessionStorage.setItem('expiresAt', result.expires_at);
+            
+            // 新制額外提示剩餘天數
+            if (result.remaining_days !== undefined) {
+                alert(`✅ 驗證成功！剩餘天數：${result.remaining_days} 天`);
+            }
+            
             window.isAdmin = false;
             fullUnlockSystem();
         } else {
