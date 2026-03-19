@@ -43,9 +43,12 @@ async function trackReferrals() {
 document.addEventListener('DOMContentLoaded', async () => {
     trackReferrals();
 
-    // 🕵️ 改良版後門：不直接上鎖，而是「悄悄啟動地雷模式」，讓你完整測試點擊+滑動流程
+    // 🕵️ 改良版後門：延遲 300 毫秒再啟動地雷模式，確保 localStorage 寫入完成
     if (window.location.search.includes('test=lock')) {
-        isRestrictedMode = true;
+        setTimeout(() => {
+            isRestrictedMode = true;
+            console.log("🕵️ 管理員測試模式：推薦碼已紀錄，地雷已就緒");
+        }, 300);
     }
 
     const savedKey = sessionStorage.getItem('verifiedKey');
