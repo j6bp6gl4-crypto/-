@@ -7,10 +7,44 @@ let isRestrictedMode = false;
 let validClickCount = 0;      
 let hasLockedDown = false;    // 🔒 新增：確保鎖定咒語只會執行一次
 const MAX_CLICKS = 1;         
-const FREE_DAYS_LIMIT = 0;    
+const FREE_DAYS_LIMIT = 99;    
+
+// 🌟 【新增】雙參數雷達：網址參數解析與記憶
+// 🌟 【新增】雙參數雷達：網址參數解析與記憶 (含防禦型計次)
+async function trackReferrals() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const refCode = urlParams.get('ref');
+    const authorCode = urlParams.get('author');
+
+    if (refCode) localStorage.setItem('qiJu_ref', refCode);
+    if (authorCode) localStorage.setItem('qiJu_author', authorCode);
+
+    // 🛡️ 防禦型點擊偵測：每人每天針對同一個推薦碼只發送一次 API
+    if (refCode) {
+        const today = new Date().toLocaleDateString('en-CA');
+        const clickKey = `click_sent_${refCode}_${today}`;
+        
+        if (!localStorage.getItem(clickKey)) {
+            try {
+                // 🚀 呼叫 Vercel 後端 API 增加點擊數
+                fetch('/api/track-click', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ refCode: refCode })
+                });
+                localStorage.setItem(clickKey, 'true'); 
+            } catch (e) {
+                console.error("點擊追蹤失敗", e);
+            }
+        }
+    }
+}
 
 document.addEventListener('DOMContentLoaded', async () => {
+    trackReferrals();
+
     const savedKey = sessionStorage.getItem('verifiedKey');
+
     if (typeof config !== 'undefined' && savedKey) {
         // ✅ 修正後的程式碼
     if (savedKey === atob(config.adminCode) || savedKey) {
@@ -130,7 +164,7 @@ function triggerLockdown() {
                     感謝您對「齊聚眾選」的支持與愛用。<br><br>
                     <div style="background: rgba(239, 68, 68, 0.1); border-left: 4px solid #ef4444; padding: 10px; margin-top: 10px; text-align: left;">
                         💡 <strong style="color: #fff;">歡迎贊助本企劃</strong>，即可索取 <strong style="color: #60a5fa;">30 日專屬金鑰</strong>！<br>
-                        詳情請內洽 <a href="https://lin.ee/MaTQnpA" target="_blank" style="color: #34d399; text-decoration: underline; font-weight: bold;">點選👉 私訊官方Line</a> 或直接私訊版大。
+                        詳情請內洽 <a href="${window.getDynamicLineUrl()}" target="_blank" style="color: #34d399; text-decoration: underline; font-weight: bold;">點選👉 私訊官方Line</a> 或直接私訊版大。
                     </div>
                 </div>
             `;
@@ -285,3 +319,28 @@ document.addEventListener('keypress', (e) => {
         checkPasscode();
     }
 });
+
+// 🌟 【新增】LINE 收網組裝機：動態產生帶有記憶參數的官方連結
+window.getDynamicLineUrl = function() {
+    const LINE_OFFICIAL_ID = "@yhd0256r"; 
+    const ref = localStorage.getItem('qiJu_ref');
+    const author = localStorage.getItem('qiJu_author');
+    
+    let message = "版大你好，我要買金鑰！";
+    if (author && ref && author !== ref) {
+        message += ` (原創碼：${author}，推廣碼：${ref})`;
+    } else if (ref || author) {
+        const singleCode = ref || author;
+        message += ` (推薦碼：${singleCode})`;
+    } else {
+        message += ` (無推薦人)`;
+    }
+
+    return `https://line.me/R/oaMessage/${LINE_OFFICIAL_ID}/?${encodeURIComponent(message)}`;
+};
+
+// 🌟 【新增】推廣者專用：產生雙軌分潤連結
+window.generateShareLink = function(authorCode, promoterCode) {
+    const baseUrl = window.location.origin + window.location.pathname;
+    return `${baseUrl}?author=${authorCode}&ref=${promoterCode}`;
+};
