@@ -43,12 +43,13 @@ async function trackReferrals() {
 document.addEventListener('DOMContentLoaded', async () => {
     trackReferrals();
 
-    // 🕵️ 管理員專屬後門：只要網址包含 ?test=lock，就延遲 0.5 秒強制上鎖！
+    // 🕵️ 改良版後門：不直接上鎖，而是「悄悄啟動地雷模式」，讓你完整測試點擊+滑動流程
     if (window.location.search.includes('test=lock')) {
-        setTimeout(triggerLockdown, 500);
+        isRestrictedMode = true;
     }
 
     const savedKey = sessionStorage.getItem('verifiedKey');
+
 
     if (typeof config !== 'undefined' && savedKey) {
 
