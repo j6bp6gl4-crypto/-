@@ -7,7 +7,7 @@ let isRestrictedMode = false;
 let validClickCount = 0;      
 let hasLockedDown = false;    // 🔒 新增：確保鎖定咒語只會執行一次
 const MAX_CLICKS = 1;         
-const FREE_DAYS_LIMIT = 16;    
+const FREE_DAYS_LIMIT = 0;    
 
 document.addEventListener('DOMContentLoaded', async () => {
     const savedKey = sessionStorage.getItem('verifiedKey');
