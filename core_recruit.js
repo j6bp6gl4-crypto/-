@@ -109,7 +109,30 @@ window.toggleRecruit = function(expertName, btnElement, sportKey) {
     }
 
     const floatBtn = document.createElement('div'); floatBtn.className = 'floating-recruit-btn';
-    floatBtn.onclick = () => window.openRecruitModal();
+
+    // 手機版：第一下展開，第二下開 Modal；電腦版直接開 Modal
+    let recruitExpanded = false;
+    floatBtn.addEventListener('click', function() {
+        if (window.innerWidth < 1024) {
+            if (!recruitExpanded) {
+                recruitExpanded = true;
+                floatBtn.style.right = '0px';
+            } else {
+                recruitExpanded = false;
+                floatBtn.style.right = '';
+                window.openRecruitModal();
+            }
+        } else {
+            window.openRecruitModal();
+        }
+    });
+    document.addEventListener('click', function(e) {
+        if (recruitExpanded && !floatBtn.contains(e.target)) {
+            recruitExpanded = false;
+            floatBtn.style.right = '';
+        }
+    });
+
     document.body.appendChild(floatBtn);
 
     const overlay = document.createElement('div'); overlay.className = 'recruit-modal-overlay';

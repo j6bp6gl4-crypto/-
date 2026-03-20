@@ -57,7 +57,30 @@ window.toggleUserPocket = function(expertName, btnElement, sportKey) {
     }
 
     const floatBtn = document.createElement('div'); floatBtn.className = 'floating-pocket-btn';
-    floatBtn.onclick = () => window.openPocketModal();
+
+    // 手機版：第一下展開，第二下開 Modal；電腦版直接開 Modal
+    let pocketExpanded = false;
+    floatBtn.addEventListener('click', function() {
+        if (window.innerWidth < 1024) {
+            if (!pocketExpanded) {
+                pocketExpanded = true;
+                floatBtn.style.right = '0px';
+            } else {
+                pocketExpanded = false;
+                floatBtn.style.right = '';
+                window.openPocketModal();
+            }
+        } else {
+            window.openPocketModal();
+        }
+    });
+    document.addEventListener('click', function(e) {
+        if (pocketExpanded && !floatBtn.contains(e.target)) {
+            pocketExpanded = false;
+            floatBtn.style.right = '';
+        }
+    });
+
     document.body.appendChild(floatBtn);
 
 const overlay = document.createElement('div'); overlay.className = 'pocket-modal-overlay';
