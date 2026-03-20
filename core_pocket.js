@@ -135,7 +135,7 @@ const overlay = document.createElement('div'); overlay.className = 'pocket-modal
 
                 <div style="background: #fff5f5; border: 2px solid #fecaca; border-left: 8px solid #ef4444; padding: clamp(6px, 1vw, 20px) clamp(10px, 2vw, 25px); border-radius: 10px; margin-top: clamp(6px, 1vw, 25px); box-shadow: 0 5px 10px rgba(239, 68, 68, 0.15);">
                     <strong style="color: #dc2626; font-size: clamp(10px, 2vw, 24px); display: block; margin-bottom: clamp(4px, 0.8vw, 10px); letter-spacing: 1px;">🚨 台灣運彩玩家 專屬策略</strong>
-                    <span style="color: #991b1b; font-weight: 900; font-size: clamp(9px, 1.9vw, 22px); line-height: 1.3; display: inline-block;">反饋最好的玩法：選 1 場 (搭配另外 1 人)，合用 2X1 即可！</span><br>
+                    <span style="color: #991b1b; font-weight: 900; font-size: clamp(9px, 1.9vw, 22px); line-height: 1.1; display: inline-block;">反饋最好的玩法：選 1 場 (搭配另外 1 人)，合用 2X1 即可！</span><br>
                     <span style="color: #dc2626; font-size: clamp(8px, 1.6vw, 18px); font-weight: bold; margin-top: clamp(3px, 0.6vw, 8px); display: inline-block;">(備註：若該兩位好手，剛好有當日運彩單場，僅玩運彩單場！)</span>
                 </div>
             </div>
