@@ -217,6 +217,20 @@ window.openPocketModal = () => {
 
     window.updatePocketWidget();
 
+    // 手機版縮放同步
+    function syncPocketBtnScale() {
+        if (window.innerWidth < 1024) {
+            const scale = window.innerWidth / 980;
+            floatBtn.style.transform = `translateY(-50%) scale(${scale})`;
+            floatBtn.style.transformOrigin = 'right center';
+        } else {
+            floatBtn.style.transform = 'translateY(-50%)';
+            floatBtn.style.transformOrigin = '';
+        }
+    }
+    window.addEventListener('resize', syncPocketBtnScale);
+    syncPocketBtnScale();
+
     // 🎯 方案 B 全域開關：讓主程式可以呼叫此函數來切換按鈕位置
     window.setFloatingButtonsCompareMode = function(isComparing) {
         const pocketBtn = document.querySelector('.floating-pocket-btn');

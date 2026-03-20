@@ -241,4 +241,19 @@ window.openRecruitModal = () => {
     };
 
     window.updateRecruitWidget();
+
+    // 手機版縮放同步
+    function syncRecruitBtnScale() {
+        if (window.innerWidth < 1024) {
+            const scale = window.innerWidth / 980;
+            floatBtn.style.transform = `translateY(-50%) scale(${scale})`;
+            floatBtn.style.transformOrigin = 'right center';
+        } else {
+            floatBtn.style.transform = 'translateY(-50%)';
+            floatBtn.style.transformOrigin = '';
+        }
+    }
+    window.addEventListener('resize', syncRecruitBtnScale);
+    syncRecruitBtnScale();
+
 })();
