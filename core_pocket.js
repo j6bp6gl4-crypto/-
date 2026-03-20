@@ -53,6 +53,17 @@ window.toggleUserPocket = function(expertName, btnElement, sportKey) {
             .pocket-clear-btn:hover { background: #dc2626; color: white; border-color: #dc2626; transform: scale(1.05); }
             /* 💡 新增的標籤 CSS */
             .pocket-sport-tag { font-size: 14px; background: #e2e8f0; color: #475569; padding: 4px 10px; border-radius: 6px; font-weight: bold; margin-left: 10px; vertical-align: middle; }
+            @media (max-width: 1023px) {
+                .pocket-modal-content { border-radius: 16px; }
+                .pocket-modal-header { padding: 16px 20px; }
+                .pocket-modal-header h3 { font-size: 18px !important; }
+                .pocket-item { padding: 14px 18px; }
+                .pocket-item-name { font-size: 16px; margin-bottom: 8px; }
+                .pocket-item-text { font-size: 13px; padding: 12px; border-radius: 10px; }
+                .pocket-remove-btn { font-size: 12px; padding: 5px 10px; }
+                .pocket-modal-footer { padding: 16px; }
+                .pocket-clear-btn { padding: 10px 24px; font-size: 14px; }
+            }
         `; document.head.appendChild(style);
     }
 

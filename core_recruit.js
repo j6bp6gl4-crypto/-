@@ -105,6 +105,16 @@ window.toggleRecruit = function(expertName, btnElement, sportKey) {
 .recruit-btn.recruited { 
     background: linear-gradient(135deg, #10b981, #059669); 
 }
+            @media (max-width: 1023px) {
+                .recruit-modal-content { border-radius: 16px; }
+                .recruit-modal-header { padding: 16px 20px; }
+                .recruit-modal-header h3 { font-size: 18px !important; }
+                .recruit-item { padding: 12px 18px; }
+                .recruit-item-name { font-size: 15px; }
+                .recruit-sport-tag { font-size: 11px; padding: 3px 8px; }
+                .recruit-remove-btn { font-size: 11px; padding: 4px 10px; }
+                .recruit-modal-footer { padding: 14px; }
+            }
         `; document.head.appendChild(style);
     }
 
