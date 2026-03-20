@@ -257,24 +257,16 @@ window.openPocketModal = () => {
                 if (ul) { ul.style.fontSize = '9px'; ul.style.lineHeight = '1.3'; ul.style.paddingLeft = '14px'; }
                 const li = strategyDiv.querySelectorAll('li');
                 li.forEach(l => l.style.marginBottom = '2px');
-                const allDivs = strategyDiv.querySelectorAll('div');
-                allDivs.forEach(function(d) {
-                    if (d.style && d.style.background && d.style.background.indexOf('fff5f5') > -1) {
-                        d.style.setProperty('padding', '5px 8px', 'important');
-                        d.style.setProperty('margin-top', '5px', 'important');
-                        const strong = d.querySelector('strong');
-                        if (strong) {
-                            strong.style.setProperty('font-size', '10px', 'important');
-                            strong.style.setProperty('margin-bottom', '3px', 'important');
-                        }
-                        const spans = d.querySelectorAll('span');
-                        spans.forEach(function(s) {
-                            s.style.setProperty('font-size', '9px', 'important');
-                            s.style.setProperty('line-height', '1.2', 'important');
-                            s.style.setProperty('margin-top', '2px', 'important');
-                        });
-                    }
-                });
+                // 直接用 id 強制抓紅框
+               const redBox = overlay.querySelector('.pocket-modal-content > div > div:last-child');
+                if (redBox) {
+                    redBox.setAttribute('style', 'background:#fff5f5; border:2px solid #fecaca; border-left:8px solid #ef4444; padding:5px 8px; border-radius:10px; margin-top:5px; box-shadow:0 5px 10px rgba(239,68,68,0.15);');
+                    const strong = redBox.querySelector('strong');
+                    if (strong) strong.setAttribute('style', 'color:#dc2626; font-size:10px; display:block; margin-bottom:2px; letter-spacing:0;');
+                    const spans = redBox.querySelectorAll('span');
+                    if (spans[0]) spans[0].setAttribute('style', 'color:#991b1b; font-weight:900; font-size:9px; line-height:1.2; display:inline-block;');
+                    if (spans[1]) spans[1].setAttribute('style', 'color:#dc2626; font-size:8px; font-weight:bold; margin-top:1px; display:inline-block;');
+                }
             }
         }
     };
