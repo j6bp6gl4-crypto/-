@@ -125,7 +125,7 @@ const overlay = document.createElement('div'); overlay.className = 'pocket-modal
                 <div style="cursor:pointer;font-size:50px;line-height:1;" onclick="closePocketModal()">&times;</div>
             </div>
             
-            <div style="background: #f8fafc; border-bottom: 2px solid #e2e8f0; padding: 30px 40px; text-align: left; font-family: sans-serif; flex-shrink: 0;">
+            <div style="background: #f8fafc; border-bottom: 2px solid #e2e8f0; padding: clamp(10px, 2vw, 30px) clamp(14px, 3vw, 40px); text-align: left; font-family: sans-serif; flex-shrink: 0;">
                 <h4 style="margin: 0 0 15px 0; color: #1e293b; font-size: 24px; font-weight: 900;">💡 系統策略指南</h4>
                 <ul style="margin: 0; padding-left: 28px; color: #475569; font-size: clamp(9px, 1.8vw, 20px); line-height: 1.8; font-weight: bold;">
                     <li style="margin-bottom: 10px;">任選 1~2 位您認為其成績有參考價值的好手即可。</li>
@@ -133,10 +133,10 @@ const overlay = document.createElement('div'); overlay.className = 'pocket-modal
                     <span style="font-size: clamp(8px, 1.5vw, 17px); color: #64748b; font-weight: normal; margin-top: 6px; display: inline-block;">(譬如：好手們常均三過二，就是他的三場全下，才有三過二的獲利)</span></li>
                 </ul>
 
-                <div style="background: #fff5f5; border: 2px solid #fecaca; border-left: 8px solid #ef4444; padding: 20px 25px; border-radius: 10px; margin-top: 25px; box-shadow: 0 5px 10px rgba(239, 68, 68, 0.15);">
-                    <strong style="color: #dc2626; font-size: clamp(10px, 2vw, 24px); display: block; margin-bottom: 10px; letter-spacing: 1px;">🚨 台灣運彩玩家 專屬策略</strong>
-                    <span style="color: #991b1b; font-weight: 900; font-size: clamp(9px, 1.9vw, 22px); line-height: 1.6; display: inline-block;">反饋最好的玩法：選 1 場 (搭配另外 1 人)，合用 2X1 即可！</span><br>
-                    <span style="color: #dc2626; font-size: clamp(8px, 1.6vw, 18px); font-weight: bold; margin-top: 8px; display: inline-block;">(備註：若該兩位好手，剛好有當日運彩單場，僅玩運彩單場！)</span>
+                <div style="background: #fff5f5; border: 2px solid #fecaca; border-left: 8px solid #ef4444; padding: clamp(8px, 1.5vw, 20px) clamp(10px, 2vw, 25px); border-radius: 10px; margin-top: clamp(8px, 1.5vw, 25px); box-shadow: 0 5px 10px rgba(239, 68, 68, 0.15);">
+                    <strong style="color: #dc2626; font-size: clamp(10px, 2vw, 24px); display: block; margin-bottom: clamp(4px, 0.8vw, 10px); letter-spacing: 1px;">🚨 台灣運彩玩家 專屬策略</strong>
+                    <span style="color: #991b1b; font-weight: 900; font-size: clamp(9px, 1.9vw, 22px); line-height: 1.3; display: inline-block;">反饋最好的玩法：選 1 場 (搭配另外 1 人)，合用 2X1 即可！</span><br>
+                    <span style="color: #dc2626; font-size: clamp(8px, 1.6vw, 18px); font-weight: bold; margin-top: clamp(3px, 0.6vw, 8px); display: inline-block;">(備註：若該兩位好手，剛好有當日運彩單場，僅玩運彩單場！)</span>
                 </div>
             </div>
 
