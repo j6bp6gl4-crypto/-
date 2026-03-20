@@ -58,10 +58,10 @@ window.toggleUserPocket = function(expertName, btnElement, sportKey) {
                 .pocket-modal-header { padding: 10px 14px !important; }
                 .pocket-modal-header h3 { font-size: 11px !important; letter-spacing: 0 !important; }
                 .pocket-modal-header div { font-size: 20px !important; }
-                .pocket-modal-content > div { padding: 12px 16px !important; }
-                .pocket-modal-content > div h4 { font-size: 10px !important; margin-bottom: 6px !important; }
-                .pocket-modal-content > div ul { font-size: 8px !important; line-height: 1.5 !important; padding-left: 14px !important; }
-                .pocket-modal-content > div > div { padding: 8px 12px !important; margin-top: 10px !important; }
+                .pocket-modal-content > div { padding: 4px 12px 2px !important; }
+                .pocket-modal-content > div h4 { font-size: 10px !important; margin-bottom: 2px !important; }
+                .pocket-modal-content > div ul { font-size: 8px !important; line-height: 1.3 !important; padding-left: 14px !important; }
+                .pocket-modal-content > div > div { padding: 4px 8px !important; margin-top: 3px !important; }
                 .pocket-modal-content > div > div strong { font-size: 10px !important; }
                 .pocket-modal-content > div > div span { font-size: 9px !important; }
                 .pocket-item { padding: 10px 14px !important; }
