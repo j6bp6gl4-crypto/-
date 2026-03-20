@@ -125,7 +125,7 @@ const overlay = document.createElement('div'); overlay.className = 'pocket-modal
                 <div style="cursor:pointer;font-size:50px;line-height:1;" onclick="closePocketModal()">&times;</div>
             </div>
             
-            <div style="background: #f8fafc; border-bottom: 2px solid #e2e8f0; padding: clamp(8px, 1.5vw, 30px) clamp(14px, 3vw, 40px) clamp(4px, 0.8vw, 30px); text-align: left; font-family: sans-serif; flex-shrink: 0;">
+            <div style="background: #f8fafc; border-bottom: 2px solid #e2e8f0; padding: clamp(4px, 1.5vw, 30px) clamp(14px, 3vw, 40px) clamp(2px, 0.8vw, 30px); text-align: left; font-family: sans-serif; flex-shrink: 0;">
                 <h4 style="margin: 0 0 15px 0; color: #1e293b; font-size: 24px; font-weight: 900;">💡 系統策略指南</h4>
                 <ul style="margin: 0; padding-left: 28px; color: #475569; font-size: clamp(9px, 1.8vw, 20px); line-height: 1.8; font-weight: bold;">
                     <li style="margin-bottom: 10px;">任選 1~2 位您認為其成績有參考價值的好手即可。</li>
