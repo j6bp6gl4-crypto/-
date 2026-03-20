@@ -257,7 +257,7 @@ window.openPocketModal = () => {
                 if (ul) { ul.style.fontSize = '9px'; ul.style.lineHeight = '1.3'; ul.style.paddingLeft = '14px'; }
                 const li = strategyDiv.querySelectorAll('li');
                 li.forEach(l => l.style.marginBottom = '2px');
-                const redBox = strategyDiv.querySelector('div');
+                const redBox = strategyDiv.querySelector('div[style*="fff5f5"]');
                 if (redBox) {
                     redBox.style.padding = '5px 8px';
                     redBox.style.marginTop = '5px';
