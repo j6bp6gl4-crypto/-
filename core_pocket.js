@@ -238,6 +238,16 @@ window.openPocketModal = () => {
             });
         }
         overlay.classList.add('show');
+        // 手機版 Modal 縮放
+        if (window.innerWidth < 1024) {
+            const scale = window.innerWidth / 980;
+            const modalContent = overlay.querySelector('.pocket-modal-content');
+            if (modalContent) {
+                modalContent.style.transform = `scale(${scale})`;
+                modalContent.style.transformOrigin = 'center center';
+                modalContent.style.width = Math.round(95 / scale) + '%';
+            }
+        }
     };
 
     window.closePocketModal = () => overlay.classList.remove('show');
