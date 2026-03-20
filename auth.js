@@ -9,7 +9,6 @@ let hasLockedDown = false;    // 🔒 新增：確保鎖定咒語只會執行一
 const MAX_CLICKS = 1;         
 const FREE_DAYS_LIMIT = 17;    
 
-// 🌟 【新增】雙參數雷達：網址參數解析與記憶
 // 🌟 【新增】雙參數雷達：網址參數解析與記憶 (含防禦型計次)
 async function trackReferrals() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -46,6 +45,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 🕵️ 改良版後門：延遲 300 毫秒再啟動地雷模式，確保 localStorage 寫入完成
     if (window.location.search.includes('test=lock')) {
         setTimeout(() => {
+            // 🛑 新增防護：如果本地已經有合法金鑰(已解鎖)，就直接作廢地雷！
+            if (localStorage.getItem('qiJu_Key')) return;
+            
             isRestrictedMode = true;
             console.log("🕵️ 管理員測試模式：推薦碼已紀錄，地雷已就緒");
         }, 300);
