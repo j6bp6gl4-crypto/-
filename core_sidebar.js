@@ -45,33 +45,26 @@
             transform: translateY(-50%) translateX(0);
         }
 
-        /* 拉把（橘色細條，平時唯一可見的部分） */
+        /* 拉把（透明，平時唯一可見的部分） */
         #sidebarHandle {
             width: 14px;
             height: 80px;
-            background: linear-gradient(180deg, #f59e0b, #d97706);
+            background: transparent;
             border-radius: 8px 0 0 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: -4px 0 12px rgba(0,0,0,0.3);
+            box-shadow: none;
             flex-shrink: 0;
         }
 
-        /* 拉把箭頭符號 */
+        /* 拉把箭頭符號（隱藏） */
         #sidebarHandle::after {
-            content: '‹';
-            color: white;
-            font-size: 18px;
-            font-weight: 900;
-            line-height: 1;
-            transition: transform 0.35s;
+            content: '';
         }
 
-        #mobileSidebar.open #sidebarHandle::after {
-            transform: rotate(180deg);
-        }
+
 
         /* 按鈕面板 */
         #sidebarPanel {
