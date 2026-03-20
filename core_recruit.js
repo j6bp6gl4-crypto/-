@@ -133,6 +133,20 @@ window.toggleRecruit = function(expertName, btnElement, sportKey) {
         }
     });
 
+    // 從右邊往左滑展開
+    let recruitTouchStartX = 0;
+    document.addEventListener('touchstart', function(e) {
+        recruitTouchStartX = e.touches[0].clientX;
+    }, { passive: true });
+    document.addEventListener('touchend', function(e) {
+        const dx = recruitTouchStartX - e.changedTouches[0].clientX;
+        const startedNearRight = recruitTouchStartX > window.innerWidth - 30;
+        if (startedNearRight && dx > 30 && !recruitExpanded) {
+            recruitExpanded = true;
+            floatBtn.style.right = '0px';
+        }
+    }, { passive: true });
+
     document.body.appendChild(floatBtn);
 
     const overlay = document.createElement('div'); overlay.className = 'recruit-modal-overlay';

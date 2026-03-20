@@ -81,6 +81,20 @@ window.toggleUserPocket = function(expertName, btnElement, sportKey) {
         }
     });
 
+    // 從右邊往左滑展開
+    let pocketTouchStartX = 0;
+    document.addEventListener('touchstart', function(e) {
+        pocketTouchStartX = e.touches[0].clientX;
+    }, { passive: true });
+    document.addEventListener('touchend', function(e) {
+        const dx = pocketTouchStartX - e.changedTouches[0].clientX;
+        const startedNearRight = pocketTouchStartX > window.innerWidth - 30;
+        if (startedNearRight && dx > 30 && !pocketExpanded) {
+            pocketExpanded = true;
+            floatBtn.style.right = '0px';
+        }
+    }, { passive: true });
+
     document.body.appendChild(floatBtn);
 
 const overlay = document.createElement('div'); overlay.className = 'pocket-modal-overlay';
