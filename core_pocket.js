@@ -122,7 +122,7 @@ const overlay = document.createElement('div'); overlay.className = 'pocket-modal
             
             <div class="pocket-modal-header" style="flex-shrink: 0;">
                 <h3 style="margin:0;font-size:28px;letter-spacing:2px;font-weight:900;">🎁 我的寶庫精選推薦</h3>
-                <div style="cursor:pointer;font-size:50px;line-height:1;" onclick="closePocketModal()">&times;</div>
+                <div style="cursor:pointer;font-size:clamp(20px,4vw,50px);line-height:1;" onclick="closePocketModal()">&times;</div>
             </div>
             
             <div style="background: #f8fafc; border-bottom: 2px solid #e2e8f0; padding: clamp(4px, 1.5vw, 30px) clamp(14px, 3vw, 40px) clamp(2px, 0.8vw, 30px); text-align: left; font-family: sans-serif; flex-shrink: 0;">
@@ -258,7 +258,7 @@ window.openPocketModal = () => {
                 const li = strategyDiv.querySelectorAll('li');
                 li.forEach(l => l.style.marginBottom = '2px');
                 // 直接用 id 強制抓紅框
-               const redBox = overlay.querySelector('.pocket-modal-content > div > div:last-child');
+               const redBox = overlay.querySelector('.pocket-modal-content > div:nth-child(2) > div:last-child');
                 if (redBox) {
                     redBox.setAttribute('style', 'background:#fff5f5; border:2px solid #fecaca; border-left:8px solid #ef4444; padding:5px 8px; border-radius:10px; margin-top:5px; box-shadow:0 5px 10px rgba(239,68,68,0.15);');
                     const strong = redBox.querySelector('strong');
