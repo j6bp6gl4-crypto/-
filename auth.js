@@ -230,9 +230,23 @@ async function checkPasscode() {
             body: JSON.stringify({ key: userInput })
         });
 
-        const result = await response.json();
-
         if (result.valid) {
+            // 🛑 【新增】前端雙重防護：檢查後端傳來的剩餘天數，或到期時間是否已經過期
+            const isExpiredByDays = result.remaining_days !== undefined && result.remaining_days <= 0;
+            const isExpiredByDate = result.expires_at && (new Date(result.expires_at) <= new Date());
+
+            if (isExpiredByDays || isExpiredByDate) {
+                // 就算後端說 valid，只要天數 <= 0 或時間過了，強制判定為過期！
+                if (errorMsg) {
+                    errorMsg.style.display = 'block';
+                    errorMsg.innerHTML = '❌ 金鑰已過期，請聯絡版大續約';
+                }
+                // 清除可能殘留的本地記憶，防止刷新後又跑進來
+                localStorage.removeItem('qiJu_Key');
+                localStorage.removeItem('qiJu_ExpiresAt');
+                return; // 終止執行，不准開門！
+            }
+
             // ⚡ 統一改為永久記憶，並加上到期時間防呆
             localStorage.setItem('qiJu_Key', userInput);
             let expireDateStr = result.expires_at;
@@ -263,6 +277,7 @@ async function checkPasscode() {
                 if (errorMsg) errorMsg.innerHTML = '❌ 密鑰錯誤或已過期';
             }
         }
+    
     } catch (e) {
         if (errorMsg) {
             errorMsg.style.display = 'block';
