@@ -246,11 +246,13 @@ window.openRecruitModal = () => {
     function syncRecruitBtnScale() {
         if (window.innerWidth < 1024) {
             const scale = window.innerWidth / 980;
-            floatBtn.style.transform = `translateY(-50%) scale(${scale})`;
-            floatBtn.style.transformOrigin = 'right center';
+            floatBtn.style.width = Math.round(75 * scale) + 'px';
+            floatBtn.style.right = '-' + Math.round(8 * scale) + 'px';
+            floatBtn.style.transform = '';
         } else {
-            floatBtn.style.transform = 'translateY(-50%)';
-            floatBtn.style.transformOrigin = '';
+            floatBtn.style.width = '';
+            floatBtn.style.right = '';
+            floatBtn.style.transform = '';
         }
     }
     window.addEventListener('resize', syncRecruitBtnScale);
