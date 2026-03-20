@@ -25,7 +25,7 @@ if (!document.getElementById('pickTooltipStyle')) {
 
 .pick-icon { font-size: 16px; padding: 4px 8px !important; border: 2px solid #fff !important; box-shadow: 0 4px 10px rgba(0,0,0,0.3) !important; background: #fffbeb; border-radius: 20px; cursor: pointer; transition: 0.2s; min-width: 34px; min-height: 34px; display: inline-flex !important; align-items: center; justify-content: center; }
 
-        @media (pointer: coarse) { .pick-icon { font-size: 16px !important; min-width: 38px !important; min-height: 38px !important; padding: 4px 8px !important; } }
+        @media (pointer: coarse) { .pick-icon { font-size: 15px !important; min-width: 34px !important; min-height: 34px !important; padding: 3px 7px !important; } }
 
         /* 🎯 核心升級三：名字優雅省略化 (單行超出自動變...，絕對防禦破版) */
         .expert-card .name { 
@@ -42,7 +42,7 @@ if (!document.getElementById('pickTooltipStyle')) {
         @media (max-width: 768px) {
             /* 手機版泡泡框稍微再縮小一點，更貼合邊緣 */
           .pick-tooltip-container { top: -6px !important; right: -6px !important; }
-          .pick-icon { font-size: 16px !important; padding: 4px 8px !important; min-width: 38px !important; min-height: 38px !important; }
+          .pick-icon { font-size: 15px !important; padding: 3px 7px !important; min-width: 34px !important; min-height: 34px !important; }
             
             /* 對策二：高度鎖死。強制卡片統一高度，並將內容垂直置中 */
             .expert-card, body.mode-neg .expert-card { 
