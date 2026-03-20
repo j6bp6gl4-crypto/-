@@ -90,6 +90,14 @@ const dailyUpdates = [
 
 const todayPicks = [
 
+// --- 台中查爾斯 NBA 雙向推薦 ---
+    ["台中查爾斯", "nba_team", "尼克 -17.5"],
+    ["台中查爾斯", "nba_total", "金塊 大235.5"],
+
+    // --- Ricky NBA 雙向推薦 ---
+    ["Ricky", "nba_team", "拓荒 +3<br>塞爾 -15<br>金塊 -7"],
+    ["Ricky", "nba_total", "活塞 218小<br>灰狼 233小"],
+
     // --- 智成 多項推薦 ---
     ["智成", "nhl_ml_reg", "颶風 獨贏<br>雪崩 獨贏<br>美洲豹 獨贏<br>猛瑪象 獨贏"],
     ["智成", "nhl_total_reg", "首都場 大5.5"],
