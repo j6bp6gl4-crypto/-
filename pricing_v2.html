@@ -8,6 +8,20 @@
 
 
 <style>
+@media (min-width: 1024px) {
+    /* 針對 Firefox 瀏覽器 */
+    html, body {
+        scrollbar-width: none !important;
+    }
+    /* 針對 Chrome, Safari, Edge 瀏覽器 */
+    html::-webkit-scrollbar, 
+    body::-webkit-scrollbar {
+        display: none !important;
+        width: 0px !important;
+    }
+}
+
+
 html, body { overflow: auto !important; }
     :root {
         --surface: #0d1825;
