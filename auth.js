@@ -7,7 +7,7 @@ let isRestrictedMode = false;
 let validClickCount = 0;      
 let hasLockedDown = false;    // 🔒 新增：確保鎖定咒語只會執行一次
 const MAX_CLICKS = 1;         
-const FREE_DAYS_LIMIT = 20;    
+const FREE_DAYS_LIMIT = 17;    
 
 // 🌟 【新增】雙參數雷達：網址參數解析與記憶
 // 🌟 【新增】雙參數雷達：網址參數解析與記憶 (含防禦型計次)
@@ -51,38 +51,34 @@ document.addEventListener('DOMContentLoaded', async () => {
         }, 300);
     }
 
-    const savedKey = sessionStorage.getItem('verifiedKey');
+    // ⚡ 瞬開魔法：讀取新的統一永久記憶
+    let ADMIN_KEY = '';
+    try { if (typeof config !== 'undefined') ADMIN_KEY = atob(config.adminCode); } catch(e) {}
 
+    const localKey = localStorage.getItem('qiJu_Key');
+    const expiresAt = localStorage.getItem('qiJu_ExpiresAt');
 
-    if (typeof config !== 'undefined' && savedKey) {
-
-        // ✅ 修正後的程式碼
-    if (savedKey === atob(config.adminCode) || savedKey) {
-            window.isAdmin = (savedKey === atob(config.adminCode));
-            fullUnlockSystem(); 
-            return; 
+    if (localKey) {
+        if (ADMIN_KEY && localKey === ADMIN_KEY) {
+            window.isAdmin = true;
+            fullUnlockSystem();
+            return;
         }
-    }
 
-    // 🚀 共存邏輯：背景自動驗證 V2 天次制金鑰 (永久記憶)
-    const savedKeyV2 = localStorage.getItem('verifiedKey_v2');
-    if (savedKeyV2) {
-        try {
-            const resV2 = await fetch('/api/verify-key-v2', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ key: savedKeyV2 })
-            });
-            const dataV2 = await resV2.json();
-            if (dataV2.valid) {
+        if (expiresAt) {
+            const now = new Date();
+            const expireDate = new Date(expiresAt);
+            if (now < expireDate) {
+                console.log('⚡ 金鑰尚在有效期限內，瞬間解鎖！');
                 window.isAdmin = false;
                 fullUnlockSystem();
-                return; // 驗證成功，自動解鎖並結束
+                return;
             } else {
-                localStorage.removeItem('verifiedKey_v2'); // 失效則清除記憶
+                localStorage.removeItem('qiJu_Key');
+                localStorage.removeItem('qiJu_ExpiresAt');
             }
-        } catch(e) {
-            console.error('V2背景驗證失敗', e);
+        } else {
+            localStorage.removeItem('qiJu_Key');
         }
     }
 
@@ -211,7 +207,10 @@ async function checkPasscode() {
         const ADMIN_KEY = atob(config.adminCode);
         if (userInput === ADMIN_KEY) {
             window.isAdmin = true;
-            sessionStorage.setItem('verifiedKey', ADMIN_KEY);
+            localStorage.setItem('qiJu_Key', ADMIN_KEY);
+            const adminExpire = new Date();
+            adminExpire.setDate(adminExpire.getDate() + 30); // 給管理員 30 天免再輸入
+            localStorage.setItem('qiJu_ExpiresAt', adminExpire.toISOString());
             fullUnlockSystem();
             return;
         }
@@ -232,16 +231,18 @@ async function checkPasscode() {
         const result = await response.json();
 
         if (result.valid) {
-            if (isV2Key) {
-                // 天次制：存入永久記憶 localStorage
-                localStorage.setItem('verifiedKey_v2', userInput);
-            } else {
-                // 單次制：維持原本的暫時記憶 sessionStorage
-                sessionStorage.setItem('verifiedKey', userInput);
+            // ⚡ 統一改為永久記憶，並加上到期時間防呆
+            localStorage.setItem('qiJu_Key', userInput);
+            let expireDateStr = result.expires_at;
+            if (!expireDateStr) {
+                const tomorrow = new Date();
+                tomorrow.setHours(tomorrow.getHours() + 24);
+                expireDateStr = tomorrow.toISOString();
             }
-            sessionStorage.setItem('verifiedPlan', result.plan);
-            sessionStorage.setItem('verifiedUser', result.user_name);
-            sessionStorage.setItem('expiresAt', result.expires_at);
+            localStorage.setItem('qiJu_ExpiresAt', expireDateStr);
+            
+            sessionStorage.removeItem('verifiedKey'); // 順便幫使用者清掉舊版垃圾
+            localStorage.removeItem('verifiedKey_v2');
             
             // 新制額外提示剩餘天數
             if (result.remaining_days !== undefined) {
