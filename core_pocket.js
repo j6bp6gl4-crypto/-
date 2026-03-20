@@ -54,15 +54,23 @@ window.toggleUserPocket = function(expertName, btnElement, sportKey) {
             /* 💡 新增的標籤 CSS */
             .pocket-sport-tag { font-size: 14px; background: #e2e8f0; color: #475569; padding: 4px 10px; border-radius: 6px; font-weight: bold; margin-left: 10px; vertical-align: middle; }
             @media (max-width: 1023px) {
-                .pocket-modal-content { border-radius: 16px; }
-                .pocket-modal-header { padding: 16px 20px; }
-                .pocket-modal-header h3 { font-size: 18px !important; }
-                .pocket-item { padding: 14px 18px; }
-                .pocket-item-name { font-size: 16px; margin-bottom: 8px; }
-                .pocket-item-text { font-size: 13px; padding: 12px; border-radius: 10px; }
-                .pocket-remove-btn { font-size: 12px; padding: 5px 10px; }
-                .pocket-modal-footer { padding: 16px; }
-                .pocket-clear-btn { padding: 10px 24px; font-size: 14px; }
+                .pocket-modal-content { border-radius: 12px !important; max-height: 80vh !important; }
+                .pocket-modal-header { padding: 10px 14px !important; }
+                .pocket-modal-header h3 { font-size: 11px !important; letter-spacing: 0 !important; }
+                .pocket-modal-header div { font-size: 20px !important; }
+                .pocket-modal-content > div { padding: 12px 16px !important; }
+                .pocket-modal-content > div h4 { font-size: 10px !important; margin-bottom: 6px !important; }
+                .pocket-modal-content > div ul { font-size: 8px !important; line-height: 1.5 !important; padding-left: 14px !important; }
+                .pocket-modal-content > div > div { padding: 8px 12px !important; margin-top: 10px !important; }
+                .pocket-modal-content > div > div strong { font-size: 10px !important; }
+                .pocket-modal-content > div > div span { font-size: 9px !important; }
+                .pocket-item { padding: 10px 14px !important; }
+                .pocket-item-name { font-size: 10px !important; margin-bottom: 6px !important; }
+                .pocket-item-text { font-size: 7px !important; padding: 8px !important; border-radius: 8px !important; line-height: 1.5 !important; }
+                .pocket-remove-btn { font-size: 6px !important; padding: 3px 6px !important; border-radius: 5px !important; }
+                .pocket-modal-footer { padding: 10px !important; }
+                .pocket-clear-btn { padding: 6px 14px !important; font-size: 7px !important; border-radius: 8px !important; }
+                .pocket-sport-tag { font-size: 6px !important; padding: 2px 5px !important; }
             }
         `; document.head.appendChild(style);
     }
@@ -238,16 +246,6 @@ window.openPocketModal = () => {
             });
         }
         overlay.classList.add('show');
-        // 手機版 Modal 縮放
-        if (window.innerWidth < 1024) {
-            const scale = window.innerWidth / 980;
-            const modalContent = overlay.querySelector('.pocket-modal-content');
-            if (modalContent) {
-                modalContent.style.transform = `scale(${scale})`;
-                modalContent.style.transformOrigin = 'center center';
-                modalContent.style.width = Math.round(95 / scale) + '%';
-            }
-        }
     };
 
     window.closePocketModal = () => overlay.classList.remove('show');

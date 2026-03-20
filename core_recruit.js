@@ -106,14 +106,17 @@ window.toggleRecruit = function(expertName, btnElement, sportKey) {
     background: linear-gradient(135deg, #10b981, #059669); 
 }
             @media (max-width: 1023px) {
-                .recruit-modal-content { border-radius: 16px; }
-                .recruit-modal-header { padding: 16px 20px; }
-                .recruit-modal-header h3 { font-size: 18px !important; }
-                .recruit-item { padding: 12px 18px; }
-                .recruit-item-name { font-size: 15px; }
-                .recruit-sport-tag { font-size: 11px; padding: 3px 8px; }
-                .recruit-remove-btn { font-size: 11px; padding: 4px 10px; }
-                .recruit-modal-footer { padding: 14px; }
+                .recruit-modal-content { border-radius: 12px !important; }
+                .recruit-modal-header { padding: 10px 14px !important; }
+                .recruit-modal-header h3 { font-size: 11px !important; letter-spacing: 0 !important; }
+                .recruit-modal-header div { font-size: 20px !important; }
+                .recruit-modal-content > div { padding: 5px 14px !important; font-size: 6px !important; }
+                .recruit-item { padding: 8px 14px !important; }
+                .recruit-item-name { font-size: 10px !important; }
+                .recruit-sport-tag { font-size: 6px !important; padding: 2px 5px !important; }
+                .recruit-remove-btn { font-size: 6px !important; padding: 3px 8px !important; }
+                .recruit-modal-footer { padding: 10px !important; }
+                .recruit-modal-footer button { padding: 6px 14px !important; font-size: 7px !important; }
             }
         `; document.head.appendChild(style);
     }
@@ -225,16 +228,6 @@ window.openRecruitModal = () => {
             });
         }
         overlay.classList.add('show');
-        // 手機版 Modal 縮放
-        if (window.innerWidth < 1024) {
-            const scale = window.innerWidth / 980;
-            const modalContent = overlay.querySelector('.recruit-modal-content');
-            if (modalContent) {
-                modalContent.style.transform = `scale(${scale})`;
-                modalContent.style.transformOrigin = 'center center';
-                modalContent.style.width = Math.round(95 / scale) + '%';
-            }
-        }
     };
 
     window.closeRecruitModal = () => {
