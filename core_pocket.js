@@ -246,6 +246,28 @@ window.openPocketModal = () => {
             });
         }
         overlay.classList.add('show');
+        // 手機版強制縮小上半部
+        if (window.innerWidth < 1024) {
+            const strategyDiv = overlay.querySelector('.pocket-modal-content > div:not(.pocket-modal-header):not(.pocket-modal-footer)');
+            if (strategyDiv) {
+                strategyDiv.style.padding = '6px 12px 4px';
+                const h4 = strategyDiv.querySelector('h4');
+                if (h4) { h4.style.fontSize = '11px'; h4.style.margin = '0 0 4px 0'; }
+                const ul = strategyDiv.querySelector('ul');
+                if (ul) { ul.style.fontSize = '9px'; ul.style.lineHeight = '1.3'; ul.style.paddingLeft = '14px'; }
+                const li = strategyDiv.querySelectorAll('li');
+                li.forEach(l => l.style.marginBottom = '2px');
+                const redBox = strategyDiv.querySelector('div');
+                if (redBox) {
+                    redBox.style.padding = '5px 8px';
+                    redBox.style.marginTop = '5px';
+                    const strong = redBox.querySelector('strong');
+                    if (strong) { strong.style.fontSize = '10px'; strong.style.marginBottom = '3px'; }
+                    const spans = redBox.querySelectorAll('span');
+                    spans.forEach(s => { s.style.fontSize = '9px'; s.style.lineHeight = '1.2'; });
+                }
+            }
+        }
     };
 
     window.closePocketModal = () => overlay.classList.remove('show');
