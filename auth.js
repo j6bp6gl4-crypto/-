@@ -232,8 +232,6 @@ async function checkPasscode() {
 
         const result = await response.json(); // 👈 就是這行！把它補回來！
 
-        if (result.valid) {
-            // 🛑 【新增】前端雙重防護：檢查後端傳來的剩餘天數，或到期時間是否已經過期
 
         if (result.valid) {
             // 🛑 【新增】前端雙重防護：檢查後端傳來的剩餘天數，或到期時間是否已經過期
