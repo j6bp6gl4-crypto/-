@@ -358,8 +358,8 @@ window.openPocketModal = () => {
                 // 下半部：完全縮回去
                 const scale = window.innerWidth / 980;
                 const w = Math.round(75 * scale);
-                pocketBtn.style.left = '-' + Math.round(w - 4) + 'px';
-                recruitBtn.style.left = '-' + Math.round(w - 4) + 'px';
+                pocketBtn.style.left = '-' + w + 'px';
+                recruitBtn.style.left = '-' + w + 'px';
             }
         }
         window.addEventListener('scroll', checkScrollPosition);
