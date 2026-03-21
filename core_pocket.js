@@ -307,7 +307,7 @@ window.openPocketModal = () => {
             const w = Math.round(75 * scale);
             floatBtn.style.width = w + 'px';
             floatBtn.style.height = Math.round(270 * scale) + 'px';
-            
+            floatBtn.style.right = '-' + Math.round(w - 8) + 'px';
             floatBtn.style.padding = Math.round(8*scale) + 'px ' + Math.round(6*scale) + 'px ' + Math.round(8*scale) + 'px ' + Math.round(12*scale) + 'px';
             floatBtn.style.fontSize = Math.round(33*scale) + 'px';
             floatBtn.style.transform = '';
@@ -320,10 +320,7 @@ window.openPocketModal = () => {
             floatBtn.style.transform = '';
         }
     }
-    window.addEventListener('resize', function() {
-        syncPocketBtnScale();
-        if (typeof checkScrollPosition === 'function') checkScrollPosition();
-    });
+    window.addEventListener('resize', syncPocketBtnScale);
     syncPocketBtnScale();
 
     // 🎯 方案 B 全域開關：讓主程式可以呼叫此函數來切換按鈕位置
@@ -338,27 +335,33 @@ window.openPocketModal = () => {
             if (recruitBtn) recruitBtn.classList.remove('is-comparing');
         }
     };
-// 手機版：強制輪詢偵測滾動位置，控制按鈕露出/隱藏
+// 手機版：偵測是否在上半部，自動露出按鈕
     if (window.innerWidth < 1024) {
-        setInterval(function() {
-            const sy = window.scrollY || window.pageYOffset || 0;
-
+        function checkScrollPosition() {
+            const details = document.getElementById('details');
             const pocketBtn = document.querySelector('.floating-pocket-btn');
             const recruitBtn = document.querySelector('.floating-recruit-btn');
-            if (!pocketBtn || !recruitBtn) return;
+            if (!details || !pocketBtn || !recruitBtn) return;
 
-            const scale = window.innerWidth / 980;
-            const w = Math.round(75 * scale);
-            const threshold = Math.round(window.innerHeight / scale * 0.4);
+            const detailsTop = details.style.display === 'none' ? 99999 : details.getBoundingClientRect().top;
+            const isInUpperArea = detailsTop > window.innerHeight * 0.5;
 
-            if (sy < threshold) {
+            if (isInUpperArea) {
+                // 上半部：露出按鈕
+                const scale = window.innerWidth / 980;
+                const w = Math.round(75 * scale);
                 pocketBtn.style.right = '-' + Math.round(w - 14) + 'px';
                 recruitBtn.style.right = '-' + Math.round(w - 14) + 'px';
             } else {
-                pocketBtn.style.right = '-' + Math.round(w - 2) + 'px';
-                recruitBtn.style.right = '-' + Math.round(w - 2) + 'px';
+                // 下半部：完全縮回去
+                const scale = window.innerWidth / 980;
+                const w = Math.round(75 * scale);
+                pocketBtn.style.right = '-' + Math.round(w - 4) + 'px';
+                recruitBtn.style.right = '-' + Math.round(w - 4) + 'px';
             }
-        }, 150);
+        }
+        window.addEventListener('scroll', checkScrollPosition);
+        checkScrollPosition();
     }
 
 })();
