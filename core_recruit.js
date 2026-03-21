@@ -298,12 +298,14 @@ window.openRecruitModal = () => {
             const scale = window.innerWidth / 980;
             const w = Math.round(75 * scale);
             floatBtn.style.width = w + 'px';
+            floatBtn.style.height = Math.round(90 * scale) + 'px';
             floatBtn.style.right = '-' + Math.round(w - 8) + 'px';
             floatBtn.style.padding = Math.round(8*scale) + 'px ' + Math.round(6*scale) + 'px ' + Math.round(8*scale) + 'px ' + Math.round(12*scale) + 'px';
             floatBtn.style.fontSize = Math.round(11*scale) + 'px';
             floatBtn.style.transform = '';
         } else {
             floatBtn.style.width = '';
+            floatBtn.style.height = '';
             floatBtn.style.right = '';
             floatBtn.style.padding = '';
             floatBtn.style.fontSize = '';
