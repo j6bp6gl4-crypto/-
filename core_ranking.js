@@ -48,9 +48,6 @@ window.addEventListener('scroll', function() {
     }
 });
 
-}
-});
-
 // 🎯 手機版強制：沒對比時也用相同的隱藏/露出邏輯
 if (window.innerWidth < 1024) {
     window.addEventListener('scroll', function() {
