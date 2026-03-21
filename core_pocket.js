@@ -342,8 +342,8 @@ window.openPocketModal = () => {
             const pocketBtn = document.querySelector('.floating-pocket-btn');
             const recruitBtn = document.querySelector('.floating-recruit-btn');
             if (!details || !pocketBtn || !recruitBtn) return;
-
-            const detailsTop = details.style.display === 'none' ? 99999 : details.getBoundingClientRect().top;
+        
+            const detailsTop = details.offsetParent === null ? 99999 : details.getBoundingClientRect().top;
             const isInUpperArea = detailsTop > window.innerHeight * 0.5;
 
             if (isInUpperArea) {
