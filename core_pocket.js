@@ -348,7 +348,8 @@ window.openPocketModal = () => {
 
           
 
-            const detailsTop = details.getBoundingClientRect().top;
+            const anchor = details.offsetParent === null ? document.getElementById('tabContainer') : details;
+            const detailsTop = anchor ? anchor.getBoundingClientRect().top : 0;
             const isInUpperArea = detailsTop > window.innerHeight * 0.5;
 
             if (isInUpperArea) {
