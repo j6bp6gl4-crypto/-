@@ -346,15 +346,7 @@ window.openPocketModal = () => {
             const recruitBtn = document.querySelector('.floating-recruit-btn');
             if (!details || !pocketBtn || !recruitBtn) return;
 
-            // 如果 details 是空的（還沒按對比），永遠露出按鈕
-            const isEmpty = details.offsetParent === null;
-            if (isEmpty) {
-                const scale = window.innerWidth / 980;
-                const w = Math.round(75 * scale);
-                pocketBtn.style.right = '-' + Math.round(w - 8) + 'px';
-                recruitBtn.style.right = '-' + Math.round(w - 8) + 'px';
-                return;
-            }
+          
 
             const detailsTop = details.getBoundingClientRect().top;
             const isInUpperArea = detailsTop > window.innerHeight * 0.5;
