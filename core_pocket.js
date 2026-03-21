@@ -83,10 +83,10 @@ window.toggleUserPocket = function(expertName, btnElement, sportKey) {
         if (window.innerWidth < 1024) {
             if (!pocketExpanded) {
                 pocketExpanded = true;
-                floatBtn.style.right = '0px';
+                floatBtn.style.left = '0px';
             } else {
                 pocketExpanded = false;
-                floatBtn.style.right = '';
+                floatBtn.style.left = '';
                 window.openPocketModal();
             }
         } else {
@@ -96,21 +96,21 @@ window.toggleUserPocket = function(expertName, btnElement, sportKey) {
     document.addEventListener('click', function(e) {
         if (pocketExpanded && !floatBtn.contains(e.target)) {
             pocketExpanded = false;
-            floatBtn.style.right = '';
+            floatBtn.style.left = '';
         }
     });
 
-    // 從右邊往左滑展開
+    // 從左邊往右滑展開
     let pocketTouchStartX = 0;
     document.addEventListener('touchstart', function(e) {
         pocketTouchStartX = e.touches[0].clientX;
     }, { passive: true });
     document.addEventListener('touchend', function(e) {
-        const dx = pocketTouchStartX - e.changedTouches[0].clientX;
-        const startedNearRight = pocketTouchStartX > window.innerWidth - 30;
-        if (startedNearRight && dx > 30 && !pocketExpanded) {
+        const dx = e.changedTouches[0].clientX - pocketTouchStartX;
+        const startedNearLeft = pocketTouchStartX < 30;
+        if (startedNearLeft && dx > 30 && !pocketExpanded) {
             pocketExpanded = true;
-            floatBtn.style.right = '0px';
+            floatBtn.style.left = '0px';
         }
     }, { passive: true });
 
@@ -307,14 +307,16 @@ window.openPocketModal = () => {
             const w = Math.round(75 * scale);
             floatBtn.style.width = w + 'px';
             floatBtn.style.height = Math.round(270 * scale) + 'px';
-            floatBtn.style.right = '-' + Math.round(w - 8) + 'px';
-            floatBtn.style.padding = Math.round(8*scale) + 'px ' + Math.round(6*scale) + 'px ' + Math.round(8*scale) + 'px ' + Math.round(12*scale) + 'px';
+            floatBtn.style.left = '-' + Math.round(w - 8) + 'px';
+            floatBtn.style.borderRadius = '0 45px 45px 0';
+            floatBtn.style.padding = Math.round(8*scale) + 'px ' + Math.round(12*scale) + 'px ' + Math.round(8*scale) + 'px ' + Math.round(6*scale) + 'px';
             floatBtn.style.fontSize = Math.round(33*scale) + 'px';
             floatBtn.style.transform = '';
         } else {
             floatBtn.style.width = '';
             floatBtn.style.height = '';
-            floatBtn.style.right = '';
+            floatBtn.style.left = '';
+            floatBtn.style.borderRadius = '';
             floatBtn.style.padding = '';
             floatBtn.style.fontSize = '';
             floatBtn.style.transform = '';
@@ -350,14 +352,14 @@ window.openPocketModal = () => {
                 // 上半部：露出按鈕
                 const scale = window.innerWidth / 980;
                 const w = Math.round(75 * scale);
-                pocketBtn.style.right = '-' + Math.round(w - 14) + 'px';
-                recruitBtn.style.right = '-' + Math.round(w - 14) + 'px';
+                pocketBtn.style.left = '-' + Math.round(w - 14) + 'px';
+                recruitBtn.style.left = '-' + Math.round(w - 14) + 'px';
             } else {
                 // 下半部：完全縮回去
                 const scale = window.innerWidth / 980;
                 const w = Math.round(75 * scale);
-                pocketBtn.style.right = '-' + Math.round(w - 4) + 'px';
-                recruitBtn.style.right = '-' + Math.round(w - 4) + 'px';
+                pocketBtn.style.left = '-' + Math.round(w - 4) + 'px';
+                recruitBtn.style.left = '-' + Math.round(w - 4) + 'px';
             }
         }
         window.addEventListener('scroll', checkScrollPosition);
