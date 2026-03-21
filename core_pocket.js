@@ -307,7 +307,7 @@ window.openPocketModal = () => {
             const w = Math.round(75 * scale);
             floatBtn.style.width = w + 'px';
             floatBtn.style.height = Math.round(270 * scale) + 'px';
-            floatBtn.style.right = '-' + Math.round(w - 8) + 'px';
+            
             floatBtn.style.padding = Math.round(8*scale) + 'px ' + Math.round(6*scale) + 'px ' + Math.round(8*scale) + 'px ' + Math.round(12*scale) + 'px';
             floatBtn.style.fontSize = Math.round(33*scale) + 'px';
             floatBtn.style.transform = '';
@@ -320,7 +320,10 @@ window.openPocketModal = () => {
             floatBtn.style.transform = '';
         }
     }
-    window.addEventListener('resize', syncPocketBtnScale);
+    window.addEventListener('resize', function() {
+        syncPocketBtnScale();
+        if (typeof checkScrollPosition === 'function') checkScrollPosition();
+    });
     syncPocketBtnScale();
 
     // 🎯 方案 B 全域開關：讓主程式可以呼叫此函數來切換按鈕位置
