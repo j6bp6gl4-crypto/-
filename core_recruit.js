@@ -132,7 +132,6 @@ window.toggleRecruit = function(expertName, btnElement, sportKey) {
                 floatBtn.style.left = '0px';
             } else {
                 recruitExpanded = false;
-                floatBtn.style.left = '';
                 window.openRecruitModal();
             }
         } else {
@@ -142,7 +141,6 @@ window.toggleRecruit = function(expertName, btnElement, sportKey) {
     document.addEventListener('click', function(e) {
         if (recruitExpanded && !floatBtn.contains(e.target)) {
             recruitExpanded = false;
-            floatBtn.style.left = '';
         }
     });
 
