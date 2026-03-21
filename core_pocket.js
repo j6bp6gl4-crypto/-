@@ -305,6 +305,7 @@ window.openPocketModal = () => {
         if (window.innerWidth < 1024) {
             const scale = window.innerWidth / 980;
             const w = Math.round(75 * scale);
+            floatBtn.style.right = 'auto';
             floatBtn.style.width = w + 'px';
             floatBtn.style.height = Math.round(270 * scale) + 'px';
             floatBtn.style.left = '-' + Math.round(w - 8) + 'px';
