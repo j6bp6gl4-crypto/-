@@ -337,6 +337,11 @@ window.openPocketModal = () => {
             if (pocketBtn) pocketBtn.classList.remove('is-comparing');
             if (recruitBtn) recruitBtn.classList.remove('is-comparing');
         }
+        // 手機版：交給 checkScrollPosition 控制，不用 is-comparing
+        if (window.innerWidth < 1024) {
+            if (pocketBtn) pocketBtn.classList.remove('is-comparing');
+            if (recruitBtn) recruitBtn.classList.remove('is-comparing');
+        }
     };
 // 手機版：偵測是否在上半部，自動露出按鈕
     if (window.innerWidth < 1024) {
