@@ -26,9 +26,16 @@ window.handleCompare = function() {
 window.addEventListener('scroll', function() {
     const detailsDiv = document.getElementById('details');
     
-    // 若對比區塊不存在或尚未顯示，確保按鈕退回右側邊緣
+    // 若對比區塊不存在或尚未顯示，用 tabContainer 當錨點判斷上下位置
     if (!detailsDiv || detailsDiv.style.display === 'none') {
-        if (typeof window.setFloatingButtonsCompareMode === 'function') window.setFloatingButtonsCompareMode(false);
+        if (typeof window.setFloatingButtonsCompareMode === 'function') {
+            const anchor = document.getElementById('tabContainer');
+            if (anchor && anchor.getBoundingClientRect().top < window.innerHeight * 0.7) {
+                window.setFloatingButtonsCompareMode(true);
+            } else {
+                window.setFloatingButtonsCompareMode(false);
+            }
+        }
         return;
     }
     
@@ -77,13 +84,17 @@ window.renderPKMode = function() {
 
 window.renderRankMode = function() {
     const display = document.getElementById('displayArea'); let allSorted = []; let systemLatestDate = window.getSystemLatestDate(window.activeSportKey);
+    // 🎯 特殊激活白名單
+    let qualifiedWhitelistRM = [];
+    try { qualifiedWhitelistRM = JSON.parse(localStorage.getItem('AdminWhitelist_Experts')) || []; } catch(e) {}
+
     for(let name in window.dataDB) {
         if(window.excludedExperts.includes(name)) continue; let list = window.dataDB[name][window.activeSportKey] || []; if(list.length === 0) continue;
         
 let diffDays = window.getDaysDiff(list[0][0], systemLatestDate); if (diffDays > 3) continue;
         // 🎯 門檻激活：不重複天數 < 10 天不進入賽事排行
-        let uniqueDatesRank = new Set(list.map(r => r[0]));
-        if (uniqueDatesRank.size < 10) continue;
+let uniqueDatesRank = new Set(list.map(r => r[0]));
+        if (uniqueDatesRank.size < 10 && !qualifiedWhitelistRM.includes(name)) continue;
 
         let w=0, l=0, n20=0; list.slice(0, 20).forEach(r => { const wm = r[1].match(/(\d+)勝/); const lm = r[1].match(/(\d+)敗/); if(wm) w += parseInt(wm[1]); if(lm) l += parseInt(lm[1]); n20 += parseInt(r[2] || 0); }); let rate = (w+l) > 0 ? (w/(w+l)) : 0; allSorted.push({ name, w, l, net: n20, rate });
     }
@@ -136,13 +147,26 @@ window.renderNormalMode = function() {
 
 window.getRankBanner = function(title, name, key) {
     let list = []; let systemLatestDate = window.getSystemLatestDate(key);
+    // 🎯 特殊激活白名單
+    let qualifiedWhitelistRB = [];
+    try { qualifiedWhitelistRB = JSON.parse(localStorage.getItem('AdminWhitelist_Experts')) || []; } catch(e) {}
+
 for(let n in window.dataDB) { if(window.dataDB[n][key] && window.dataDB[n][key].length > 0){ let diffDays = window.getDaysDiff(window.dataDB[n][key][0][0], systemLatestDate); if (diffDays > 3) continue;
         // 🎯 門檻激活：不重複天數 < 10 天不進入 getRankBanner 排名
-        let uniqueDatesRB = new Set(window.dataDB[n][key].map(r => r[0]));
-        if (uniqueDatesRB.size < 10) continue;
+let uniqueDatesRB = new Set(window.dataDB[n][key].map(r => r[0]));
+if (uniqueDatesRB.size < 10 && !qualifiedWhitelistRB.includes(n + '||' + key)) continue;
+
         let w=0, l=0, n20=0; window.dataDB[n][key].slice(0, 20).forEach(r => { const wm = r[1].match(/(\d+)勝/); const lm = r[1].match(/(\d+)敗/); if(wm) w += parseInt(wm[1]); if(lm) l += parseInt(lm[1]); n20 += parseInt(r[2] || 0); }); let rate = (w+l) > 0 ? (w/(w+l)) : 0; list.push({name: n, net: n20, rate: rate}); } }
  
-    const target = list.find(r => r.name === name); if (!target) return `<div class="title-container title-unranked"><h4 class="section-title">${title}</h4><span class="rank-badge" style="background:#f1f5f9; color:#94a3b8;">未激活榜單</span></div>`;
+const target = list.find(r => r.name === name);
+    if (!target) {
+        const wlKey = (name + '||' + key).replace(/'/g, "\\'");
+        const activateBtn = (window.isAdmin === true)
+            ? `<span onclick="window.adminActivateExpert('${wlKey}')" style="cursor:pointer; background:#f59e0b; color:white; font-size:11px; font-weight:bold; padding:3px 10px; border-radius:6px; border:none;">⭐ 點擊激活</span>`
+            : `<span style="background:#f1f5f9; color:#94a3b8; font-size:12px; padding:3px 10px; border-radius:6px;">未激活榜單</span>`;
+        return `<div class="title-container title-unranked"><h4 class="section-title">${title}</h4>${activateBtn}</div>`;
+    }
+
     let isReverse = target.rate < 0.5; let rankIdx = -1; let cls = "title-unranked"; let bCls = ""; let rankPrefix = "近況";
     if (!isReverse) { let topList = list.filter(item => item.rate >= 0.5); topList.sort((a,b) => b.rate - a.rate || b.net - a.net); rankIdx = topList.findIndex(r => r.name === name); if(rankIdx === 0) { cls = "title-rank-1"; bCls = "rank-1-badge"; } else if(rankIdx === 1) { cls = "title-rank-2"; bCls = "rank-2-badge"; } else if(rankIdx === 2) { cls = "title-rank-3"; bCls = "rank-3-badge"; } } 
     else { let bottomList = list.filter(item => item.rate < 0.5); bottomList.sort((a,b) => a.rate - b.rate || a.net - b.net); rankIdx = bottomList.findIndex(r => r.name === name); rankPrefix = "反向"; cls = "title-rank-neg"; bCls = "rank-neg-badge"; }
@@ -176,5 +200,21 @@ let delBtnHtml = (expertName && sportKey && canEdit) ? `<span onclick="window.ad
             html += `<div class="record-row ${bg} ${idx===chunk.length-1 && i+10<show.length?'ten-day-gap':''}"><div class="col-date">${r[0]}</div><div class="col-record">${r[1]}</div><div class="score-wrapper" style="display:flex; align-items:center; position:relative;">${sH}${delBtnHtml}</div></div>`; 
         });
     } return html;
+};
+
+window.adminActivateExpert = function(wlKey) {
+    var parts = wlKey.split('||');
+    var expertName = parts[0];
+    var sportKey = parts[1];
+    var sportLabel = (typeof itemNames !== 'undefined' && itemNames[sportKey]) ? itemNames[sportKey] : sportKey;
+    if (!confirm('激活「' + expertName + '」的【' + sportLabel + '】榜單資格？')) return;
+    var whitelist = [];
+    try { whitelist = JSON.parse(localStorage.getItem('AdminWhitelist_Experts')) || []; } catch(e) {}
+    if (whitelist.includes(wlKey)) { alert('已在白名單中。'); return; }
+    whitelist.push(wlKey);
+    localStorage.setItem('AdminWhitelist_Experts', JSON.stringify(whitelist));
+    if (typeof window.renderWhitelistArea === 'function') window.renderWhitelistArea();
+    window.renderDisplay();
+    alert('✅ 已激活「' + expertName + '」/ ' + sportLabel);
 };
 
