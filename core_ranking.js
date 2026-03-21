@@ -26,16 +26,9 @@ window.handleCompare = function() {
 window.addEventListener('scroll', function() {
     const detailsDiv = document.getElementById('details');
     
-    // 若對比區塊不存在或尚未顯示，用 tabContainer 當錨點判斷上下位置
-    if (!detailsDiv || detailsDiv.style.display === 'none') {
-        if (typeof window.setFloatingButtonsCompareMode === 'function') {
-            const anchor = document.getElementById('tabContainer');
-            if (anchor && anchor.getBoundingClientRect().top < window.innerHeight * 0.7) {
-                window.setFloatingButtonsCompareMode(true);
-            } else {
-                window.setFloatingButtonsCompareMode(false);
-            }
-        }
+    // 若對比區塊不存在或尚未顯示，確保按鈕退回右側邊緣
+    if (!detailsDiv || getComputedStyle(detailsDiv).display === 'none') {
+        if (typeof window.setFloatingButtonsCompareMode === 'function') window.setFloatingButtonsCompareMode(false);
         return;
     }
     
