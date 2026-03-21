@@ -86,7 +86,6 @@ window.toggleUserPocket = function(expertName, btnElement, sportKey) {
                 floatBtn.style.left = '0px';
             } else {
                 pocketExpanded = false;
-                floatBtn.style.left = '';
                 window.openPocketModal();
             }
         } else {
@@ -96,7 +95,6 @@ window.toggleUserPocket = function(expertName, btnElement, sportKey) {
     document.addEventListener('click', function(e) {
         if (pocketExpanded && !floatBtn.contains(e.target)) {
             pocketExpanded = false;
-            floatBtn.style.left = '';
         }
     });
 
