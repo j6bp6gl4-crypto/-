@@ -120,7 +120,7 @@ const todayPicks = [
 
     // --- Yu Siang 30 NBA 雙向推薦 ---
     ["Yu Siang 30", "nba_team", "湖人 -3<br>騎士 -4.5<br>爵士 +6.5"],
-    ["Yu Siang 30", "nba_total", "騎士 234.5小<br>爵士 30.5大"],
+    ["Yu Siang 30", "nba_total", "騎士 234.5小<br>爵士 230.5大"],
 
     // --- 莫忘初衷34 NBA 推薦 ---
     ["莫忘初衷34", "nba_team", "湖人 -3<br>雷霆 -21<br>黃蜂 -16"],
