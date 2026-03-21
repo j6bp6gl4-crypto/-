@@ -338,36 +338,30 @@ window.openPocketModal = () => {
             if (recruitBtn) recruitBtn.classList.remove('is-comparing');
         }
     };
-// 手機版：偵測是否在上半部，自動露出按鈕
+// 手機版：強制輪詢偵測滾動位置，控制按鈕露出/隱藏
     if (window.innerWidth < 1024) {
-        function checkScrollPosition() {
-            const details = document.getElementById('details');
+        let lastScrollY = -1;
+        setInterval(function() {
+            const sy = window.scrollY || window.pageYOffset || 0;
+            if (sy === lastScrollY) return;
+            lastScrollY = sy;
+
             const pocketBtn = document.querySelector('.floating-pocket-btn');
             const recruitBtn = document.querySelector('.floating-recruit-btn');
-            if (!details || !pocketBtn || !recruitBtn) return;
+            if (!pocketBtn || !recruitBtn) return;
 
-          
+            const scale = window.innerWidth / 980;
+            const w = Math.round(75 * scale);
+            const threshold = Math.round(window.innerHeight / scale * 0.4);
 
-            const anchor = details.offsetParent === null ? document.getElementById('tabContainer') : details;
-            const detailsTop = anchor ? anchor.getBoundingClientRect().top : 0;
-            const isInUpperArea = detailsTop > window.innerHeight * 0.5;
-
-            if (isInUpperArea) {
-                // 上半部：露出按鈕
-                const scale = window.innerWidth / 980;
-                const w = Math.round(75 * scale);
-                pocketBtn.style.right = '-' + Math.round(w - 14) + 'px';
-                recruitBtn.style.right = '-' + Math.round(w - 14) + 'px';
+            if (sy < threshold) {
+                pocketBtn.style.right = '-' + Math.round(w - 8) + 'px';
+                recruitBtn.style.right = '-' + Math.round(w - 8) + 'px';
             } else {
-                // 下半部：完全縮回去
-                const scale = window.innerWidth / 980;
-                const w = Math.round(75 * scale);
-                pocketBtn.style.right = '-' + Math.round(w - 4) + 'px';
-                recruitBtn.style.right = '-' + Math.round(w - 4) + 'px';
+                pocketBtn.style.right = '-' + Math.round(w - 2) + 'px';
+                recruitBtn.style.right = '-' + Math.round(w - 2) + 'px';
             }
-        }
-        window.addEventListener('scroll', checkScrollPosition);
-        checkScrollPosition();
+        }, 150);
     }
 
 })();
