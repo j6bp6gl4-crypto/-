@@ -27,7 +27,7 @@ window.addEventListener('scroll', function() {
     const detailsDiv = document.getElementById('details');
     
     // 若對比區塊不存在或尚未顯示，確保按鈕退回右側邊緣
-    if (!detailsDiv || getComputedStyle(detailsDiv).display === 'none') {
+    if (!detailsDiv || detailsDiv.style.display === 'none') {
         if (typeof window.setFloatingButtonsCompareMode === 'function') window.setFloatingButtonsCompareMode(false);
         return;
     }
@@ -47,6 +47,24 @@ window.addEventListener('scroll', function() {
         }
     }
 });
+
+}
+});
+
+// 🎯 手機版強制：沒對比時也用相同的隱藏/露出邏輯
+if (window.innerWidth < 1024) {
+    window.addEventListener('scroll', function() {
+        var detailsDiv = document.getElementById('details');
+        if (detailsDiv && detailsDiv.offsetParent !== null) return;
+        var anchor = document.getElementById('tabContainer');
+        if (!anchor || typeof window.setFloatingButtonsCompareMode !== 'function') return;
+        if (anchor.getBoundingClientRect().top < window.innerHeight * 0.7) {
+            window.setFloatingButtonsCompareMode(true);
+        } else {
+            window.setFloatingButtonsCompareMode(false);
+        }
+    });
+}
 
 window.renderDisplay = function() {
     const display = document.getElementById('displayArea'); const header = document.getElementById('singleHeader');
