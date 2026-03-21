@@ -335,4 +335,33 @@ window.openPocketModal = () => {
             if (recruitBtn) recruitBtn.classList.remove('is-comparing');
         }
     };
+// 手機版：偵測是否在上半部，自動露出按鈕
+    if (window.innerWidth < 1024) {
+        function checkScrollPosition() {
+            const details = document.getElementById('details');
+            const pocketBtn = document.querySelector('.floating-pocket-btn');
+            const recruitBtn = document.querySelector('.floating-recruit-btn');
+            if (!details || !pocketBtn || !recruitBtn) return;
+
+            const detailsTop = details.getBoundingClientRect().top;
+            const isInUpperArea = detailsTop > window.innerHeight * 0.5;
+
+            if (isInUpperArea) {
+                // 上半部：露出按鈕
+                const scale = window.innerWidth / 980;
+                const w = Math.round(75 * scale);
+                pocketBtn.style.right = '-' + Math.round(w - 14) + 'px';
+                recruitBtn.style.right = '-' + Math.round(w - 14) + 'px';
+            } else {
+                // 下半部：完全縮回去
+                const scale = window.innerWidth / 980;
+                const w = Math.round(75 * scale);
+                pocketBtn.style.right = '-' + Math.round(w - 4) + 'px';
+                recruitBtn.style.right = '-' + Math.round(w - 4) + 'px';
+            }
+        }
+        window.addEventListener('scroll', checkScrollPosition);
+        checkScrollPosition();
+    }
+
 })();
