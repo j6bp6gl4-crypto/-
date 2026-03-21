@@ -307,7 +307,7 @@ window.openPocketModal = () => {
             const w = Math.round(75 * scale);
             floatBtn.style.width = w + 'px';
             floatBtn.style.height = Math.round(270 * scale) + 'px';
-            
+            floatBtn.style.right = '-' + Math.round(w - 8) + 'px';
             floatBtn.style.padding = Math.round(8*scale) + 'px ' + Math.round(6*scale) + 'px ' + Math.round(8*scale) + 'px ' + Math.round(12*scale) + 'px';
             floatBtn.style.fontSize = Math.round(33*scale) + 'px';
             floatBtn.style.transform = '';
@@ -347,13 +347,12 @@ window.openPocketModal = () => {
             if (!details || !pocketBtn || !recruitBtn) return;
 
             // 如果 details 是空的（還沒按對比），永遠露出按鈕
-            const isEmpty = details.querySelector('#displayArea') === null || 
-                            document.getElementById('displayArea').innerHTML.trim() === '';
+            const isEmpty = details.offsetParent === null;
             if (isEmpty) {
                 const scale = window.innerWidth / 980;
                 const w = Math.round(75 * scale);
-                pocketBtn.style.right = '-' + Math.round(w - 14) + 'px';
-                recruitBtn.style.right = '-' + Math.round(w - 14) + 'px';
+                pocketBtn.style.right = '-' + Math.round(w - 8) + 'px';
+                recruitBtn.style.right = '-' + Math.round(w - 8) + 'px';
                 return;
             }
 
