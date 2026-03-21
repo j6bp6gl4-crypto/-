@@ -129,10 +129,10 @@ window.toggleRecruit = function(expertName, btnElement, sportKey) {
         if (window.innerWidth < 1024) {
             if (!recruitExpanded) {
                 recruitExpanded = true;
-                floatBtn.style.right = '0px';
+                floatBtn.style.left = '0px';
             } else {
                 recruitExpanded = false;
-                floatBtn.style.right = '';
+                floatBtn.style.left = '';
                 window.openRecruitModal();
             }
         } else {
@@ -142,21 +142,21 @@ window.toggleRecruit = function(expertName, btnElement, sportKey) {
     document.addEventListener('click', function(e) {
         if (recruitExpanded && !floatBtn.contains(e.target)) {
             recruitExpanded = false;
-            floatBtn.style.right = '';
+            floatBtn.style.left = '';
         }
     });
 
-    // 從右邊往左滑展開
+    // 從左邊往右滑展開
     let recruitTouchStartX = 0;
     document.addEventListener('touchstart', function(e) {
         recruitTouchStartX = e.touches[0].clientX;
     }, { passive: true });
     document.addEventListener('touchend', function(e) {
-        const dx = recruitTouchStartX - e.changedTouches[0].clientX;
-        const startedNearRight = recruitTouchStartX > window.innerWidth - 30;
-        if (startedNearRight && dx > 30 && !recruitExpanded) {
+        const dx = e.changedTouches[0].clientX - recruitTouchStartX;
+        const startedNearLeft = recruitTouchStartX < 30;
+        if (startedNearLeft && dx > 30 && !recruitExpanded) {
             recruitExpanded = true;
-            floatBtn.style.right = '0px';
+            floatBtn.style.left = '0px';
         }
     }, { passive: true });
 
@@ -303,14 +303,16 @@ window.openRecruitModal = () => {
             const w = Math.round(75 * scale);
             floatBtn.style.width = w + 'px';
             floatBtn.style.height = Math.round(270 * scale) + 'px';
-            floatBtn.style.right = '-' + Math.round(w - 8) + 'px';
-            floatBtn.style.padding = Math.round(8*scale) + 'px ' + Math.round(6*scale) + 'px ' + Math.round(8*scale) + 'px ' + Math.round(12*scale) + 'px';
+            floatBtn.style.left = '-' + Math.round(w - 8) + 'px';
+            floatBtn.style.borderRadius = '0 45px 45px 0';
+            floatBtn.style.padding = Math.round(8*scale) + 'px ' + Math.round(12*scale) + 'px ' + Math.round(8*scale) + 'px ' + Math.round(6*scale) + 'px';
             floatBtn.style.fontSize = Math.round(33*scale) + 'px';
             floatBtn.style.transform = '';
         } else {
             floatBtn.style.width = '';
             floatBtn.style.height = '';
-            floatBtn.style.right = '';
+            floatBtn.style.left = '';
+            floatBtn.style.borderRadius = '';
             floatBtn.style.padding = '';
             floatBtn.style.fontSize = '';
             floatBtn.style.transform = '';
