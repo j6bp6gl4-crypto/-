@@ -161,7 +161,7 @@ floatBtn.innerHTML = `
     <span style="font-size:${emojiSize};">🎁</span>
     <span style="font-size:${textSize}; margin-top:2px; letter-spacing:1px; font-weight:900;">我的</span>
     <span style="font-size:${textSize}; letter-spacing:1px; font-weight:900;">寶庫</span>
-    <span class="pocket-badge">${window.userPocket.length}</span>
+    <span class="pocket-badge" style="font-size:${Math.round(14*scale)}px; padding:${Math.round(3*scale)}px ${Math.round(10*scale)}px; top:${Math.round(-5*scale)}px;">${window.userPocket.length}</span>
 `;
         } else { 
             floatBtn.style.display = 'none'; 

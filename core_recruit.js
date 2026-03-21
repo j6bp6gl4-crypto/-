@@ -190,7 +190,7 @@ floatBtn.innerHTML = `
                 <span style="font-size:${emojiSize};">🏯</span>
                 <span style="font-size:${textSize}; margin-top:2px; letter-spacing:1px; font-weight:900;">麾下</span>
                 <span style="font-size:${textSize}; letter-spacing:1px; font-weight:900;">名單</span>
-                <span class="recruit-badge">${window.userRecruit.length}</span>
+                <span class="recruit-badge" style="font-size:${Math.round(14*scale)}px; padding:${Math.round(3*scale)}px ${Math.round(10*scale)}px; top:${Math.round(-5*scale)}px;">${window.userRecruit.length}</span>
             `;
         } else { 
             floatBtn.style.display = 'none'; 
