@@ -182,10 +182,14 @@ window.updateRecruitWidget = () => {
         if (window.userRecruit.length > 0) { 
             floatBtn.style.display = 'flex'; 
             /* 🎯 字體再次放大：將圖示升級至 24px，文字升級至 19px 極粗體 */
+const isMobile = window.innerWidth < 1024;
+const scale = isMobile ? window.innerWidth / 980 : 1;
+const emojiSize = Math.round(20 * scale) + 'px';
+const textSize = Math.round(16 * scale) + 'px';
 floatBtn.innerHTML = `
-                <span style="font-size:20px;">🏯</span>
-                <span style="font-size:16px; margin-top:2px; letter-spacing:1px; font-weight:900;">麾下</span>
-                <span style="font-size:16px; letter-spacing:1px; font-weight:900;">名單</span>
+                <span style="font-size:${emojiSize};">🏯</span>
+                <span style="font-size:${textSize}; margin-top:2px; letter-spacing:1px; font-weight:900;">麾下</span>
+                <span style="font-size:${textSize}; letter-spacing:1px; font-weight:900;">名單</span>
                 <span class="recruit-badge">${window.userRecruit.length}</span>
             `;
         } else { 
@@ -301,7 +305,7 @@ window.openRecruitModal = () => {
             floatBtn.style.height = Math.round(270 * scale) + 'px';
             floatBtn.style.right = '-' + Math.round(w - 8) + 'px';
             floatBtn.style.padding = Math.round(8*scale) + 'px ' + Math.round(6*scale) + 'px ' + Math.round(8*scale) + 'px ' + Math.round(12*scale) + 'px';
-            floatBtn.style.fontSize = Math.round(11*scale) + 'px';
+            floatBtn.style.fontSize = Math.round(33*scale) + 'px';
             floatBtn.style.transform = '';
         } else {
             floatBtn.style.width = '';

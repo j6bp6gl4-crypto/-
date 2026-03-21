@@ -153,10 +153,14 @@ window.updatePocketWidget = () => {
         if (window.userPocket.length > 0) { 
             floatBtn.style.display = 'flex'; 
 // core_pocket.js 對應的修改參考：
+const isMobile = window.innerWidth < 1024;
+const scale = isMobile ? window.innerWidth / 980 : 1;
+const emojiSize = Math.round(20 * scale) + 'px';
+const textSize = Math.round(16 * scale) + 'px';
 floatBtn.innerHTML = `
-    <span style="font-size:20px;">🎁</span>
-    <span style="font-size:16px; margin-top:2px; letter-spacing:1px; font-weight:900;">我的</span>
-    <span style="font-size:16px; letter-spacing:1px; font-weight:900;">寶庫</span>
+    <span style="font-size:${emojiSize};">🎁</span>
+    <span style="font-size:${textSize}; margin-top:2px; letter-spacing:1px; font-weight:900;">我的</span>
+    <span style="font-size:${textSize}; letter-spacing:1px; font-weight:900;">寶庫</span>
     <span class="pocket-badge">${window.userPocket.length}</span>
 `;
         } else { 
@@ -305,7 +309,7 @@ window.openPocketModal = () => {
             floatBtn.style.height = Math.round(270 * scale) + 'px';
             floatBtn.style.right = '-' + Math.round(w - 8) + 'px';
             floatBtn.style.padding = Math.round(8*scale) + 'px ' + Math.round(6*scale) + 'px ' + Math.round(8*scale) + 'px ' + Math.round(12*scale) + 'px';
-            floatBtn.style.fontSize = Math.round(11*scale) + 'px';
+            floatBtn.style.fontSize = Math.round(33*scale) + 'px';
             floatBtn.style.transform = '';
         } else {
             floatBtn.style.width = '';
