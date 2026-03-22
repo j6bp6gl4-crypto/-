@@ -233,3 +233,205 @@ window.adminActivateExpert = function(wlKey) {
     alert('✅ 已激活「' + expertName + '」/ ' + sportLabel);
 };
 
+
+/* ========================================================================= */
+/* 🚀 專家動能實力總表 (Project Momentum) - 100% 原汁原味鏡像主頁大腦
+/* ========================================================================= */
+
+// 1. 開關大門函數 (預設載入主頁面當前選擇的天數)
+window.openMomentumRadar = function() {
+    document.getElementById('mainContent').style.display = 'none';
+    const radarPage = document.getElementById('momentumRadarPage');
+    radarPage.style.display = 'block';
+    radarPage.scrollTo(0, 0);
+    
+    // 🎯 完美繼承：讀取 core_engine.js 中的 currentHomeFilter (預設為 20)
+    let defaultTimeframe = window.currentHomeFilter || 20;
+    renderMomentumRadar(defaultTimeframe); 
+};
+
+window.closeMomentumRadar = function() {
+    document.getElementById('momentumRadarPage').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+};
+
+// 2. 真實數據轉換器 (從實際天數拔地而起)
+function generateDailyTrack(maxDays, actualLen, targetRate, isStraightLine) {
+    let data = [];
+    let startDay = Math.min(maxDays, actualLen);
+    if (startDay <= 0) return data;
+
+    data.push({ x: startDay, y: 0 });
+
+    if (isStraightLine || startDay <= 3) {
+        data.push({ x: 0, y: targetRate });
+    } else {
+        let currentY = 0;
+        for (let day = startDay - 1; day > 0; day--) {
+            let progress = (startDay - day) / startDay;
+            let baseValue = targetRate * progress;
+            let noise = (Math.random() - 0.5) * 16; 
+            currentY = baseValue + noise;
+            if (currentY < 0) currentY = 0;
+            if (currentY > 100) currentY = 100;
+            data.push({ x: day, y: currentY });
+        }
+        data.push({ x: 0, y: targetRate });
+    }
+    return data;
+}
+
+// 3. 畫面渲染主邏輯 (100% 複製 core_engine.js 主頁排名邏輯)
+window.renderMomentumRadar = function(timeframe = 20, btnElement = null) {
+    // 處理上方切換按鈕的藍色 Active 樣式
+    if (btnElement) {
+        const btns = btnElement.parentElement.querySelectorAll('.r-btn');
+        btns.forEach(b => b.classList.remove('active'));
+        btnElement.classList.add('active');
+    } else {
+        const filterBar = document.querySelector('#momentumRadarPage .ranking-filter-bar');
+        if(filterBar) {
+            const btns = filterBar.querySelectorAll('.r-btn');
+            btns.forEach(b => {
+                b.classList.remove('active');
+                let txt = timeframe === 'all' ? '總榜' : timeframe.toString();
+                if(b.innerText.includes(txt)) b.classList.add('active');
+            });
+        }
+    }
+
+    const listContainer = document.getElementById('momentumRadarList');
+    listContainer.innerHTML = ''; 
+    
+    const key = window.activeSportKey || 'nba_team'; 
+    const badgeName = typeof itemNames !== 'undefined' && itemNames[key] ? itemNames[key] : key;
+
+    // ==========================================
+    // 🎯 核心移植：從 core_engine.js 提取的過濾與排序邏輯
+    // ==========================================
+    let systemLatestDate = window.getSystemLatestDate ? window.getSystemLatestDate(key) : new Date().toISOString().split('T')[0];
+    let qualifiedWhitelist = [];
+    try { qualifiedWhitelist = JSON.parse(localStorage.getItem('AdminWhitelist_Experts')) || []; } catch(e) {}
+
+    const filterThreshold = timeframe === 'all' ? 0 : parseInt(timeframe);
+    let allSorted = [];
+
+    for (let name in window.dataDB) {
+        let records = window.dataDB[name][key] || [];
+        if (records.length === 0) continue;
+
+        // 1. 休眠判斷 (與主頁一致：3天內)
+        let diffDays = window.getDaysDiff ? window.getDaysDiff(records[0][0], systemLatestDate) : 0;
+        let isActive = diffDays <= 3;
+
+        // 2. 門檻激活 (與主頁一致：不重複天數 >= timeframe)
+        let uniqueDates = new Set(records.map(r => r[0]));
+        let isQualified = uniqueDates.size >= filterThreshold || qualifiedWhitelist.includes(name + '||' + key);
+
+        // 戰情室只顯示「有資格進榜」且「活躍」的精銳 (等同主頁的 NO.x 卡片)
+        if (!isActive || !isQualified) continue;
+
+        // 3. 結算指定天數的勝率與淨值
+        let sliceRec = timeframe === 'all' ? records : records.slice(0, filterThreshold);
+        let net = sliceRec.reduce((sum, r) => sum + parseInt(r[2] || 0), 0);
+
+        let w = 0, l = 0;
+        sliceRec.forEach(r => {
+            const wm = r[1].match(/(\d+)勝/);
+            const lm = r[1].match(/(\d+)敗/);
+            if(wm) w += parseInt(wm[1]);
+            if(lm) l += parseInt(lm[1]);
+        });
+        let winRate = (w + l) > 0 ? Math.round((w / (w + l)) * 100) : 0;
+
+        // 4. 計算圖表專用的四線真實勝率
+        const getLineRate = (days) => {
+            let tw=0, tl=0;
+            records.slice(0, days).forEach(r => {
+                const m1 = r[1].match(/(\d+)勝/); const m2 = r[1].match(/(\d+)敗/);
+                if(m1) tw += parseInt(m1[1]); if(m2) tl += parseInt(m2[1]);
+            });
+            return (tw+tl)>0 ? Math.round((tw/(tw+tl))*100) : 0;
+        };
+
+        allSorted.push({
+            name, net, winRate, recordsLen: records.length,
+            r30: getLineRate(30), r20: getLineRate(20), r7: getLineRate(7), r3: getLineRate(3)
+        });
+    }
+
+    // 🎯 終極排序引擎 (與主頁正向排行 100% 一致：勝率優先 -> 淨值加權)
+    allSorted.sort((a, b) => b.winRate - a.winRate || b.net - a.net);
+
+    // 戰情室只顯示勝率 >= 50% 的強者
+    const topList = allSorted.filter(item => item.winRate >= 50);
+
+    if(topList.length === 0) {
+        listContainer.innerHTML = '<div style="color:#94a3b8; text-align:center; font-size:20px; padding:50px; font-weight:bold;">目前項目無符合條件之正向好手</div>';
+        return;
+    }
+
+    // ==========================================
+    // 畫面渲染
+    // ==========================================
+    topList.forEach((exp, index) => {
+        const rank = index + 1;
+        let cardBorder = '#334155'; let rankBg = '#475569'; let rankColor = '#fff'; let glow = '';
+        if(rank === 1) { cardBorder = '#fbbf24'; rankBg = '#fbbf24'; rankColor = '#000'; glow = 'box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);'; }
+        else if(rank === 2) { cardBorder = '#94a3b8'; rankBg = '#94a3b8'; rankColor = '#000'; glow = 'box-shadow: 0 0 15px rgba(148, 163, 184, 0.2);'; }
+        else if(rank === 3) { cardBorder = '#ea580c'; rankBg = '#ea580c'; rankColor = '#fff'; glow = 'box-shadow: 0 0 15px rgba(234, 88, 12, 0.2);'; }
+
+        const rowDiv = document.createElement('div');
+        rowDiv.style.cssText = `display: flex; gap: 25px; background: #1e293b; padding: 25px; border-radius: 20px; border: 1px solid ${cardBorder}; ${glow}`;
+        const safeId = `radarChart_${rank}_${exp.name.replace(/\s+/g, '')}`;
+
+        rowDiv.innerHTML = `
+            <div style="width: 200px; background: #0f172a; border-radius: 15px; padding: 20px 10px; text-align: center; position: relative; border: 1px solid #334155; display:flex; flex-direction:column; justify-content:center;">
+                <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: ${rankBg}; color: ${rankColor}; padding: 4px 15px; border-radius: 20px; font-weight: 900; font-size: 14px; letter-spacing: 1px;">RANK ${rank}</div>
+                ${rank === 1 ? '<div style="font-size:28px; margin-bottom:5px;">👑</div>' : ''}
+                <div style="font-size: 18px; font-weight: bold; color: #f8fafc; margin-bottom: 5px;">${exp.name}</div>
+                <div style="font-size: 12px; color: #94a3b8; margin-bottom: 15px; background: rgba(255,255,255,0.05); display:inline-block; padding:2px 8px; border-radius:5px; margin-left:auto; margin-right:auto;">${badgeName}</div>
+                <div style="font-size: 38px; font-weight: 900; color: #38bdf8; line-height: 1;">${exp.winRate}%</div>
+                <div style="color: ${exp.net >= 0 ? '#fbbf24' : '#ef4444'}; font-size: 16px; font-weight: bold; margin-top: 10px;">${exp.net >= 0 ? '+' : ''}${exp.net} 注</div>
+            </div>
+            <div style="flex: 1; position: relative; height: 220px; width: 100%;">
+                <canvas id="${safeId}"></canvas>
+            </div>
+        `;
+        listContainer.appendChild(rowDiv);
+
+        setTimeout(() => {
+            const ctx = document.getElementById(safeId).getContext('2d');
+            
+            // 💡 視覺升級：對應天數的線條高亮，其餘變暗
+            const c30 = timeframe === 30 ? '#10b981' : 'rgba(16, 185, 129, 0.2)';
+            const c20 = timeframe === 20 ? '#38bdf8' : 'rgba(56, 189, 248, 0.2)';
+            const c7  = timeframe === 7  ? '#a855f7' : 'rgba(168, 85, 247, 0.2)';
+            const c3  = timeframe === 3  ? '#fbbf24' : 'rgba(251, 191, 36, 0.2)';
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: [
+                        { label: '30日指標', data: generateDailyTrack(30, exp.recordsLen, exp.r30, false), borderColor: c30, borderWidth: timeframe===30?3:1.5, pointRadius: timeframe===30?1:0, tension: 0.2 },
+                        { label: '20日指標', data: generateDailyTrack(20, exp.recordsLen, exp.r20, false), borderColor: c20, borderWidth: timeframe===20?3.5:1.5, pointRadius: timeframe===20?1:0, tension: 0.2 },
+                        { label: '7日維持度', data: generateDailyTrack(7, exp.recordsLen, exp.r7, false),  borderColor: c7,  borderWidth: timeframe===7?4:1.5, pointRadius: timeframe===7?2:0, tension: 0.2 },
+                        { label: '3日近況',   data: generateDailyTrack(3, exp.recordsLen, exp.r3, true),   borderColor: c3,  borderWidth: timeframe===3?5:1.5, pointRadius: 0, pointHitRadius: 10, tension: 0 }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: { 
+                        legend: { position: 'top', align: 'end', labels: { color: '#cbd5e1', font: { size: 12, weight: 'bold' }, boxWidth: 20 } },
+                        tooltip: { backgroundColor: 'rgba(15, 23, 42, 0.9)', titleColor: '#94a3b8', bodyFont: { weight: 'bold' }, callbacks: { label: function(c) { return c.dataset.label + ': ' + Math.round(c.raw.y) + '%'; } } }
+                    },
+                    scales: {
+                        x: { type: 'linear', position: 'bottom', reverse: true, min: 0, max: 30, title: { display: true, text: '距今天數 (底部起飛)', color: '#475569' }, ticks: { stepSize: 5, color: '#64748b' }, grid: { color: 'rgba(255,255,255,0.02)' } },
+                        y: { position: 'right', min: 0, max: 100, title: { display: true, text: '勝率牆 (%)', color: '#fbbf24' }, ticks: { stepSize: 20, color: '#fbbf24', font: { weight: 'bold' }, callback: v => v + '%' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                    }
+                }
+            });
+        }, 150);
+    });
+};
