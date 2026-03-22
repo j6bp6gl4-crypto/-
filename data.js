@@ -15825,7 +15825,7 @@ const defaultDB = {
             ]
         ]
     },
-    "lsh碩 24": {
+    "lsh碩24": {
         "nba_team": [
             [
                 "03/22",
