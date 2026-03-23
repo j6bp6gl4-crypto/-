@@ -94,6 +94,9 @@ const dailyUpdates = [
 
 const todayPicks = [
 
+// --- 傲慢20 MLB 獨贏推薦 (中數合一) ---
+    ["傲慢20", "mlb_ml", "道奇 獨贏<br>金鶯 獨贏<br>小熊 獨贏<br>遊騎 獨贏"],
+
     // --- Hsiang NBA 推薦 ---
     ["Hsiang", "nba_team", "馬刺 -5.0<br>拓荒 -14.0<br>火箭 -8.0"],
 
