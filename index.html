@@ -413,65 +413,86 @@
             </div>
         </div>
     </div>
-    <script src="config.js?v=1.0.116"></script>
-    <script src="data.js?v=1.0.31"></script>
+    <script src="config.js?v=1.0.123"></script>
+    <script src="data.js?v=1.0.33"></script>
     <script src="auth.js?v=1.0.35"></script>
-    <script src="core_admin.js?v=1.0.28"></script>
+    <script src="core_admin.js?v=1.0.31"></script>
     <script src="core_backup.js?v=1.0.16"></script>
     <script src="core_settle.js?v=1.0.10"></script>
     <script src="core_pocket.js?v=1.0.80"></script>
     <script src="core_utils.js?v=1.0.10"></script>
     <script src="core_tooltips.js?v=1.0.13"></script>
     <script src="core_trend.js?v=1.0.10"></script>
-    <script src="core_ranking.js?v=1.0.137"></script>
+    <script src="core_ranking.js?v=1.0.143"></script>
     <script src="core_recruit.js?v=1.0.81"></script>
-    <script src="core_engine.js?v=1.0.81"></script>
+    <script src="core_engine.js?v=1.0.84"></script>
 
 <script>
 (function() {
     var lastWidth = 0;
     var lastHeight = 0;
 
-    // 🛡️ 究極縮放引擎：支援 force 強制執行與雙重長寬監控
     window.scalePage = function(force) {
         var content = document.getElementById('mainContent');
         var radar = document.getElementById('momentumRadarPage');
         var screenWidth = window.innerWidth;
         var screenHeight = window.innerHeight;
 
-        // 🚨 邏輯核心：除非 force 為 true，否則長寬都沒變就拒絕重算，防止風暴
-        if (force !== true && lastWidth === screenWidth && lastHeight === screenHeight) return;
+        // 防風暴鎖：如果不是強制執行，且尺寸完全沒變，才跳過
+        if (force !== true && lastWidth === screenWidth && lastHeight === screenHeight) return; 
         lastWidth = screenWidth;
         lastHeight = screenHeight;
 
-        if (screenWidth < 1024) {
+        // 📱 手機版邏輯 (<1024)
+        if (screenWidth < 1024) { 
             var scale = screenWidth / 980;
+            // 確保高度絕對能填滿被收起的網址列空間 (加上 100px 緩衝值，杜絕滑動白邊)
+            var targetH = Math.round((screenHeight + 100) / scale) + 'px'; 
             
-            if (content) {
+            if (content && content.style.display !== 'none') {
                 content.style.transformOrigin = 'top left';
                 content.style.transform = 'scale(' + scale + ')';
                 content.style.width = '980px';
-                content.style.height = Math.round(screenHeight / scale) + 'px';
+                content.style.height = targetH;
             }
             if (radar && radar.style.display !== 'none') {
-    radar.style.transformOrigin = 'top left';
-    radar.style.transform = 'scale(' + scale + ')';
-    radar.style.width = '980px';
-    radar.style.height = Math.round(screenHeight / scale) + 'px';
-}
+                radar.style.transformOrigin = 'top left';
+                radar.style.transform = 'scale(' + scale + ')';
+                radar.style.width = '980px';
+                radar.style.height = targetH;
+                // 🚨 終極防線：用 CSS 強制將網頁底色塗黑，這樣就算高度計算有毫秒延遲，也不會閃現白邊！
+                document.body.style.backgroundColor = '#060b14';
+            } else {
+                // 如果戰情室關閉，恢復主頁底色
+                document.body.style.backgroundColor = '#f4f7f9';
+            }
+            
             document.body.style.overflowX = 'hidden';
             document.documentElement.style.overflowX = 'hidden';
+
+        // 💻 電腦版邏輯 (>=1024)
         } else {
-            if (content) { content.style.transform = ''; content.style.width = ''; content.style.height = ''; }
-            if (radar) { radar.style.transform = ''; radar.style.width = ''; radar.style.height = ''; }
+            // 🚨 揪出凶手並修正：絕對不能用 '' 空字串！必須強迫鎖死 100% 滿版！
+            if (content) { 
+                content.style.transform = 'none'; 
+                content.style.width = '100%'; 
+                content.style.height = 'auto'; 
+            }
+            if (radar) { 
+                radar.style.transform = 'none'; 
+                radar.style.width = '100%';    // 鎖死寬度 100%
+                radar.style.height = '100%';   // 鎖死高度 100%
+            }
+            document.body.style.backgroundColor = '#f4f7f9'; // 恢復正常底色
+            
             document.body.style.overflowX = 'auto';
             document.documentElement.style.overflowX = 'auto';
         }
         document.documentElement.style.visibility = 'visible';
-    };
+    }
     
     window.addEventListener('load', function() { window.scalePage(true); });
-    window.addEventListener('resize', function() { window.scalePage(); });
+    window.addEventListener('resize', window.scalePage);
     window.addEventListener('orientationchange', function() {
         setTimeout(function() { window.scalePage(true); }, 200);
     });

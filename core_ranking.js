@@ -390,56 +390,39 @@ window.adminActivateExpert = function(wlKey) {
 /* ========================================================================= */
 
 window.openMomentumRadar = function() {
-    const mainContent = document.getElementById('mainContent');
-    const radarPage = document.getElementById('momentumRadarPage');
-    if (!radarPage) {
-        alert("找不到戰情室畫面，請確認 index.html 已經更新！");
-        return;
-    }
-    // 🚨 LINE WebView 終極方案：不信任 innerWidth，用 screen.width 強制算 scale
-    window.scrollTo(0, 0);
-    mainContent.style.display = 'none';
-
-    // 戰情室先上場但完全透明
-    radarPage.style.display = 'block';
-    radarPage.style.visibility = 'hidden';
-
-    // 🚨 核心：用 screen.width 直接算 scale，繞過 LINE 的 innerWidth 污染問題
-    var safeWidth = window.screen.width || window.innerWidth;
-    if (safeWidth < 1024) {
-        var scale = safeWidth / 980;
-        var safeHeight = window.screen.height || window.innerHeight;
-        radarPage.style.transformOrigin = 'top left';
-        radarPage.style.transform = 'scale(' + scale + ')';
-        radarPage.style.width = '980px';
-        radarPage.style.height = Math.round(safeHeight / scale) + 'px';
+    const mainContent = document.getElementById('mainContent');
+    const radarPage = document.getElementById('momentumRadarPage');
+    if (!radarPage) {
+        alert("找不到戰情室畫面，請確認 index.html 已經更新！");
+        return;
     }
+    
+    // 1. 單純切換顯示
+    mainContent.style.display = 'none';
+    radarPage.style.display = 'block';
+    window.scrollTo(0, 0);
+    radarPage.scrollTo(0, 0);
 
-    // 延遲讓 LINE 渲染穩定後才顯示
-    setTimeout(function() {
-        radarPage.scrollTo(0, 0);
-        radarPage.style.visibility = 'visible';
-    }, 100);     
-
-    // 🎯 完美繼承：讀取 core_engine.js 中的 currentHomeFilter
-    let defaultTimeframe = window.currentHomeFilter || 20;
-    window.renderMomentumRadar(defaultTimeframe); 
+    // 2. 🚨 霸道展開指令：不分裝置，強制踹引擎一腳，要它立刻把畫面填滿！
+    if (typeof window.scalePage === 'function') {
+        setTimeout(function() { window.scalePage(true); }, 50);
+    }
+    
+    // 3. 渲染數據
+    let defaultTimeframe = window.currentHomeFilter || 20;
+    window.renderMomentumRadar(defaultTimeframe); 
 };
 
 window.closeMomentumRadar = function() {
     var radarPage = document.getElementById('momentumRadarPage');
-    radarPage.style.display = 'none';
-    radarPage.style.transform = '';
-    radarPage.style.width = '';
-    radarPage.style.height = '';
+    if (radarPage) radarPage.style.display = 'none';
     document.getElementById('mainContent').style.display = 'block';
 
-    // 🚨 核心防呆升級：關閉時也強制傳入 true 更新一次主頁高度，確保完美歸位！
+    // 🚨 霸道歸位指令：關閉時也強制引擎重新計算一次主頁！
     if (typeof window.scalePage === 'function') {
-        setTimeout(function() { window.scalePage(true); }, 100);
+        setTimeout(function() { window.scalePage(true); }, 50);
     }
 };
-
 
 // 2. 數據轉換器 (真實累積勝率走勢演算法 - 終極動能竄出版)
 function generateAuthenticTrack(maxMatches, records) {
