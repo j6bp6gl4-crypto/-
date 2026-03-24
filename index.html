@@ -18,6 +18,8 @@
     <meta http-equiv="Expires" content="0">
     <title>齊聚眾選 - 戰績實時反饋儀表板 (每日密鑰版)</title>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <meta property="og:title" content="齊聚眾選 一起來預測吧 !" />
 <meta property="og:description" content="全台最強運動賽事分析對比系統，即時掌握好手動向與戰績趨勢，尊爵黑金風儀表板。" />
 <meta property="og:image" content="https://fu6rm4.vercel.app/og-image.png.jpg" />
@@ -343,7 +345,6 @@
 
     </style> 
 
-</style>
 <script>
 (function() {
     if (window.innerWidth < 980) {
@@ -384,7 +385,7 @@
                 <p style="font-weight:bold; color:#64748b; margin-bottom:15px;">
 🔍 步驟：請選擇賽事項目 按對比送出 就能開始全域對比 / 或單獨點選好手卡片按送出也能比照成績清單 </p>
                 <div class="sport-tabs" id="tabContainer" style="justify-content: center; margin-bottom: 20px;"></div>
-                <button style="background: linear-gradient(135deg, #1877f2, #0052cc); color: #fff; border: none; padding: 15px 70px; font-size: 22px; font-weight: bold; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 15px rgba(24,119,242,0.3);" onclick="handleCompare()">📊 送出戰力分析 / 複選對比</button>
+                <button style="background: linear-gradient(135deg, #1877f2, #0052cc); color: #fff; border: none; padding: 15px 70px; font-size: 22px; font-weight: bold; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 15px rgba(24,119,242,0.3);" onclick="handleCompare()">📊 送出戰力分析 / 複選對比</button> <button onclick="openMomentumRadar()" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: #fbbf24; border: 2px solid #fbbf24; padding: 13px 40px; font-size: 22px; font-weight: 900; border-radius: 50px; cursor: pointer; box-shadow: 0 0 20px rgba(251, 191, 36, 0.3); transition: all 0.3s ease; margin-left: 20px;" onmouseover="this.style.boxShadow='0 0 30px rgba(251, 191, 36, 0.6)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.boxShadow='0 0 20px rgba(251, 191, 36, 0.3)'; this.style.transform='translateY(0)';">📈 啟動動能戰情室</button>
             </div>
 
             <div id="details">
@@ -412,51 +413,67 @@
             </div>
         </div>
     </div>
-    <script src="config.js?v=1.0.122"></script>
-    <script src="data.js?v=1.0.32"></script>
+    <script src="config.js?v=1.0.116"></script>
+    <script src="data.js?v=1.0.31"></script>
     <script src="auth.js?v=1.0.35"></script>
-    <script src="core_admin.js?v=1.0.30"></script>
+    <script src="core_admin.js?v=1.0.28"></script>
     <script src="core_backup.js?v=1.0.16"></script>
     <script src="core_settle.js?v=1.0.10"></script>
     <script src="core_pocket.js?v=1.0.80"></script>
     <script src="core_utils.js?v=1.0.10"></script>
     <script src="core_tooltips.js?v=1.0.13"></script>
     <script src="core_trend.js?v=1.0.10"></script>
-    <script src="core_ranking.js?v=1.0.82"></script>
+    <script src="core_ranking.js?v=1.0.133"></script>
     <script src="core_recruit.js?v=1.0.81"></script>
-    <script src="core_engine.js?v=1.0.83"></script>
+    <script src="core_engine.js?v=1.0.81"></script>
 
 <script>
 (function() {
-    function scalePage() {
+    var lastWidth = 0;
+    var lastHeight = 0;
+
+    // 🛡️ 究極縮放引擎：支援 force 強制執行與雙重長寬監控
+    window.scalePage = function(force) {
         var content = document.getElementById('mainContent');
-        if (!content) return;
+        var radar = document.getElementById('momentumRadarPage');
         var screenWidth = window.innerWidth;
-        
-        if (screenWidth < 1024) { // 💡 門檻提高到 1024
+        var screenHeight = window.innerHeight;
+
+        // 🚨 邏輯核心：除非 force 為 true，否則長寬都沒變就拒絕重算，防止風暴
+        if (force !== true && lastWidth === screenWidth && lastHeight === screenHeight) return;
+        lastWidth = screenWidth;
+        lastHeight = screenHeight;
+
+        if (screenWidth < 1024) {
             var scale = screenWidth / 980;
-            content.style.transformOrigin = 'top left';
-            content.style.transform = 'scale(' + scale + ')';
-            content.style.width = '980px';
-            // 💡 修正高度計算錯誤 (原本寫成了 width)
-            content.style.height = Math.round(window.innerHeight / scale) + 'px';
+            
+            if (content) {
+                content.style.transformOrigin = 'top left';
+                content.style.transform = 'scale(' + scale + ')';
+                content.style.width = '980px';
+                content.style.height = Math.round(screenHeight / scale) + 'px';
+            }
+            if (radar && radar.style.display !== 'none') {
+    // 🚨 戰情室不再參與 scale 縮放，保持原生全屏渲染
+    radar.style.transform = 'none';
+    radar.style.width = '100%';
+    radar.style.height = '100%';
+}
             document.body.style.overflowX = 'hidden';
             document.documentElement.style.overflowX = 'hidden';
         } else {
-            // 電腦版還原
-            content.style.transform = '';
-            content.style.width = '';
-            content.style.height = '';
+            if (content) { content.style.transform = ''; content.style.width = ''; content.style.height = ''; }
+            if (radar) { radar.style.transform = ''; radar.style.width = ''; radar.style.height = ''; }
             document.body.style.overflowX = 'auto';
             document.documentElement.style.overflowX = 'auto';
         }
         document.documentElement.style.visibility = 'visible';
-    }
-    window.addEventListener('load', scalePage);
-    window.addEventListener('resize', scalePage);
-    // 💡 關鍵：加入翻轉監聽
+    };
+    
+    window.addEventListener('load', function() { window.scalePage(true); });
+    window.addEventListener('resize', function() { window.scalePage(); });
     window.addEventListener('orientationchange', function() {
-        setTimeout(scalePage, 200);
+        setTimeout(function() { window.scalePage(true); }, 200);
     });
 })();
 </script>
@@ -469,5 +486,29 @@
 })();
 </script>
 
+
+<div id="momentumRadarPage" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #060b14; z-index: 10000; overflow-y: auto; padding: 40px 20px; box-sizing: border-box; font-family: 'Noto Sans TC', sans-serif;">
+    <div style="max-width: 1400px; margin: 0 auto;">
+        <button onclick="closeMomentumRadar()" style="background: #1e293b; color: #fbbf24; border: 1px solid #fbbf24; padding: 10px 24px; border-radius: 50px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 20px; transition: 0.3s;" onmouseover="this.style.background='#fbbf24'; this.style.color='#000';" onmouseout="this.style.background='#1e293b'; this.style.color='#fbbf24';">
+            ⬅️ 關閉戰情室 (返回主控制台)
+        </button>
+        
+        <h1 style="text-align:center; color:#f8fafc; margin-bottom: 15px; font-size: 36px; font-weight: 900; letter-spacing: 2px;">📈 專家實力與動能縱向對比總表</h1>
+        
+        <div class="ranking-filter-bar" style="margin-bottom: 25px; display: flex; justify-content: center; gap: 10px;">
+            <button class="r-btn" onclick="renderMomentumRadar(30, this)">近 30 場</button>
+            <button class="r-btn active" onclick="renderMomentumRadar(20, this)">近 20 場</button>
+            <button class="r-btn" onclick="renderMomentumRadar(7, this)">近 7 場</button>
+            <button class="r-btn" onclick="renderMomentumRadar(3, this)">近 3 場 (爆發)</button>
+        </div>
+
+        <p style="text-align:center; color:#94a3b8; font-weight:bold; margin-bottom: 40px; font-size: 16px;">
+            左側為所選區間之結算實力，右側為近 <span style="color:#10b981">30</span> / <span style="color:#38bdf8">20</span> / <span style="color:#a855f7">7</span> / <span style="color:#fbbf24">3</span> 日真實動能發射軌跡 (從實際天數拔地而起)
+        </p>
+
+        <div id="momentumRadarList" style="display: flex; flex-direction: column; gap: 30px;">
+        </div>
+    </div>
+</div>
 </body>
 </html>
