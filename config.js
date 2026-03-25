@@ -100,6 +100,9 @@ const dailyUpdates = [
 const todayPicks = [
 
 
+// --- 傲慢20 MLB 獨贏推薦 (中數合一) ---
+    ["傲慢20", "mlb_ml", "洋基 獨贏"],
+
 // --- 泓佑 NBA 多項分流推薦 ---
     ["泓佑", "nba_team", "賽爾 +3.5"],
     ["泓佑", "nba_1h_total", "湖人上半 122.5大"],
