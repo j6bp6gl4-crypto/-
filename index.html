@@ -463,13 +463,13 @@
     <script src="core_admin.js?v=1.0.32"></script>
     <script src="core_backup.js?v=1.0.16"></script>
     <script src="core_settle.js?v=1.0.10"></script>
-    <script src="core_pocket.js?v=1.0.82"></script>
+    <script src="core_pocket.js?v=1.0.92"></script>
     <script src="core_utils.js?v=1.0.10"></script>
     <script src="core_tooltips.js?v=1.0.14"></script>
     <script src="core_trend.js?v=1.0.10"></script>
     <script src="core_ranking.js?v=1.0.144"></script>
-    <script src="core_recruit.js?v=1.0.83"></script>
-    <script src="core_engine.js?v=1.0.89"></script>
+    <script src="core_recruit.js?v=1.0.84"></script>
+    <script src="core_engine.js?v=1.0.97"></script>
 
 <script>
 (function() {
@@ -482,12 +482,48 @@
         var screenWidth = window.innerWidth;
         var screenHeight = window.innerHeight;
 
+        // 🎯 核心黑科技：偵測「實體翻轉手機」(判斷寬度是否大於高度)
+        var isLandscape = (screenWidth > screenHeight);
+        var viewportMeta = document.getElementById('viewportMeta');
+        var isLineApp = (navigator.userAgent.indexOf("Line") > -1);
+
+        // 只有在 LINE 瀏覽器裡面才需要這個強制切換
+        if (isLineApp) {
+            if (isLandscape) {
+                // 📱 手機橫放：強制欺騙瀏覽器，塞入 1440px 的電腦版視角！
+                // 📱 手機橫放：切換超廣角，並強制重算排版
+                if (viewportMeta.getAttribute('content') !== 'width=1800, user-scalable=yes') {
+                    viewportMeta.setAttribute('content', 'width=1800, user-scalable=yes');
+                    
+                    // 🎯 關鍵修正：延遲 200ms 等待視角生效後，觸發全域重新渲染
+                    setTimeout(function() { 
+                        window.scalePage(true); 
+                        if (typeof window.init === 'function') window.init(); // 🚀 強制觸發：展開內容與計算排名
+                    }, 200); 
+                    
+                    return; 
+                }
+            } else {
+                // 📱 手機直放：恢復原本視角，並重算手機排版
+                if (viewportMeta.getAttribute('content') !== 'width=device-width, initial-scale=1.0') {
+                    viewportMeta.setAttribute('content', 'width=device-width, initial-scale=1.0');
+                    
+                    setTimeout(function() { 
+                        window.scalePage(true); 
+                        if (typeof window.init === 'function') window.init(); // 🚀 強制恢復：手機版專屬排版
+                    }, 200); 
+                    
+                    return; 
+                }
+            }
+        }
+
         // 防風暴鎖：如果不是強制執行，且尺寸完全沒變，才跳過
         if (force !== true && lastWidth === screenWidth && lastHeight === screenHeight) return; 
         lastWidth = screenWidth;
         lastHeight = screenHeight;
 
-        // 📱 手機版邏輯 (<1024)
+        // 📱 手機版邏輯 (<1024 且為直向時)
         if (screenWidth < 1024) { 
             var scale = screenWidth / 980;
             // 確保高度絕對能填滿被收起的網址列空間 (加上 100px 緩衝值，杜絕滑動白邊)
@@ -514,7 +550,7 @@
             document.body.style.overflowX = 'hidden';
             document.documentElement.style.overflowX = 'hidden';
 
-        // 💻 電腦版邏輯 (>=1024)
+        // 💻 電腦版邏輯 (>=1024，包含手機橫放被判定為 1440 寬度時)
         } else {
             // 🚨 揪出凶手並修正：絕對不能用 '' 空字串！必須強迫鎖死 100% 滿版！
             if (content) { 
@@ -534,7 +570,7 @@
         }
         document.documentElement.style.visibility = 'visible';
     }
-    
+
     window.addEventListener('load', function() { window.scalePage(true); });
     window.addEventListener('resize', window.scalePage);
     window.addEventListener('orientationchange', function() {
