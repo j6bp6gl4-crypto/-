@@ -558,5 +558,18 @@
         </div>
     </div>
 </div>
+<script>
+// 🎯 監聽全域點擊事件：當點擊選單以外的地方，自動收起主推選單
+document.addEventListener('click', function(e) {
+    var dropdownContent = document.querySelector('.main-pick-dropdown-content');
+    var mainPickBtn = e.target.closest('button');
+
+    // 如果點擊的地方不是選單內部，且不是那個「👑 眾選主推」按鈕，就隱藏選單
+    if (dropdownContent && !dropdownContent.contains(e.target) && (!mainPickBtn || !mainPickBtn.innerText.includes('眾選主推'))) {
+        dropdownContent.style.display = 'none';
+    }
+});
+</script>
+
 </body>
 </html>
