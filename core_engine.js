@@ -441,7 +441,7 @@ const tabs = document.getElementById('tabContainer');
         tabs.innerHTML = '';
         const categories = [
          
-            { name: '🏀 美籃 NBA', items: [ { id: 'nba_team', label: 'NBA 讓分盤' }, { id: 'nba_total', label: 'NBA 大小分' }, { id: 'nba_team_total', label: 'NBA 單隊大小' }, { id: 'nba_team_spread', label: 'NBA 單隊讓盤' }, { id: 'nba_1h_total', label: 'NBA 上半大小' } ] }, 
+    { name: '🏀 美籃 NBA', items: [ { id: 'nba_team', label: 'NBA 讓分盤' }, { id: 'nba_total', label: 'NBA 大小分' }, { id: 'nba_team_total', label: 'NBA 單隊大小' }, { id: 'nba_team_spread', label: 'NBA 單隊讓盤' }, { id: 'nba_1h_total', label: 'NBA 上半大小' } ] }, 
             { name: '⚾ 美棒 MLB', items: [ { id: 'mlb_ml', label: 'MLB 獨贏(正常)' }, { id: 'mlb_runline', label: 'MLB 讓分盤' }, { id: 'mlb_total', label: 'MLB 大小分' }, { id: 'mlb_ml_high', label: 'MLB 高賠獨贏' } ] },
             { name: '🇯🇵 日棒 NPB', items: [ { id: 'npb_runline', label: '日棒讓分' }, { id: 'npb_ml', label: '日棒獨贏' }, { id: 'npb_total', label: '日棒大小' }, { id: 'npb_1h_runline', label: '日棒上半讓分' }, { id: 'npb_1h_ml', label: '日棒上半獨贏' }, { id: 'npb_1h_total', label: '日棒上半大小' } ] },
             { name: '⚽ 足球系列', items: [ { id: 'soccer_team', label: '足球隊伍' }, { id: 'soccer_total', label: '足球大小分' }, { id: 'soccer_ml', label: '足球獨贏' }, { id: 'soccer_btts', label: '足球兩隊進球' }, { id: 'soccer_corner_total', label: '足球角球大小' }, { id: 'soccer_corner_ml', label: '足球角球PK' } ] },
