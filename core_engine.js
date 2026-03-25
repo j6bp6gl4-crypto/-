@@ -2,7 +2,7 @@
 /* ==== 【組件 E：核心引擎 - core_engine.js】 ==== */
 /* ============================================================== */
 
-const DB_KEY = 'DashboardDB_V109_Final'; 
+const DB_KEY = 'DashboardDB_V110_Final'; 
 window.dataDB = JSON.parse(localStorage.getItem(DB_KEY));
 window.isNegativeMode = false; // 🪄 魔法反向開關
 
@@ -176,35 +176,29 @@ if (!document.getElementById('pickTooltipStyle')) {
         body.mode-neg .sleep-card .badge { background-color: #1e293b !important; color: #475569 !important; }
         body.mode-neg .sleep-card .sleep-text { color: #334155 !important; }
 
-        /* ✅ 這是新的 (只留這個就好！) */
+        /* ✅ 統一網格架構：移除強制的 gap 與 padding 覆蓋，讓黑底 100% 繼承白底的手機版空間設定 */
         body.mode-neg #expertGrid { 
             display: grid !important;
-            grid-template-columns: repeat(8, 1fr) !important; 
-            gap: 12px !important; /* 🎯 修正點：改為 12px，讓上下排間距恢復正常 */
+            grid-template-columns: repeat(8, minmax(0, 1fr)) !important; 
             max-width: 1550px !important; 
-            margin: 0px auto 30px auto !important; /* 🎯 修正點：下方留白恢復正常的 30px */
+            margin: 0px auto 30px auto !important; 
             position: relative;
             z-index: 50; 
-            padding: 0 20px; 
+
         }
         
-        body.mode-neg #expertGrid { 
-            display: grid !important;
-            grid-template-columns: repeat(8, 1fr) !important; 
-            gap: 12px !important; /* 🎯 修正點：改為 12px，讓上下排間距恢復正常 */
-            max-width: 1550px !important; 
-            margin: 0px auto 30px auto !important; /* 🎯 修正點：下方留白恢復正常的 30px */
-            position: relative;
-            z-index: 50; 
-            padding: 0 20px; 
-        }
-        
-        /* 🚨 已經移除反向 U 形排列，恢復為原本正常的網格排版，同時保留紅光特效 */
+        /* ✅ 統一卡片外觀：強制禁止 iOS 膨脹字體，維持白底架構，並補回全黑透明背景 */
         body.mode-neg .expert-card {
-            padding: 15px 5px !important; 
+            background: transparent !important; /* 🎯 關鍵修正：讓黑卡變透明，露出下方的全黑背景 */
+            -webkit-text-size-adjust: 100% !important; /* 🎯 修正：徹底禁止蘋果自作聰明放大字體 */
+            text-size-adjust: 100% !important; 
             border-radius: 12px !important; 
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s !important;
         }
+
+        /* ✅ 如果 index.html 裡的 mode-neg 被刪了，這裡補回全黑背景，絕對安全 */
+        body.mode-neg { background-color: #020617 !important; color: #f8fafc !important; }
+        body.mode-neg #details { background-color: #0f172a !important; border-color: #1e293b !important; }
 
         body.mode-neg .expert-card:hover {
             transform: translateY(-2px) scale(1.02) !important;
