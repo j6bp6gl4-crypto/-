@@ -31,6 +31,17 @@ window.toggleUserPocket = function(expertName, btnElement, sportKey) {
             /* 🎯 正常狀態的懸浮展開 */
             .floating-pocket-btn:hover { right: 0; background: linear-gradient(135deg, #fbbf24, #f59e0b); padding-right: 22px; transform: translateY(-50%) scale(1.05); }
             
+/* 🛡️ 隱形防護罩：向【右】擴大 40px 的點擊熱區，防止誤觸右側卡片 */
+            .floating-recruit-btn::before { 
+                content: ""; 
+                position: absolute; 
+                top: -20px; 
+                bottom: -20px; 
+                left: 0; 
+                right: -200px; /* 👈 關鍵修正：向「右」偷出 40px 的隱形點擊區！ */
+                background: transparent; 
+            }
+
 /* 🎯 視覺魔術版：利用 transform 平移縮進，實體維持在原位，絕對不會撐出白邊！ */
             .floating-pocket-btn.is-comparing { transform: translate(52px, -50%); opacity: 0.7; }
             .floating-pocket-btn.is-comparing:hover { transform: translate(-8px, -50%) scale(1.05); opacity: 1; }
@@ -79,45 +90,33 @@ window.toggleUserPocket = function(expertName, btnElement, sportKey) {
 
     // 手機版：第一下展開，第二下開 Modal；電腦版直接開 Modal
     let pocketExpanded = false;
+    
+    // 1. 點擊邏輯
     floatBtn.addEventListener('click', function() {
         if (window.innerWidth < 1024) {
-            if (!pocketExpanded) {
+            // 🎯 只要按鈕滑出來了，或是變數是 true，點擊就直接開視窗！
+            if (floatBtn.style.left === '0px' || pocketExpanded) {
+                window.openPocketModal();
+            } else {
                 pocketExpanded = true;
                 floatBtn.style.left = '0px';
-            } else {
-                pocketExpanded = false;
-                window.openPocketModal();
             }
         } else {
             window.openPocketModal();
         }
     });
+
+document.body.appendChild(floatBtn);
+
+    // 2. 點擊外部縮回邏輯
     document.addEventListener('click', function(e) {
         if (pocketExpanded && !floatBtn.contains(e.target)) {
             pocketExpanded = false;
+            if (typeof syncPocketBtnScale === 'function') syncPocketBtnScale();
         }
     });
 
-    // 從左邊往右滑展開 (🎯 已升級：高靈敏度與寬邊緣)
-    let pocketTouchStartX = 0;
-    document.addEventListener('touchstart', function(e) {
-        pocketTouchStartX = e.touches[0].clientX;
-    }, { passive: true });
-    
-    document.addEventListener('touchend', function(e) {
-        const dx = e.changedTouches[0].clientX - pocketTouchStartX;
-        
-        // 👇 放寬到 110 (不用貼死螢幕邊緣，避開手機原生返回手勢)
-        const startedNearLeft = pocketTouchStartX < 110; 
-        
-        // 👇 滑動距離降到 15 (輕輕往右撥一下就瞬間觸發)
-        if (startedNearLeft && dx > 15 && !pocketExpanded) {
-            pocketExpanded = true;
-            floatBtn.style.left = '0px';
-        }
-    }, { passive: true });
 
-    document.body.appendChild(floatBtn);
 
 const overlay = document.createElement('div'); overlay.className = 'pocket-modal-overlay';
     overlay.innerHTML = `
@@ -312,7 +311,7 @@ window.openPocketModal = () => {
             floatBtn.style.right = 'auto';
             floatBtn.style.width = w + 'px';
             floatBtn.style.height = Math.round(270 * scale) + 'px';
-            floatBtn.style.left = '-' + Math.round(w - 12) + 'px';
+            floatBtn.style.left = '-' + Math.round(w - 14) + 'px';
 
             floatBtn.style.borderRadius = '0 45px 45px 0';
             floatBtn.style.padding = Math.round(8*scale) + 'px ' + Math.round(12*scale) + 'px ' + Math.round(8*scale) + 'px ' + Math.round(6*scale) + 'px';

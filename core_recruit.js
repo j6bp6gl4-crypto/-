@@ -56,6 +56,17 @@ window.toggleRecruit = function(expertName, btnElement, sportKey) {
             /* 🎯 正常狀態的懸浮展開 */
             .floating-recruit-btn:hover { right: 0; background: linear-gradient(135deg, #6366f1, #3730a3); padding-right: 22px; transform: translateY(-50%) scale(1.05); }
             
+/* 🛡️ 隱形防護罩：向【右】擴大 40px 的點擊熱區，防止誤觸右側卡片 */
+            .floating-recruit-btn::before { 
+                content: ""; 
+                position: absolute; 
+                top: -20px; 
+                bottom: -20px; 
+                left: 0; 
+                right: -200px; /* 👈 關鍵修正：向「右」偷出 40px 的隱形點擊區！ */
+                background: transparent; 
+            }
+
 /* 🎯 視覺魔術版：利用 transform 平移縮進，實體維持在原位，絕對不會撐出白邊！ */
             .floating-recruit-btn.is-comparing { transform: translate(52px, -50%); opacity: 0.7; }
             .floating-recruit-btn.is-comparing:hover { transform: translate(-8px, -50%) scale(1.05); opacity: 1; }
@@ -125,42 +136,31 @@ window.toggleRecruit = function(expertName, btnElement, sportKey) {
 
     // 手機版：第一下展開，第二下開 Modal；電腦版直接開 Modal
     let recruitExpanded = false;
+    
+    // 1. 點擊邏輯
     floatBtn.addEventListener('click', function() {
         if (window.innerWidth < 1024) {
-            if (!recruitExpanded) {
+            // 🎯 只要按鈕滑出來了，或是變數是 true，點擊就直接開視窗！
+            if (floatBtn.style.left === '0px' || recruitExpanded) {
+                window.openRecruitModal();
+            } else {
                 recruitExpanded = true;
                 floatBtn.style.left = '0px';
-            } else {
-                recruitExpanded = false;
-                window.openRecruitModal();
             }
         } else {
             window.openRecruitModal();
         }
     });
+
+    // 2. 點擊外部縮回邏輯
     document.addEventListener('click', function(e) {
         if (recruitExpanded && !floatBtn.contains(e.target)) {
             recruitExpanded = false;
+            // 呼叫下方的縮放引擎讓它乖乖縮回去
+            if (typeof syncRecruitBtnScale === 'function') syncRecruitBtnScale();
         }
     });
 
-    // 從左邊往右滑展開 (🎯 已升級：高靈敏度與寬邊緣)
-    let recruitTouchStartX = 0;
-    document.addEventListener('touchstart', function(e) {
-        recruitTouchStartX = e.touches[0].clientX;
-    }, { passive: true });
-    document.addEventListener('touchend', function(e) {
-        const dx = e.changedTouches[0].clientX - recruitTouchStartX;
-        
-        // 👇 放寬到 110 (不用貼死邊緣)
-        const startedNearLeft = recruitTouchStartX < 110; 
-        
-        // 👇 滑動 15 就觸發
-        if (startedNearLeft && dx > 15 && !recruitExpanded) {
-            recruitExpanded = true;
-            floatBtn.style.left = '0px';
-        }
-    }, { passive: true });
 
     document.body.appendChild(floatBtn);
 
@@ -259,18 +259,18 @@ window.openRecruitModal = () => {
         if (typeof window.renderDisplay === 'function') window.renderDisplay();
     };
 
-/* 🛡️ 核心黑科技：1:1 唯讀預覽卡片特效 (絕對置中升級版) */
+/* 🛡️ 核心黑科技：1:1 唯讀預覽卡片特效 (雙軌自適應版) */
     window.showRecruitPreview = function(expertName, sportKey, event) {
         let tooltip = document.getElementById('recruitPreviewBox');
         if(!tooltip) {
             tooltip = document.createElement('div');
             tooltip.id = 'recruitPreviewBox';
-            // 💡 絕對置中魔法：將 transform 加入 translateY(-50%)，讓它永遠垂直置中
-            tooltip.style.cssText = 'position:fixed; z-index:10005; pointer-events:none; width:300px; transform:translateY(-50%) scale(0.95); transform-origin: center center; transition:opacity 0.2s; background:transparent; border-radius:12px; box-shadow:0 30px 60px rgba(0,0,0,0.7); opacity:0;';
+            // 💡 完全保留你原版的初始樣式 (透明度為 0，確保淡入動畫正常運作)
+            tooltip.style.cssText = 'position:fixed; z-index:10005; pointer-events:none; width:300px; transform-origin: center center; transition:opacity 0.2s; background:transparent; border-radius:12px; box-shadow:0 30px 60px rgba(0,0,0,0.7); opacity:0;';
             document.body.appendChild(tooltip);
         }
 
-        // 模擬 core_ranking.js 算分邏輯來生成 mockItem
+        // 模擬 core_ranking.js 算分邏輯 (100% 保留)
         let list = (window.dataDB[expertName] && window.dataDB[expertName][sportKey]) ? window.dataDB[expertName][sportKey] : [];
         let w=0, l=0, n20=0; 
         list.slice(0, 20).forEach(r => { 
@@ -282,13 +282,24 @@ window.openRecruitModal = () => {
         let mockItem = { name: expertName, w: w, l: l, net: n20, rate: rate };
         let isReverse = rate < 0.5;
         
-        // 呼叫您原有完美的渲染邏輯
+        // 呼叫您原有完美的渲染邏輯 (100% 保留)
         let cardHtml = window.renderRankCard(mockItem, isReverse ? -1 : 0, sportKey, isReverse); 
         tooltip.innerHTML = `<div style="background:#fff; border-radius:8px; overflow:hidden;">${cardHtml}</div>`;
         
-        // 💡 排版校正：高度鎖定在螢幕正中央 (50%)，水平位置跟隨滑鼠左側
-        tooltip.style.left = Math.max(20, event.clientX - 330) + 'px';
-        tooltip.style.top = '50%';
+        // 💡 只有這裡做「雙軌分流」：手機置中縮小，電腦跟隨滑鼠
+        if (window.innerWidth < 1024) {
+            // 手機版：強制螢幕正中央，並縮小至 65%
+            tooltip.style.left = '50%';
+            tooltip.style.top = '50%';
+            tooltip.style.transform = 'translate(-50%, -50%) scale(0.50)';
+        } else {
+            // 電腦版：維持 95%，水平位置跟隨滑鼠左側
+            tooltip.style.left = Math.max(20, event.clientX - 330) + 'px';
+            tooltip.style.top = '50%';
+            tooltip.style.transform = 'translateY(-50%) scale(0.95)';
+        }
+        
+        // 觸發 0.2 秒順滑淡入動畫
         tooltip.style.opacity = '1';
     };
 
@@ -306,7 +317,7 @@ window.openRecruitModal = () => {
             const w = Math.round(75 * scale);
             floatBtn.style.width = w + 'px';
             floatBtn.style.height = Math.round(270 * scale) + 'px';
-            floatBtn.style.left = '-' + Math.round(w - 12) + 'px';
+            floatBtn.style.left = '-' + Math.round(w - 14) + 'px';
 
             floatBtn.style.borderRadius = '0 45px 45px 0';
             floatBtn.style.padding = Math.round(8*scale) + 'px ' + Math.round(12*scale) + 'px ' + Math.round(8*scale) + 'px ' + Math.round(6*scale) + 'px';
