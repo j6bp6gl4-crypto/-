@@ -4,12 +4,12 @@
 /* ========================================== */
 
 // 你的專屬 LIFF ID
-const LIFF_ID = '2009615655-KgVItEBz'; 
+const LIFF_ID = '2009615655-Qfz6sgKV'; 
 
 let isRestrictedMode = false; 
 let validClickCount = 0;      
 let hasLockedDown = false;    
-const MAX_CLICKS = 99;         
+const MAX_CLICKS = 1;         
 // const FREE_DAYS_LIMIT = 99; // 註：天數計算已全面移交給 Supabase 雲端大腦判斷
 
 // 🌟 動態載入 LINE LIFF SDK
