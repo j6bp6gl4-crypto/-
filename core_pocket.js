@@ -83,6 +83,35 @@ window.toggleUserPocket = function(expertName, btnElement, sportKey) {
                 .pocket-clear-btn { padding: 6px 14px !important; font-size: 7px !important; border-radius: 8px !important; }
                 .pocket-sport-tag { font-size: 6px !important; padding: 2px 5px !important; }
             }
+
+/* 💻 真正的電腦版專屬：永久保持 Hover 展開狀態 */
+@media (min-width: 1024px) {
+    .floating-pocket-btn { 
+        right: 0 !important; 
+        padding-right: 22px !important; 
+        background: linear-gradient(135deg, #fbbf24, #f59e0b) !important; 
+    }
+}
+
+/* 📱 手機看網頁版專屬：阻斷文字膨脹 Bug、左右縮窄、上下拉長、鎖定大字體 */
+@media (pointer: coarse) and (min-width: 1024px), (max-device-width: 1024px) and (min-width: 1024px) {
+    .floating-pocket-btn { 
+        width: 65px !important; 
+        padding: 24px 12px 24px 12px !important; 
+        -webkit-text-size-adjust: 100% !important; 
+    }
+    /* 強制放大內部文字與圖示 (必須包在 @media 的大括號裡面！) */
+    .floating-pocket-btn span:nth-child(1) { font-size: 20px !important; } 
+    .floating-pocket-btn span:nth-child(2), 
+    .floating-pocket-btn span:nth-child(3) { font-size: 16px !important; } 
+}
+
+/* 📱 一般手機版專屬：隱藏直立觀看提示 */
+            @media (max-width: 1023px) {
+                .orientation-tip { display: none !important; }
+            }
+
+
         `; document.head.appendChild(style);
     }
 
@@ -123,7 +152,10 @@ const overlay = document.createElement('div'); overlay.className = 'pocket-modal
         <div class="pocket-modal-content" style="max-height: 90vh; display: flex; flex-direction: column;">
             
             <div class="pocket-modal-header" style="flex-shrink: 0;">
-                <h3 style="margin:0;font-size:28px;letter-spacing:2px;font-weight:900;">🎁 我的寶庫精選推薦</h3>
+               <h3 style="margin:0;font-size:28px;letter-spacing:2px;font-weight:900; display:flex; align-items:center; flex-wrap:wrap; gap:12px;">
+    🎁 我的寶庫精選推薦
+    <span class="orientation-tip" style="font-size:15px; color:white; font-weight:900; letter-spacing:1px;">📱 建議: 手機直立觀看 體驗更佳</span>
+</h3>
                 <div style="cursor:pointer;font-size:clamp(20px,4vw,50px);line-height:1;" onclick="closePocketModal()">&times;</div>
             </div>
             

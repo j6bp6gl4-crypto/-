@@ -129,6 +129,34 @@ window.toggleRecruit = function(expertName, btnElement, sportKey) {
                 .recruit-modal-footer { padding: 10px !important; }
                 .recruit-modal-footer button { padding: 6px 14px !important; font-size: 7px !important; }
             }
+
+/* 💻 真正的電腦版專屬：永久保持 Hover 展開狀態 */
+@media (min-width: 1024px) {
+    .floating-recruit-btn { 
+        right: 0 !important; 
+        padding-right: 22px !important; 
+        background: linear-gradient(135deg, #6366f1, #3730a3) !important; 
+    }
+}
+
+/* 📱 手機看網頁版專屬：阻斷文字膨脹 Bug、左右縮窄、上下拉長、鎖定大字體 */
+@media (pointer: coarse) and (min-width: 1024px), (max-device-width: 1024px) and (min-width: 1024px) {
+    .floating-recruit-btn { 
+        width: 65px !important; 
+        padding: 24px 12px 24px 12px !important; 
+        -webkit-text-size-adjust: 100% !important; 
+    }
+    /* 強制放大內部文字與圖示 */
+    .floating-recruit-btn span:nth-child(1) { font-size: 20px !important; } 
+    .floating-recruit-btn span:nth-child(2), 
+    .floating-recruit-btn span:nth-child(3) { font-size: 16px !important; } 
+}
+
+/* 📱 一般手機版專屬：隱藏直立觀看提示 */
+            @media (max-width: 1023px) {
+                .orientation-tip { display: none !important; }
+            }
+
         `; document.head.appendChild(style);
     }
 
@@ -168,7 +196,10 @@ window.toggleRecruit = function(expertName, btnElement, sportKey) {
     overlay.innerHTML = `
         <div class="recruit-modal-content">
             <div class="recruit-modal-header">
-                <h3 style="margin:0;font-size:28px;letter-spacing:2px;font-weight:900;">🏯 麾下好手名單</h3>
+                <h3 style="margin:0;font-size:28px;letter-spacing:2px;font-weight:900; display:flex; align-items:center; flex-wrap:wrap; gap:12px;">
+    🏯 麾下好手名單
+    <span class="orientation-tip" style="font-size:15px; color:white; font-weight:900; letter-spacing:1px;">📱 建議: 手機直立觀看 體驗更佳</span>
+</h3>
                 <div style="cursor:pointer;font-size:45px;line-height:1;color:white;" onclick="closeRecruitModal()">&times;</div>
             </div>
             <div style="padding:10px 35px; background:#f1f5f9; font-size:13px; color:#64748b; font-weight:bold; border-bottom:1px solid #e2e8f0;">💡 提示：將滑鼠移至名單上方，即可直接預覽該好手的 1:1 原版戰力卡片。</div>
