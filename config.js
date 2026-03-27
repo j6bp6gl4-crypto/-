@@ -98,6 +98,10 @@ const dailyUpdates = [
 
 const todayPicks = [
 
+    // --- 泓佑 NBA 三路分流推薦 ---
+    ["泓佑", "nba_team", "老鷹 +4.5<br>火箭 -12.5"],
+    ["泓佑", "nba_total", "快艇 238.5大<br>獨行俠 239.5大"],
+    ["泓佑", "nba_team_total", "雷霆 129.5大"],
 
 // --- 傲慢20 MLB 三路分流推薦 (中數合一) ---
     ["傲慢20", "mlb_ml", "勇士 獨贏<br>太空 獨贏"],
