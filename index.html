@@ -408,21 +408,44 @@
             👑 眾選主推 ▾
         </button>
         
-        <div class="main-pick-dropdown-content" style="display: none; position: absolute; bottom: 110%; left: 50%; transform: translateX(-50%); background-color: #1e293b; min-width: 220px; box-shadow: 0px 10px 30px rgba(0,0,0,0.8); z-index: 999; border-radius: 12px; border: 1px solid #fbbf24; overflow: hidden; margin-bottom: 10px;">
-
-
+        <div class="main-pick-dropdown-content" style="display: none; position: absolute; bottom: 110%; left: 50%; transform: translateX(-50%); background-color: #1e293b; min-width: 240px; box-shadow: 0px 10px 30px rgba(0,0,0,0.8); z-index: 999; border-radius: 12px; border: 1px solid #fbbf24; overflow: hidden; margin-bottom: 10px;">
+            
+            <div style="color: #fbbf24; font-size: 14px; padding: 12px 15px 5px; text-align: center; font-weight: bold; letter-spacing: 1px; cursor: default; opacity: 0.8;">
+                🏀 【 籃球主推區 】
+            </div>
+            
             <div onclick="window.activeSportKey='nba_main'; window.init(); handleCompare(); this.parentElement.style.display='none';" 
-                                 style="color: white; padding: 15px 20px; font-size: 18px; font-weight: bold; cursor: pointer; text-align: center; border-bottom: 1px solid #334155; transition: 0.2s;" 
-                                 onmouseover="this.style.background='#334155'; this.style.color='#fbbf24'" 
-                                 onmouseout="this.style.background='transparent'; this.style.color='white'">
-                                 🏀 NBA 主推
-                            </div>
-                            <div onclick="window.activeSportKey='mlb_main'; window.init(); handleCompare(); this.parentElement.style.display='none';" 
-                                 style="color: white; padding: 15px 20px; font-size: 18px; font-weight: bold; cursor: pointer; text-align: center; transition: 0.2s;" 
-                                 onmouseover="this.style.background='#334155'; this.style.color='#fbbf24'" 
-                                 onmouseout="this.style.background='transparent'; this.style.color='white'">
-                                 ⚾ MLB 主推
-                            </div>
+                 style="color: white; padding: 12px 20px; font-size: 18px; font-weight: bold; cursor: pointer; text-align: center; transition: 0.2s;" 
+                 onmouseover="this.style.background='#334155'; this.style.color='#fbbf24'" 
+                 onmouseout="this.style.background='transparent'; this.style.color='white'">
+                 NBA主推(隊伍)
+            </div>
+            <div onclick="window.activeSportKey='nba_total_main'; window.init(); handleCompare(); this.parentElement.style.display='none';" 
+                 style="color: white; padding: 12px 20px; font-size: 18px; font-weight: bold; cursor: pointer; text-align: center; transition: 0.2s;" 
+                 onmouseover="this.style.background='#334155'; this.style.color='#fbbf24'" 
+                 onmouseout="this.style.background='transparent'; this.style.color='white'">
+                 NBA主推(大小)
+            </div>
+
+            <div style="height: 1px; background: linear-gradient(90deg, transparent, #475569, transparent); margin: 5px 0;"></div>
+
+            <div style="color: #fbbf24; font-size: 14px; padding: 10px 15px 5px; text-align: center; font-weight: bold; letter-spacing: 1px; cursor: default; opacity: 0.8;">
+                ⚾ 【 棒球主推區 】
+            </div>
+
+            <div onclick="window.activeSportKey='mlb_main'; window.init(); handleCompare(); this.parentElement.style.display='none';" 
+                 style="color: white; padding: 12px 20px; font-size: 18px; font-weight: bold; cursor: pointer; text-align: center; transition: 0.2s;" 
+                 onmouseover="this.style.background='#334155'; this.style.color='#fbbf24'" 
+                 onmouseout="this.style.background='transparent'; this.style.color='white'">
+                 MLB主推(隊伍)
+            </div>
+            <div onclick="window.activeSportKey='mlb_total_main'; window.init(); handleCompare(); this.parentElement.style.display='none';" 
+                 style="color: white; padding: 12px 20px; font-size: 18px; font-weight: bold; cursor: pointer; text-align: center; transition: 0.2s;" 
+                 onmouseover="this.style.background='#334155'; this.style.color='#fbbf24'" 
+                 onmouseout="this.style.background='transparent'; this.style.color='white'">
+                 MLB主推(大小)
+            </div>
+
         </div>
     </div>
 
@@ -457,10 +480,10 @@
             </div>
         </div>
     </div>
-    <script src="config.js?v=1.0.139"></script>
-    <script src="data.js?v=1.0.39"></script>
+    <script src="config.js?v=1.0.140"></script>
+    <script src="data.js?v=1.0.40"></script>
     <script src="auth.js?v=1.0.35"></script>
-    <script src="core_admin.js?v=1.0.37"></script>
+    <script src="core_admin.js?v=1.0.38"></script>
     <script src="core_backup.js?v=1.0.16"></script>
     <script src="core_settle.js?v=1.0.10"></script>
     <script src="core_pocket.js?v=1.0.104"></script>
@@ -469,7 +492,7 @@
     <script src="core_trend.js?v=1.0.10"></script>
     <script src="core_ranking.js?v=1.0.146"></script>
     <script src="core_recruit.js?v=1.0.90"></script>
-    <script src="core_engine.js?v=1.0.107"></script>
+    <script src="core_engine.js?v=1.0.108"></script>
 
 <script>
 (function() {
