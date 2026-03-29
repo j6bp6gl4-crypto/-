@@ -391,10 +391,41 @@
                 <button class="r-btn active" onclick="changeHomeRanking(20, this)">近 20 場</button>
                 <button class="r-btn" onclick="changeHomeRanking(7, this)">近 7 場</button>         
                 <button class="r-btn" onclick="changeHomeRanking(3, this)">近 3 場 (爆發)</button>
+
+
             </div>
 
-            <div id="podiumArea" class="podium-container"></div>
+            <div style="position: relative; width: 100%;">
+                
+                <div style="
+                    position: absolute; 
+                    left: 50px; 
+                    top: 0px;   
+                    z-index: 10;
+                    display: inline-flex; 
+                    align-items: flex-start; 
+                    gap: 12px; /* 🎚️ 間距微調 */
+                    padding: 14px 20px; /* 🎚️ 留白微縮 */
+                    background: linear-gradient(135deg, #1e293b, #0f172a); 
+                    border-left: 5px solid #38bdf8; /* 🎚️ 邊框退回 5px */
+                    border-radius: 9px; 
+                    box-shadow: 0 5px 18px rgba(0,0,0,0.18), inset 0 0 10px rgba(56, 189, 248, 0.05);
+                    max-width: 260px; /* 🎚️ 寬度微縮 */
+                ">
+                    <div style="margin-top: 5px; width: 8px; height: 8px; background: #38bdf8; border-radius: 50%; box-shadow: 0 0 10px #38bdf8; animation: pulse-glow 2s infinite ease-in-out; flex-shrink: 0;"></div>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 5px; text-align: left;">
+                        <span style="color: #38bdf8; font-size: 16px; font-weight: 900; letter-spacing: 0.8px;">每日下午 5 點更新</span>
+                        <span style="color: #94a3b8; font-size: 13px; font-weight: bold; line-height: 1.45;">更新前可瀏覽好手狀況<br>以待賽後如實核定。</span>
+                    </div>
+                </div>
+
+                <div id="podiumArea" class="podium-container"></div>
+            </div>
+
             <div class="grid-container" id="expertGrid"></div>
+
+
 
             <div style="background: white; padding: 20px; border-radius: 12px; margin-bottom: 25px; text-align: center; border: 1px solid #eef2f6;">
                 <p style="font-weight:bold; color:#64748b; margin-bottom:15px;">
