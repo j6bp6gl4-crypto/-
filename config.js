@@ -102,6 +102,14 @@ const dailyUpdates = [
 
 const todayPicks = [
 
+// --- 傲慢20 MLB 雙向分流推薦 (中數合一) ---
+    ["傲慢20", "mlb_ml", "水手 獨贏<br>勇士 獨贏"],
+    ["傲慢20", "mlb_total", "藍鳥 8.5大<br>水手 7.5大<br>勇士 8.5小"],
+
+    // --- Rayen 28 NBA 推薦 (英數留空) ---
+    ["Rayen 28", "nba_team", "火箭 -6<br>勇士 +11<br>拓荒 -15.5<br>魔術 +3"],
+
+
     // --- NBA 讓分組 (nba_team) ---
     ["lsh碩24", "nba_team", "公鹿 +14<br>火箭 -6"],
     ["子ㄈ25", "nba_team", "國王 -1<br>熱火 -9.5"],
