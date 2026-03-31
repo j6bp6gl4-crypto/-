@@ -2,7 +2,7 @@
 /* ==== 【組件 A：系統工具 - core_utils.js】 ==== */
 /* ============================================================== */
 
-window.getSystemLatestDate = function(sportKey) { let maxTime = 0; let maxStr = "01/01"; let currentYear = new Date().getFullYear(); for (let expert in window.dataDB) { if (window.dataDB[expert][sportKey] && window.dataDB[expert][sportKey].length > 0) { let dateStr = window.dataDB[expert][sportKey][0][0]; let d = new Date(`${currentYear}/${dateStr}`); if (d.getMonth() === 11 && new Date().getMonth() <= 2) d.setFullYear(currentYear - 1); if (d.getTime() > maxTime) { maxTime = d.getTime(); maxStr = dateStr; } } } return maxStr; };
+window.getSystemLatestDate = function(sportKey) { let maxTime = 0; let maxStr = "01/01"; let currentYear = new Date().getFullYear(); for (let expert in window.dataDB) { if (window.dataDB[expert][sportKey] && window.dataDB[expert][sportKey].length > 0) { let dateStr = window.dataDB[expert][sportKey][0][0]; let d = new Date(`${currentYear}/${dateStr}`); if (d > new Date()) d.setFullYear(currentYear - 1); if (d.getTime() > maxTime) { maxTime = d.getTime(); maxStr = dateStr; } } } return maxStr; };
 
 window.getDaysDiff = function(recordDateStr, systemLatestStr) { if(!recordDateStr || !systemLatestStr) return 999; let currentYear = new Date().getFullYear(); let d1 = new Date(`${currentYear}/${systemLatestStr}`); let d2 = new Date(`${currentYear}/${recordDateStr}`); if (d2 > d1) d2.setFullYear(currentYear - 1); return Math.floor((d1 - d2) / (1000 * 60 * 60 * 24)); };
 
