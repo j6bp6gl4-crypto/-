@@ -12326,7 +12326,7 @@ const defaultDB = {
             ]
         ]
     },
-    "小李Joy 48": {
+    "小李Joy48": {
         "nba_team": [
             [
                 "03/31",
