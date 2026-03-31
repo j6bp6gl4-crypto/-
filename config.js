@@ -107,9 +107,6 @@ const dailyUpdates = [
 
 const todayPicks = [
 
-
-// 03/31 預測清單
-
 ["Reaves", "mlb_ml", "釀酒1+40<br>洋基PK<br>小熊1+18"],
 ["Reaves", "mlb_main", "洋基PK"],
 ["山Shan 46", "nba_team", "太陽+2.5<br>尼克+1.5"],
@@ -126,10 +123,7 @@ const todayPicks = [
 ["夏炘41", "nba_team", "黃蜂-15.5<br>快艇-6<br>活塞-2<br>湖人-1"],
 ["夏炘41", "mlb_ml_high", "光芒受讓1+40"],
 ["夏炘41", "mlb_runline", "國民受讓1-58<br>落磯受讓2-16"],
-["顆", "mlb_ml", "水手受讓PK"],
-["顆", "mlb_runline", "守護受讓2+16"],
-["顆", "mlb_total", "守護道奇 8大"],
-["顆", "mlb_main", "守護受讓2+16"],
+
 ["啊霖:B 16", "nba_team", "太陽+2.5"],
 ["啊霖:B 16", "nba_total", "尼克火箭 218小<br>騎士湖人 238小"],
 ["啊霖:B 16", "mlb_total", "國民費城 9大<br>白襪馬林 8.5大<br>落磯藍鳥 8大"],
@@ -217,6 +211,18 @@ const todayPicks = [
 ["Leon lin", "nba_team", "魔術-2.5<br>黃蜂-15.5"],
 ["Leon lin", "mlb_ml", "小熊1+18"],
 ["Leon lin", "mlb_total", "騎兵金鶯 8大"],
+["小李Joy48", "nba_team", "太陽+2.5<br>黃蜂-15.5"],
+["小李Joy48", "mlb_total", "落磯藍鳥 8大<br>光芒釀酒 7.5大"],
+["莊硯", "nba_team", "魔術-2.5<br>獨行-1.5"],
+["莊硯", "nba_total", "騎士湖人 238小"],
+["莊硯", "nba_main", "魔術-2.5"],
+["莊硯", "mlb_ml", "洋基PK"],
+["莊硯", "mlb_runline", "道奇2+16"],
+["莊硯", "mlb_main", "洋基PK"],
+["金門小翁40", "nba_team", "火箭-1.5<br>快艇-6<br>湖人-1"],
+["金門小翁40", "mlb_ml", "釀酒1+40<br>巨人1+28"],
+["金門小翁40", "mlb_ml_high", "老虎受讓1+80"],
+["金門小翁40", "mlb_runline", "藍鳥2-16<br>道奇2+16"],
 
 ];
 
