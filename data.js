@@ -3099,7 +3099,7 @@ const defaultDB = {
             ]
         ]
     },
-    "羅Robo 49": {
+    "Robo": {
         "soccer_total": [
             [
                 "02/03",
@@ -6698,7 +6698,7 @@ const defaultDB = {
             ]
         ]
     },
-    "智成": {
+    "Holly": {
         "nba_team": [
             [
                 "03/31",
@@ -8788,7 +8788,7 @@ const defaultDB = {
             ]
         ]
     },
-    "MAX.YAN 36": {
+    "MAXYANSS": {
         "nba_team": [
             [
                 "03/30",
@@ -12326,7 +12326,7 @@ const defaultDB = {
             ]
         ]
     },
-    "小李Joy 48": {
+    "小李Joy48": {
         "nba_team": [
             [
                 "03/31",
@@ -14129,7 +14129,7 @@ const defaultDB = {
             ]
         ]
     },
-    "林Cu 53": {
+    "林Cu53": {
         "nhl_ml": [
             [
                 "02/04",
@@ -17658,7 +17658,7 @@ const defaultDB = {
             ]
         ]
     },
-    "錦哲": {
+    "Reaves": {
         "nba_team": [
             [
                 "03/31",
@@ -19335,7 +19335,7 @@ const defaultDB = {
             ]
         ]
     },
-    "八尾牛鬼11": {
+    "八尾牛鬼 11": {
         "nba_team": [
             [
                 "03/24",
@@ -19389,7 +19389,7 @@ const defaultDB = {
             ]
         ]
     },
-    "Leon": {
+    "Leon lin": {
         "nba_team": [
             [
                 "03/29",
