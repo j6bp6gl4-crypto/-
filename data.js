@@ -3245,7 +3245,7 @@ const defaultDB = {
             ]
         ]
     },
-    "Robo": {
+    "羅Robo 49": {
         "soccer_total": [
             [
                 "02/03",
@@ -11148,7 +11148,7 @@ const defaultDB = {
             ]
         ]
     },
-    "Yeep 06": {
+    "Yeep06": {
         "nba_team": [
             [
                 "04/01",
@@ -15556,7 +15556,7 @@ const defaultDB = {
             ]
         ]
     },
-    "金門小翁40": {
+    "金門小翁": {
         "nba_team": [
             [
                 "04/01",
