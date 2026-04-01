@@ -202,7 +202,9 @@ const todayPicks = [
 ["秉達Li da 35", "mlb_runline", "勇士2+80<br>太空受讓1平"],
 ["秉達Li da 35", "mlb_total", "落磯藍鳥 7.5大"],
 ["秉達Li da 35", "mlb_main", "洋基受讓1+76"],
-
+    
+["小李Joy48", "nba_team", "熱火+5<br>公牛-4.5"],
+["小李Joy48", "mlb_total", "運動勇士 8小<br>大都紅雀 7.5小"],
 
 ];
 
