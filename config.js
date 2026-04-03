@@ -117,12 +117,7 @@ const todayPicks = [
 ["Holly", "mlb_ml", "紅襪1+54<br>太空1+82"],
 ["Holly", "mlb_runline", "洋基1-46<br>藍鳥2+66<br>費城1-94"],
 ["Holly", "mlb_main", "洋基1-46"],
-["仁劭", "nba_team", "黃蜂-16<br>七六-1.5<br>籃網+16.5"],
-["仁劭", "nba_total", "灰狼七六 233.5小<br>老鷹籃網 226小"],
-["仁劭", "nba_main", "七六-1.5"],
-["仁劭", "mlb_runline", "老虎1-50<br>洋基1-46<br>白襪受讓2+66"],
-["仁劭", "mlb_total", "藍鳥白襪 7.5小<br>教士紅襪 9小"],
-["仁劭", "mlb_total_main", "教士紅襪 9小"],
+
 ["Yu lu", "nba_team", "溜馬+16<br>七六-1.5<br>老鷹-16.5"],
 ["Yu lu", "nba_main", "溜馬+16"],
 ["Yu lu", "mlb_ml", "紅襪1+54<br>光芒PK<br>釀酒PK"],
