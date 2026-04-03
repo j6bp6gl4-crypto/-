@@ -257,6 +257,10 @@ const todayPicks = [
 
     ["Yeep06", "nba_team", "溜馬+16<br>灰狼+1.5<br>公牛+15.5<br>爵士+17"],
 ["Yeep06", "nba_main", "公牛+15.5"],
+
+    ["leon lin", "nba_team", "黃蜂-16<br>暴龍-12.5"],
+["leon lin", "nba_total", "塞爾公鹿 217.5大<br>鵜鶘國王 234.5大"],
+["leon lin", "mlb_runline", "老虎1-50<br>騎兵1-30"],
     
     // --- 依凡38 足球推薦 ---
     ["依凡38", "soccer_team", "巴列卡諾 -0.5/1<br>巴黎聖日門 -1.5/2"],
