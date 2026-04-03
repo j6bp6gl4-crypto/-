@@ -250,6 +250,11 @@ const todayPicks = [
 ["幸運星29", "mlb_runline", "老虎1-50<br>洋基1-46"],
 ["幸運星29", "mlb_total", "藍鳥白襪 7.5大<br>教士紅襪 9大<br>費城落磯 10大"],
 
+    ["MAXYANSS", "nba_team", "籃網+16.5<br>暴龍-12.5"],
+["MAXYANSS", "nba_total", "溜馬黃蜂 237大<br>塞爾公鹿 217.5大<br>鵜鶘國王 234.5大"],
+["MAXYANSS", "mlb_ml", "釀酒PK"],
+["MAXYANSS", "mlb_total", "水手天使 8大<br>太空運動 10大<br>勇士響蛇 9.5大<br>大都巨人 7.5小"],
+
     // --- 依凡38 足球推薦 ---
     ["依凡38", "soccer_team", "巴列卡諾 -0.5/1<br>巴黎聖日門 -1.5/2"],
 
