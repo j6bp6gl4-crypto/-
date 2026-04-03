@@ -23,7 +23,7 @@
             // 且螢幕寬度小於 1024 (代表他是在手機上)
             if (!isLineApp && window.innerWidth < 1024) {
                 // 強制把視角拉遠，變成 1440px 的電腦版視野
-                document.getElementById('viewportMeta').setAttribute('content', 'width=1440, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes');
+                document.getElementById('viewportMeta').setAttribute('content', 'width=1440, user-scalable=yes');
             }
         })();
     </script>
@@ -46,7 +46,6 @@
 <meta name="description" content="全台最強運動賽事分析對比系統，即時掌握好手動向與戰績趨勢，尊爵黑金風儀表板。" />
     
     <style>
-* { -webkit-text-size-adjust: 100% !important; text-size-adjust: 100% !important; }
 /* ==================================================== */
 /* 🚀 隱藏電腦版多餘捲軸 (保留滑鼠滾動功能)               */
 /* ==================================================== */
@@ -599,7 +598,7 @@
 
         // 📱 手機版邏輯 (<1024 且為直向時)
         if (screenWidth < 1024) { 
-            var scale = (window.screen.width / window.devicePixelRatio) / 980;
+            var scale = screenWidth / 980;
             // 確保高度絕對能填滿被收起的網址列空間 (加上 100px 緩衝值，杜絕滑動白邊)
             var targetH = Math.round((screenHeight + 100) / scale) + 'px'; 
             
