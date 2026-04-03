@@ -599,7 +599,7 @@
 
         // 📱 手機版邏輯 (<1024 且為直向時)
         if (screenWidth < 1024) { 
-            var scale = screenWidth / 980;
+            var scale = (window.screen.width / window.devicePixelRatio) / 980;
             // 確保高度絕對能填滿被收起的網址列空間 (加上 100px 緩衝值，杜絕滑動白邊)
             var targetH = Math.round((screenHeight + 100) / scale) + 'px'; 
             
