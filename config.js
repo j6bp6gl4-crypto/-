@@ -255,6 +255,9 @@ const todayPicks = [
 ["MAXYANSS", "mlb_ml", "釀酒PK"],
 ["MAXYANSS", "mlb_total", "水手天使 8大<br>太空運動 10大<br>勇士響蛇 9.5大<br>大都巨人 7.5小"],
 
+    ["Yeep06", "nba_team", "溜馬+16<br>灰狼+1.5<br>公牛+15.5<br>爵士+17"],
+["Yeep06", "nba_main", "公牛+15.5"],
+    
     // --- 依凡38 足球推薦 ---
     ["依凡38", "soccer_team", "巴列卡諾 -0.5/1<br>巴黎聖日門 -1.5/2"],
 
