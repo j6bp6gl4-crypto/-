@@ -107,6 +107,9 @@ const dailyUpdates = [
 
 const todayPicks = [
 
+// --- 依凡38 足球推薦 (04/04) ---
+    ["依凡38", "soccer_team", "4/4 皇家蘇斯達 -0.5/1<br>勒沃庫森 -1<br>拜仁慕尼黑 -1<br>慕遜加柏 -0.5/1"],
+
 
 ];
 
