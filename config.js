@@ -233,6 +233,19 @@ const todayPicks = [
 ["lsh碩24", "nba_total", "湖人獨行 232.5小"],
 ["lsh碩24", "nba_main", "獨行+2"],
 
+    ["小魚兒", "nba_team", "籃網-3<br>黃蜂-1<br>魔術-5"],
+["小魚兒", "nba_total", "太陽公牛 237.5小<br>暴龍塞爾 220.5大"],
+["小魚兒", "nba_main", "黃蜂-1"],
+["小魚兒", "mlb_ml", "小熊1+38"],
+["小魚兒", "mlb_total", "金鶯海盜 8小<br>教士紅襪 8.5大<br>道奇國民 9大<br>大都巨人 7小"],
+["小魚兒", "mlb_total_main", "教士紅襪 8.5大"],
+["leon lin", "nba_team", "太陽-10<br>籃網-3"],
+["leon lin", "nba_main", "籃網-3"],
+["leon lin", "mlb_ml", "老虎1+36<br>海盜1+52"],
+["leon lin", "mlb_runline", "水手1-36"],
+["leon lin", "mlb_total", "大都巨人 7小<br>釀酒皇家 7.5大"],
+["leon lin", "mlb_total_main", "大都巨人 7小"],
+
 // --- Rong 14 冰球分流推薦 ---
     ["Rong 14", "nhl_ml", "荒野 獨贏<br>企鵝 獨贏<br>飛人 獨贏<br>颶風 獨贏"],
     ["Rong 14", "nhl_total_reg", "荒野 5.5大<br>企鵝 6.5小<br>飛人 5.5大"],
