@@ -246,6 +246,12 @@ const todayPicks = [
 ["leon lin", "mlb_total", "大都巨人 7小<br>釀酒皇家 7.5大"],
 ["leon lin", "mlb_total_main", "大都巨人 7小"],
 
+["Yu Siang 30", "nba_team", "籃網-3<br>暴龍+9.5<br>鵜鶘+5"],
+["Yu Siang 30", "nba_total", "暴龍塞爾 220.5大<br>溜馬騎士 240小"],
+["Yu Siang 30", "nba_main", "暴龍+9.5"],
+["Yu Siang 30", "mlb_ml", "海盜1+52<br>釀酒受讓1+64<br>巨人1+74"],
+["Yu Siang 30", "mlb_total", "金鶯海盜 8大<br>太空運動 10大"],
+["Yu Siang 30", "mlb_main", "巨人1+74"],
 // --- Rong 14 冰球分流推薦 ---
     ["Rong 14", "nhl_ml", "荒野 獨贏<br>企鵝 獨贏<br>飛人 獨贏<br>颶風 獨贏"],
     ["Rong 14", "nhl_total_reg", "荒野 5.5大<br>企鵝 6.5小<br>飛人 5.5大"],
