@@ -107,7 +107,6 @@ const dailyUpdates = [
 
 const todayPicks = [
 
-
 ["Hsiang", "nba_team", "尼克+1.5<br>騎士-13.5<br>馬刺-8.5"],
 ["Hsiang", "nba_main", "馬刺-8.5"],
 ["山Shan 46", "nba_team", "老鷹-1.5<br>魔術+3"],
@@ -156,9 +155,7 @@ const todayPicks = [
 ["Yu lu", "mlb_main", "釀酒1+80"],
 ["阿綺", "nba_team", "尼克+1.5<br>活塞-3<br>灰熊+13.5<br>七六+8.5<br>拓荒+8.5"],
 ["阿綺", "nba_main", "活塞-3"],
-["仁劭", "mlb_ml", "馬林1+54<br>海盜1+48<br>守護1+52"],
-["仁劭", "mlb_total", "釀酒紅襪 8小<br>紅雀國民 8小"],
-["仁劭", "mlb_main", "守護1+52"],
+
 ["莊硯", "nba_team", "尼克+1.5<br>魔術+3"],
 ["莊硯", "nba_total", "尼克老鷹 229大<br>活塞魔術 225.5小<br>拓荒金塊 240小"],
 ["莊硯", "nba_main", "魔術+3"],
@@ -204,16 +201,16 @@ const todayPicks = [
 ["秉達Li da 35", "mlb_total_main", "勇士天使 7.5大"],
 ["lsh碩24", "nba_team", "尼克+1.5<br>活塞-3<br>灰熊+13.5<br>馬刺-8.5"],
 ["lsh碩24", "nba_main", "活塞-3"],
+
 ["小歐", "nba_team", "活塞-3<br>騎士-13.5<br>馬刺-8.5<br>金塊-8.5"],
 ["小歐", "nba_main", "活塞-3"],
 ["小歐", "mlb_total", "老虎雙城 7大<br>水手騎兵 7.5大<br>太空落磯 10.5小<br>勇士天使 7.5大"],
-
-    ["Yu Siang 30", "mlb_ml", "馬林1+54<br>釀酒1+80"],
+["Yu Siang 30", "mlb_ml", "馬林1+54<br>釀酒1+80"],
 ["Yu Siang 30", "mlb_ml_high", "藍鳥受讓1+22"],
 ["Yu Siang 30", "mlb_total", "皇家守護 7大<br>水手騎兵 7.5大"],
 ["Yu Siang 30", "mlb_main", "藍鳥受讓1+22"],
 
-        ["小李Joy48", "nba_team", "灰熊+13.5<br>馬刺-8.5"],
+    ["小李Joy48", "nba_team", "灰熊+13.5<br>馬刺-8.5"],
 ["小李Joy48", "mlb_total", "老虎雙城 7大<br>勇士天使 7.5小"],
 ["金門小翁", "nba_team", "尼克+1.5<br>魔術+3<br>金塊-8.5"],
 ["金門小翁", "nba_main", "金塊-8.5"],
@@ -231,16 +228,16 @@ const todayPicks = [
 ["Paul蔡47", "nba_team", "七六+8.5<br>拓荒+8.5<br>灰熊+13.5"],
 ["Paul蔡47", "nba_total", "七六馬刺 237大<br>拓荒金塊 240大"],
 ["Paul蔡47", "nba_total_main", "七六馬刺 237大"],
-    
-// --- Holly 冰球分流推薦 (4/7) ---
-["Holly", "nhl_ml_reg", "閃電 獨贏<br>噴射機 獨贏<br>鯊魚 獨贏<br>國王 獨贏"],
-["Holly", "nhl_total_reg", "海怪場 5.5大"],
 
- // --- Rong 14 冰球分流推薦 ---
-["Rong 14", "nhl_ml", "閃電 獨贏<br>噴射機 獨贏<br>鯊魚 獨贏<br>國王 獨贏"],
-["Rong 14", "nhl_total_reg", "閃電 6.5大<br>噴射機 5.5大<br>鯊魚 6.5小"],
+// --- Holly 冰球分流推薦 (4/7) ---
+    ["Holly", "nhl_ml_reg", "閃電 獨贏<br>噴射機 獨贏<br>鯊魚 獨贏<br>國王 獨贏"],
+    ["Holly", "nhl_total_reg", "海怪場 5.5大"],
+
+    // --- Rong 14 冰球分流推薦 ---
+    ["Rong 14", "nhl_ml", "閃電 獨贏<br>噴射機 獨贏<br>鯊魚 獨贏<br>國王 獨贏"],
+    ["Rong 14", "nhl_total_reg", "閃電 6.5大<br>噴射機 5.5大<br>鯊魚 6.5小"],
 // --- 依凡38 足球推薦 (4/6 ~ 4/7) ---
-["依凡38", "soccer_team", "4/6<br>義甲 21:00 阿特蘭大 -0.5/1<br>4/7<br>義甲 00:00 祖雲達斯 -1"],
+    ["依凡38", "soccer_team", "4/6<br>義甲 21:00 阿特蘭大 -0.5/1<br>4/7<br>義甲 00:00 祖雲達斯 -1"],
 
 
 ];
