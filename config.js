@@ -204,6 +204,8 @@ const todayPicks = [
 ["秉達Li da 35", "mlb_total_main", "勇士天使 7.5大"],
 ["lsh碩24", "nba_team", "尼克+1.5<br>活塞-3<br>灰熊+13.5<br>馬刺-8.5"],
 ["lsh碩24", "nba_main", "活塞-3"],
+    ["小歐", "nba_team", "活塞-3<br>騎士-13.5<br>馬刺-8.5<br>金塊-8.5"],
+["小歐", "nba_main", "活塞-3"],
 
 // --- Holly 冰球分流推薦 (4/7) ---
     ["Holly", "nhl_ml_reg", "閃電 獨贏<br>噴射機 獨贏<br>鯊魚 獨贏<br>國王 獨贏"],
