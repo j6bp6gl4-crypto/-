@@ -102,7 +102,7 @@ window.renderRankMode = function() {
 let diffDays = window.getDaysDiff(list[0][0], systemLatestDate); if (diffDays > 3) continue;
         // 🎯 門檻激活：不重複天數 < 10 天不進入賽事排行
 let uniqueDatesRank = new Set(list.map(r => r[0]));
-        if (uniqueDatesRank.size < 10 && !qualifiedWhitelistRM.includes(name)) continue;
+        if (uniqueDatesRank.size < 10 && !qualifiedWhitelistRM.includes(name + '||' + window.activeSportKey)) continue;
 
         let w=0, l=0, n20=0; list.slice(0, 20).forEach(r => { const wm = r[1].match(/(\d+)勝/); const lm = r[1].match(/(\d+)敗/); if(wm) w += parseInt(wm[1]); if(lm) l += parseInt(lm[1]); n20 += parseInt(r[2] || 0); }); let rate = (w+l) > 0 ? (w/(w+l)) : 0; allSorted.push({ name, w, l, net: n20, rate });
     }
