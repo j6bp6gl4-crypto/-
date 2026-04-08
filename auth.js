@@ -140,7 +140,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         const liff = await loadLiffSdk();
         await liff.init({ liffId: LIFF_ID });
-        if (liff.isLoggedIn()) liffLoggedIn = true;
+        if (liff.isLoggedIn()) {
+            liffLoggedIn = true;
+            // ✅ 記錄登入成功事件
+            try {
+                const profile = await liff.getProfile();
+                fetch('/api/track-login-event', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        event_type: 'login_success',
+                        line_user_id: profile.userId
+                    })
+                }).catch(() => {});
+            } catch(e) {}
+        }
     } catch (err) {
         console.error('⚠️ LIFF 初始化失敗，忽略錯誤繼續');
     }
@@ -467,6 +481,12 @@ css.innerHTML = `
 // 🚨 升級版：LINE 登入過場動畫 (自帶破謊雷達，動態放大)
 function handleTransitionLogin(type) {
     if (type === 'line') {
+// ✅ 記錄點擊登入事件
+        fetch('/api/track-login-event', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ event_type: 'click' })
+        }).catch(() => {});
         // 🎯 啟動微型破謊雷達：決定放大倍率
         let scale = 1; // 預設 1 倍 (電腦版、LINE 內建瀏覽器)
         const screenW = window.screen.width;
